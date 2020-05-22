@@ -1,5 +1,5 @@
-import workBookReducer, { getNewSlide } from "../reducers/workbook";
-import * as actions from "../actions/workbook";
+import workBookReducer, { getNewSlide } from "../../reducers/workbook";
+import * as actions from "../../actions/workbook";
 import { fabric } from "fabric";
 
 const defaultState = {
@@ -24,7 +24,7 @@ describe("Workbook reducer tests", () => {
     const { slides } = workBookReducer(state, actions.deleteSlide(1));
     expect(slides.length).toBe(1);
   });
-  it("decrements curSlide when curSlide is the last slide and last slide is deleted", () => {
+  it("deletes a slide when curSlide is at the last index", () => {
     const withTwoSlides = {
       slides: [getNewSlide(), getNewSlide()],
       curSlide: 1,
@@ -33,13 +33,17 @@ describe("Workbook reducer tests", () => {
     expect(curSlide).toBe(0);
   });
   it("sets a fabric object in the slide", () => {
+    let withTwoSlides = {
+      slides: [getNewSlide(), getNewSlide()],
+      curSlide: 1,
+    };
     const fabricObj = new fabric.Rect({
       left: 100,
     });
     const { slides } = workBookReducer(
-      defaultState,
+      withTwoSlides,
       actions.setFabricObjectsInCurSlide([fabricObj])
     );
-    expect(slides[0].fabricObjects[0].left).toBe(100);
+    expect(slides[1].fabricObjects[0].left).toBe(100);
   });
 });

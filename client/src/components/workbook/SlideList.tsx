@@ -3,11 +3,17 @@ import SlideButton from "./SlideButton";
 type Props = {
   noOfSlides: number;
   onSlideButtonClick(slideNo: number): any;
-  onSlideDeleteButtonClick(slideNo: number): any;
+  onDeleteSlideButtonClick(slideNo: number): any;
+  curSlide: number;
 };
 
 const SlideList = (props: Props) => {
-  const { noOfSlides, onSlideButtonClick, onSlideDeleteButtonClick } = props;
+  const {
+    noOfSlides,
+    onSlideButtonClick,
+    onDeleteSlideButtonClick,
+    curSlide,
+  } = props;
 
   const renderSlides = () => {
     const slides = [];
@@ -16,15 +22,20 @@ const SlideList = (props: Props) => {
         <SlideButton
           key={slideNo}
           slideNo={slideNo}
-          onDeleteButtonClick={onSlideDeleteButtonClick}
+          onDeleteButtonClick={onDeleteSlideButtonClick}
           onSlideButtonClick={onSlideButtonClick}
+          isSlideSelected={curSlide === slideNo}
         />
       );
     }
     return slides;
   };
 
-  return <div>{renderSlides()}</div>;
+  return (
+    <>
+      <div>{renderSlides()}</div>
+    </>
+  );
 };
 
 export default SlideList;
