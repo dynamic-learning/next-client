@@ -1,10 +1,11 @@
-import * as React from "react";
+import Workbook from "../src/components/workbook";
+import { Provider } from "react-redux";
+import store from "../src/store";
 
 export default () => {
-    return (
-        <>
-            <h1>Index page</h1>
-            <div>You are on index page</div>
-        </>
-    )
-}
+  return (
+    <Provider store={store}>
+      <Workbook />
+    </Provider>
+  );
+};
