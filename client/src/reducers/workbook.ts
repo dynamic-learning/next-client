@@ -23,29 +23,35 @@ type Action = {
 };
 
 const workbookReducer = (state = defaultState, action: Action) => {
+  let updatedSlides;
   switch (action.type) {
     case ADD_SLIDE:
-      const newSlides = [...state.slides, getNewSlide()];
+      updatedSlides = [...state.slides, getNewSlide()];
       return {
         ...state,
-        slides: newSlides,
-        curSlide: newSlides.length - 1,
+        slides: updatedSlides,
+        curSlide: updatedSlides.length - 1,
       };
     case DELETE_SLIDE:
-      const index = action.payload.index;
+      const deleteIndex = action.payload.index;
       if (state.slides.length === 1) {
         return {
           ...state,
           slides: [getNewSlide()],
         };
       } else {
+        updatedSlides = [
+          ...state.slides.slice(0, deleteIndex),
+          ...state.slides.slice(deleteIndex + 1, state.slides.length),
+        ];
+        const isCurSlideBeyondNoOfSlides =
+          state.curSlide > updatedSlides.length - 1;
         return {
           ...state,
-          slides: [
-            ...state.slides.slice(0, index),
-            ...state.slides.slice(index + 1, state.slides.length),
-          ],
-          curSlide: index === state.slides.length - 1 ? index - 1 : index,
+          slides: updatedSlides,
+          curSlide: isCurSlideBeyondNoOfSlides
+            ? state.curSlide - 1
+            : state.curSlide,
         };
       }
     case CHANGE_CURRENT_SLIDE:
