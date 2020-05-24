@@ -96,6 +96,7 @@ const getStyles = ({ color2, color4, color5 }: any) => `
   .workbook-container {
     display:flex;
     flex-direction:row;
+    height:100vh;
   }
   .workbook-container h1 {
     color:white;
@@ -104,7 +105,8 @@ const getStyles = ({ color2, color4, color5 }: any) => `
   .left-menu {
     background-color:${color2};
     padding:1rem;
-    width:9rem;
+    width:11rem;
+    overflow-y:auto;
   }
   .add-button {
     text-align:center;
