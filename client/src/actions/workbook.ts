@@ -1,21 +1,17 @@
-import {
-  ADD_SLIDE,
-  DELETE_SLIDE,
-  CHANGE_CURRENT_SLIDE,
-  SET_FABRIC_OBJECTS_IN_CURSLIDE,
-} from "../action-types/workbook";
+import * as actions from "../action-types/workbook";
 import { fabric } from "fabric";
+import { CanvasSimType } from "../types";
 
 export const addSlide = () => {
   return {
-    type: ADD_SLIDE,
+    type: actions.ADD_SLIDE,
     payload: {},
   };
 };
 
 export const deleteSlide = (index: number) => {
   return {
-    type: DELETE_SLIDE,
+    type: actions.DELETE_SLIDE,
     payload: {
       index,
     },
@@ -24,7 +20,7 @@ export const deleteSlide = (index: number) => {
 
 export const changeCurSlide = (newCurSlide: number) => {
   return {
-    type: CHANGE_CURRENT_SLIDE,
+    type: actions.CHANGE_CURRENT_SLIDE,
     payload: {
       newCurSlide,
     },
@@ -35,9 +31,44 @@ export const setFabricObjectsInCurSlide = (
   fabricObjects: Array<fabric.Object>
 ) => {
   return {
-    type: SET_FABRIC_OBJECTS_IN_CURSLIDE,
+    type: actions.SET_FABRIC_OBJECTS_IN_CURSLIDE,
     payload: {
       fabricObjects,
+    },
+  };
+};
+
+export const addItemInCurSlide = (newItem: any, itemType: string) => {
+  return {
+    type: actions.ADD_ITEM_IN_CURSLIDE,
+    payload: {
+      newItem,
+      itemType,
+    },
+  };
+};
+
+export const updateItemInCurSlide = (
+  updatedItem: any,
+  index: number,
+  itemType: string
+) => {
+  return {
+    type: actions.UPDATE_ITEM_IN_CURSLIDE,
+    payload: {
+      updatedItem,
+      index,
+      itemType,
+    },
+  };
+};
+
+export const deleteItemInCurSlide = (deleteIndex: number, itemType: string) => {
+  return {
+    type: actions.DELETE_ITEM_FROM_CURSLIDE,
+    payload: {
+      deleteIndex,
+      itemType,
     },
   };
 };

@@ -4,16 +4,25 @@ import {
   deleteSlide,
   changeCurSlide,
   setFabricObjectsInCurSlide,
+  addItemInCurSlide,
+  updateItemInCurSlide,
+  deleteItemInCurSlide,
 } from "../../actions/workbook";
 import Slide from "./slide/Slide";
 import { SlideType } from "../../types";
 import LeftMenu from "./left-menu";
+import { useState } from "react";
+import AddSimModal from "./modals/AddSimModal";
 
 interface WorkbookMethods {
   onAddSlideButtonClick(): void;
   onDeleteSlideButtonClick(slideNo: number): void;
   onSlideButtonClick(slideNo: number): void;
-  onCanvasChange(fabricObjects: Array<fabric.Object>): void;
+  onCanvasUpdate(fabricObjects: Array<fabric.Object>): void;
+
+  onItemAdd(newItem: any, itemType: string): void;
+  onItemUpdate(updatedItem: any, index: number, itemType: string): void;
+  onItemDelete(deleteIndex: number, itemType: string): void;
 }
 
 interface WorkbookProps {
@@ -30,27 +39,51 @@ const Workbook = (props: Props) => {
     onDeleteSlideButtonClick,
     onSlideButtonClick,
     slides,
-    onCanvasChange,
+    onCanvasUpdate,
+    onItemAdd,
+    onItemDelete,
+    onItemUpdate,
   } = props;
 
   const noOfSlides = slides.length;
+  const [showAddSimModal, setShowAddSimModal] = useState(false);
+
+  const handleAddSimButtonClick = () => {
+    setShowAddSimModal(true);
+  };
+
+  const handleAddSimModalClose = () => {
+    setShowAddSimModal(false);
+  };
 
   return (
     <>
       <style>{style}</style>
+      <AddSimModal
+        showAddSimModal={showAddSimModal}
+        handleAddSimModalClose={handleAddSimModalClose}
+        onItemAdd={onItemAdd}
+      />
       <div className="workbook-container">
-        <LeftMenu
-          onAddSlideButtonClick={onAddSlideButtonClick}
-          onSlideButtonClick={onSlideButtonClick}
-          onDeleteSlideButtonClick={onDeleteSlideButtonClick}
-          curSlide={curSlide}
-          noOfSlides={noOfSlides}
-        />
-        <Slide
-          onCanvasChange={onCanvasChange}
-          slideContents={slides[curSlide]}
-        />
+        <div className="left-menu-container">
+          <LeftMenu
+            onAddSlideButtonClick={onAddSlideButtonClick}
+            onSlideButtonClick={onSlideButtonClick}
+            onDeleteSlideButtonClick={onDeleteSlideButtonClick}
+            curSlide={curSlide}
+            noOfSlides={noOfSlides}
+          />
+        </div>
+        <div className="slide-container">
+          <Slide
+            onCanvasUpdate={onCanvasUpdate}
+            onItemUpdate={onItemUpdate}
+            onItemDelete={onItemDelete}
+            slideContents={slides[curSlide]}
+          />
+        </div>
       </div>
+      <button onClick={handleAddSimButtonClick}>Add sim</button>
     </>
   );
 };
@@ -66,8 +99,17 @@ const mapDispatchToProps = (dispatch: Function): WorkbookMethods => {
     onSlideButtonClick: (slideNo: number) => {
       dispatch(changeCurSlide(slideNo));
     },
-    onCanvasChange: (fabricObjects: Array<fabric.Object>) => {
+    onCanvasUpdate: (fabricObjects: Array<fabric.Object>) => {
       dispatch(setFabricObjectsInCurSlide(fabricObjects));
+    },
+    onItemAdd: (newItem: any, itemType: string) => {
+      dispatch(addItemInCurSlide(newItem, itemType));
+    },
+    onItemUpdate: (updatedItem: any, index: number, itemType: string) => {
+      dispatch(updateItemInCurSlide(updatedItem, index, itemType));
+    },
+    onItemDelete: (deleteIndex: number, itemType: string) => {
+      dispatch(deleteItemInCurSlide(deleteIndex, itemType));
     },
   };
 };
@@ -81,9 +123,17 @@ const mapStateToProps = (state: any): WorkbookProps => {
 
 const style = `
   .workbook-container {
+    width:100vw;
+    height:100vh;
     display:flex;
     flex-direction:row;
-    height:100vh;
+    max-width:100%;
+  }
+  .slide-container {
+    flex:14;
+  }
+  .left-menu-container {
+    flex:2;
   }
 `;
 

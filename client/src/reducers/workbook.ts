@@ -1,14 +1,15 @@
-import {
-  ADD_SLIDE,
-  DELETE_SLIDE,
-  CHANGE_CURRENT_SLIDE,
-  SET_FABRIC_OBJECTS_IN_CURSLIDE,
-} from "../action-types/workbook";
+import * as actions from "../action-types/workbook";
 import { SlideType } from "../types";
+import {
+  addAnItemToArray,
+  updateItemInArrayAtIndex,
+  deleteItemInArrayAtIndex,
+} from "../utils";
 
 export const getNewSlide = (): SlideType => {
   return {
     fabricObjects: [],
+    sims: [],
   };
 };
 
@@ -23,16 +24,17 @@ type Action = {
 };
 
 const workbookReducer = (state = defaultState, action: Action) => {
-  let updatedSlides;
+  let updatedSlides, updatedSlide;
   switch (action.type) {
-    case ADD_SLIDE:
-      updatedSlides = [...state.slides, getNewSlide()];
+    case actions.ADD_SLIDE:
+      updatedSlides = addAnItemToArray(state.slides, getNewSlide());
       return {
         ...state,
         slides: updatedSlides,
         curSlide: updatedSlides.length - 1,
       };
-    case DELETE_SLIDE:
+
+    case actions.DELETE_SLIDE:
       const deleteIndex = action.payload.index;
       if (state.slides.length === 1) {
         return {
@@ -40,10 +42,7 @@ const workbookReducer = (state = defaultState, action: Action) => {
           slides: [getNewSlide()],
         };
       } else {
-        updatedSlides = [
-          ...state.slides.slice(0, deleteIndex),
-          ...state.slides.slice(deleteIndex + 1, state.slides.length),
-        ];
+        updatedSlides = deleteItemInArrayAtIndex(state.slides, deleteIndex);
         const isCurSlideBeyondNoOfSlides =
           state.curSlide > updatedSlides.length - 1;
         return {
@@ -54,28 +53,122 @@ const workbookReducer = (state = defaultState, action: Action) => {
             : state.curSlide,
         };
       }
-    case CHANGE_CURRENT_SLIDE:
+
+    case actions.CHANGE_CURRENT_SLIDE:
       return {
         ...state,
         curSlide: action.payload.newCurSlide,
       };
-    case SET_FABRIC_OBJECTS_IN_CURSLIDE:
+
+    case actions.SET_FABRIC_OBJECTS_IN_CURSLIDE:
+      updatedSlide = {
+        ...state.slides[state.curSlide],
+        fabricObjects: action.payload.fabricObjects,
+      };
+      updatedSlides = updateItemInArrayAtIndex(
+        state.slides,
+        state.curSlide,
+        updatedSlide
+      );
       return {
         ...state,
-        slides: [
-          ...state.slides.slice(0, state.curSlide),
-          {
-            ...state.slides[state.curSlide],
-            fabricObjects: action.payload.fabricObjects,
-          },
-          ...state.slides.slice(state.curSlide + 1, state.slides.length),
-        ],
+        slides: updatedSlides,
       };
+
+    case actions.ADD_ITEM_IN_CURSLIDE:
+      updatedSlide = addItemInCurSlide(
+        state,
+        action.payload.itemType,
+        action.payload.newItem
+      );
+      updatedSlides = updateItemInArrayAtIndex(
+        state.slides,
+        state.curSlide,
+        updatedSlide
+      );
+      return {
+        ...state,
+        slides: updatedSlides,
+      };
+
+    case actions.UPDATE_ITEM_IN_CURSLIDE:
+      updatedSlide = updateItemInCurSlide(
+        state,
+        action.payload.itemType,
+        action.payload.updatedItem,
+        action.payload.index
+      );
+      updatedSlides = updateItemInArrayAtIndex(
+        state.slides,
+        state.curSlide,
+        updatedSlide
+      );
+      return {
+        ...state,
+        slides: updatedSlides,
+      };
+
+    case actions.DELETE_ITEM_FROM_CURSLIDE:
+      updatedSlide = deleteItemInCurSlide(
+        state,
+        action.payload.itemType,
+        action.payload.deleteIndex
+      );
+      updatedSlides = updateItemInArrayAtIndex(
+        state.slides,
+        state.curSlide,
+        updatedSlide
+      );
+      return {
+        ...state,
+        slides: updatedSlides,
+      };
+
     default:
       return {
         ...state,
       };
   }
+};
+
+const addItemInCurSlide = (state: any, itemType: string, newItem: any) => {
+  const updatedSlide = {
+    ...state.slides[state.curSlide],
+    [itemType]: [...state.slides[state.curSlide][itemType], newItem],
+  };
+  return updatedSlide;
+};
+
+const updateItemInCurSlide = (
+  state: any,
+  itemType: string,
+  updatedItem: any,
+  index: number
+) => {
+  const itemsInCurSlide = state.slides[state.curSlide][itemType];
+  const updateIndex = index;
+  const updatedSlide = {
+    ...state.slides[state.curSlide],
+    [itemType]: updateItemInArrayAtIndex(
+      itemsInCurSlide,
+      updateIndex,
+      updatedItem
+    ),
+  };
+  return updatedSlide;
+};
+
+const deleteItemInCurSlide = (
+  state: any,
+  itemType: string,
+  deleteIndex: number
+) => {
+  const itemsInCurSlide = state.slides[state.curSlide][itemType];
+  const updatedSlide = {
+    ...state.slides[state.curSlide],
+    [itemType]: deleteItemInArrayAtIndex(itemsInCurSlide, deleteIndex),
+  };
+  return updatedSlide;
 };
 
 export default workbookReducer;

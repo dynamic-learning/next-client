@@ -4,11 +4,11 @@ import ThemeContext from "../../../contexts";
 import { useContext } from "react";
 
 interface Props {
-  curSlide:number,
-  noOfSlides:number,
-  onSlideButtonClick(slideNo:number):void,
-  onDeleteSlideButtonClick(slideNo:number):void,
-  onAddSlideButtonClick():void
+  curSlide: number;
+  noOfSlides: number;
+  onSlideButtonClick(slideNo: number): void;
+  onDeleteSlideButtonClick(slideNo: number): void;
+  onAddSlideButtonClick(): void;
 }
 
 const LeftMenu = ({
@@ -40,8 +40,8 @@ const getStyle = ({ color2 }: any) => `
   .left-menu {
     background-color:${color2};
     padding:1rem;
-    width:11rem;
     overflow-y:auto;
+    height:100%;
   }
   .left-menu h1 {
     color:white;
