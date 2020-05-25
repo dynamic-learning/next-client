@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "unit-tests": "jest src/tests/unit",
-    "e2e-tests": "cypress open"
+    "e2e-tests": "cypress open",
+    "lint": "prettier --write 'src/**/*.{ts,tsx,js,jsx}' 'pages/**/*.{ts,tsx,js,jsx}'"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +34,7 @@
     "@types/redux": "^3.6.0",
     "cypress": "^4.6.0",
     "jest": "^26.0.1",
+    "prettier": "^2.0.5",
     "ts-jest": "^26.0.0",
     "typescript": "^3.9.3"
   }

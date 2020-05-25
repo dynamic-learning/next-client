@@ -1,6 +1,6 @@
 import Canvas from "./Canvas";
 import { fabric } from "fabric";
-import { SlideType } from "../../types";
+import { SlideType } from "../../../types";
 
 type Props = {
   onCanvasChange(fabricObjects: Array<fabric.Object>): void;

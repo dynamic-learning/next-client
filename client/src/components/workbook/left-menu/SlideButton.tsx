@@ -1,4 +1,4 @@
-import ThemeContext from "../../contexts";
+import ThemeContext from "../../../contexts";
 import { useContext, useState } from "react";
 import { DeleteOutlined } from "@ant-design/icons";
 

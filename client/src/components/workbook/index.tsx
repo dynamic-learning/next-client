@@ -1,4 +1,3 @@
-import SlideList from "./SlideList";
 import { connect } from "react-redux";
 import {
   addSlide,
@@ -6,11 +5,9 @@ import {
   changeCurSlide,
   setFabricObjectsInCurSlide,
 } from "../../actions/workbook";
-import Slide from "./Slide";
+import Slide from "./slide/Slide";
 import { SlideType } from "../../types";
-import ThemeContext from "../../contexts";
-import { useContext } from "react";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import LeftMenu from "./left-menu";
 
 interface WorkbookMethods {
   onAddSlideButtonClick(): void;
@@ -37,28 +34,18 @@ const Workbook = (props: Props) => {
   } = props;
 
   const noOfSlides = slides.length;
-  const { darkTheme } = useContext(ThemeContext);
-
-  const AddSlide = () => (
-    <div className="add-button" onClick={onAddSlideButtonClick}>
-      <PlusCircleOutlined size={20} className="add-icon" />
-    </div>
-  );
 
   return (
     <>
-      <style>{getStyles(darkTheme)}</style>
+      <style>{style}</style>
       <div className="workbook-container">
-        <div className="left-menu">
-          <h1>{curSlide}</h1>
-          <AddSlide />
-          <SlideList
-            noOfSlides={noOfSlides}
-            onSlideButtonClick={onSlideButtonClick}
-            onDeleteSlideButtonClick={onDeleteSlideButtonClick}
-            curSlide={curSlide}
-          />
-        </div>
+        <LeftMenu
+          onAddSlideButtonClick={onAddSlideButtonClick}
+          onSlideButtonClick={onSlideButtonClick}
+          onDeleteSlideButtonClick={onDeleteSlideButtonClick}
+          curSlide={curSlide}
+          noOfSlides={noOfSlides}
+        />
         <Slide
           onCanvasChange={onCanvasChange}
           slideContents={slides[curSlide]}
@@ -92,34 +79,11 @@ const mapStateToProps = (state: any): WorkbookProps => {
   };
 };
 
-const getStyles = ({ color2, color4, color5 }: any) => `
+const style = `
   .workbook-container {
     display:flex;
     flex-direction:row;
     height:100vh;
-  }
-  .workbook-container h1 {
-    color:white;
-    text-align:center;
-  }
-  .left-menu {
-    background-color:${color2};
-    padding:1rem;
-    width:11rem;
-    overflow-y:auto;
-  }
-  .add-button {
-    text-align:center;
-    margin-bottom:1rem;
-    background-color: ${color4};
-    padding:0.5rem;
-    cursor:pointer;
-  }
-  .add-button:hover {
-    background-color: ${color5};
-  }
-  .add-icon {
-    margin:0 auto;
   }
 `;
 
