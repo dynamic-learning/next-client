@@ -13,6 +13,7 @@ import { SlideType } from "../../types";
 import LeftMenu from "./left-menu";
 import { useState } from "react";
 import AddSimModal from "./modals/AddSimModal";
+import TopBar from '../workbook/topbar/TopBar'
 
 interface WorkbookMethods {
   onAddSlideButtonClick(): void;
@@ -59,6 +60,7 @@ const Workbook = (props: Props) => {
   return (
     <>
       <style>{style}</style>
+      <TopBar />
       <AddSimModal
         showAddSimModal={showAddSimModal}
         handleAddSimModalClose={handleAddSimModalClose}
