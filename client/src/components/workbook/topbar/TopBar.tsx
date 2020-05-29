@@ -44,7 +44,8 @@ const TopBar = () => {
 
 const style=`
     .topbar-container {
-        width 100%;
+        width: 95vw;
+        float: right;
     }
 `
 
