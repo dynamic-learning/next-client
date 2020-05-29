@@ -1,9 +1,9 @@
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { RiAddCircleLine } from "react-icons/ri";
 import ThemeContext from "../../../contexts";
 import { useContext } from "react";
 
 interface Props {
-  onClick():void
+  onClick(): void;
 }
 
 const AddSlide = ({ onClick }: Props) => {
@@ -12,7 +12,7 @@ const AddSlide = ({ onClick }: Props) => {
     <>
       <style>{getStyle(darkTheme)}</style>
       <div className="add-button" onClick={onClick}>
-        <PlusCircleOutlined size={20} className="add-icon" />
+        <RiAddCircleLine size={20} className="add-icon" />
       </div>
     </>
   );
@@ -25,6 +25,8 @@ const getStyle = ({ color4, color5 }: any) => `
     background-color: ${color4};
     padding:0.5rem;
     cursor:pointer;
+    display:flex;
+    vertical-align:center;
   }
   .add-button:hover {
     background-color: ${color5};
