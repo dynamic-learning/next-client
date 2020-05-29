@@ -9,14 +9,14 @@ let canvasConfig = {
 };
 
 type Props = {
-  onCanvasChange(fabricObjects: Array<fabric.Object>): void;
+  onChange(fabricObjects: Array<fabric.Object>): void;
   fabricObjects: Array<fabric.Object>;
 };
 
 let canvas: fabric.Canvas;
 
 const Slide = (props: Props) => {
-  const { fabricObjects, onCanvasChange } = props;
+  const { fabricObjects, onChange } = props;
 
   useEffect(() => {
     canvas = new fabric.Canvas("canvas", canvasConfig);
@@ -31,7 +31,7 @@ const Slide = (props: Props) => {
   };
 
   const handleMouseUp = () => {
-    onCanvasChange(canvas.getObjects());
+    onChange(canvas.getObjects());
   };
 
   const resizeCanvasToFillItsContainer = () => {
@@ -98,6 +98,7 @@ const style = `
   .canvas-container {
     width:100% !important;
     height:100% !important;
+    max-width:100% !important;
   }
 `;
 

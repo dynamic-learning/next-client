@@ -1,6 +1,6 @@
-import ThemeContext from "../../contexts";
+import ThemeContext from "../../../contexts";
 import { useContext, useState } from "react";
-import { DeleteOutlined } from "@ant-design/icons";
+import { FiTrash } from "react-icons/fi";
 
 type Props = {
   slideNo: number;
@@ -65,14 +65,14 @@ const SlideButton = (props: Props) => {
           onMouseEnter={handleMouseEnterDeleteButton}
           onClick={handleDeleteClick}
         >
-          <DeleteOutlined className={isDeleteButtonVisible} size={14} />
+          <FiTrash className={isDeleteButtonVisible} size={16} />
         </div>
       </div>
     </div>
   );
 };
 
-const getStyle = ({ color1, color3, color4, color5 }: any) => `
+const getStyle = ({ color1, color3, color4, color6 }: any) => `
   .slide-button-container {
     display:flex;
     flex-direction:row;
@@ -86,7 +86,7 @@ const getStyle = ({ color1, color3, color4, color5 }: any) => `
   .slide-button-container:hover {
     background-color:${color3};
     border:1px solid ${color3};
-    color:${color5};
+    color:${color6};
   }
   .slide-selected {
     color:${color1};
@@ -101,6 +101,11 @@ const getStyle = ({ color1, color3, color4, color5 }: any) => `
   }
   .delete-button-visible:hover {
     color:${color1}
+  }
+  .slide-delete-button {
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
   }
 `;
 

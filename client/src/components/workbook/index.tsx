@@ -1,22 +1,28 @@
-import SlideList from "./SlideList";
 import { connect } from "react-redux";
 import {
   addSlide,
   deleteSlide,
   changeCurSlide,
   setFabricObjectsInCurSlide,
+  addItemInCurSlide,
+  updateItemInCurSlide,
+  deleteItemInCurSlide,
 } from "../../actions/workbook";
-import Slide from "./Slide";
+import Slide from "./slide/Slide";
 import { SlideType } from "../../types";
-import ThemeContext from "../../contexts";
-import { useContext } from "react";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import LeftMenu from "./left-menu";
+import { useState } from "react";
+import AddSimModal from "./modals/AddSimModal";
 
 interface WorkbookMethods {
   onAddSlideButtonClick(): void;
   onDeleteSlideButtonClick(slideNo: number): void;
   onSlideButtonClick(slideNo: number): void;
-  onCanvasChange(fabricObjects: Array<fabric.Object>): void;
+  onCanvasUpdate(fabricObjects: Array<fabric.Object>): void;
+
+  onItemAdd(newItem: any, itemType: string): void;
+  onItemUpdate(updatedItem: any, index: number, itemType: string): void;
+  onItemDelete(deleteIndex: number, itemType: string): void;
 }
 
 interface WorkbookProps {
@@ -33,37 +39,51 @@ const Workbook = (props: Props) => {
     onDeleteSlideButtonClick,
     onSlideButtonClick,
     slides,
-    onCanvasChange,
+    onCanvasUpdate,
+    onItemAdd,
+    onItemDelete,
+    onItemUpdate,
   } = props;
 
   const noOfSlides = slides.length;
-  const { darkTheme } = useContext(ThemeContext);
+  const [showAddSimModal, setShowAddSimModal] = useState(false);
 
-  const AddSlide = () => (
-    <div className="add-button" onClick={onAddSlideButtonClick}>
-      <PlusCircleOutlined size={20} className="add-icon" />
-    </div>
-  );
+  const handleAddSimButtonClick = () => {
+    setShowAddSimModal(true);
+  };
+
+  const handleAddSimModalClose = () => {
+    setShowAddSimModal(false);
+  };
 
   return (
     <>
-      <style>{getStyles(darkTheme)}</style>
+      <style>{style}</style>
+      <AddSimModal
+        showAddSimModal={showAddSimModal}
+        handleAddSimModalClose={handleAddSimModalClose}
+        onItemAdd={onItemAdd}
+      />
       <div className="workbook-container">
-        <div className="left-menu">
-          <h1>{curSlide}</h1>
-          <AddSlide />
-          <SlideList
-            noOfSlides={noOfSlides}
+        <div className="left-menu-container">
+          <LeftMenu
+            onAddSlideButtonClick={onAddSlideButtonClick}
             onSlideButtonClick={onSlideButtonClick}
             onDeleteSlideButtonClick={onDeleteSlideButtonClick}
             curSlide={curSlide}
+            noOfSlides={noOfSlides}
           />
         </div>
-        <Slide
-          onCanvasChange={onCanvasChange}
-          slideContents={slides[curSlide]}
-        />
+        <div className="slide-container">
+          <Slide
+            onCanvasUpdate={onCanvasUpdate}
+            onItemUpdate={onItemUpdate}
+            onItemDelete={onItemDelete}
+            slideContents={slides[curSlide]}
+          />
+        </div>
       </div>
+      <button onClick={handleAddSimButtonClick}>Add sim</button>
     </>
   );
 };
@@ -79,8 +99,17 @@ const mapDispatchToProps = (dispatch: Function): WorkbookMethods => {
     onSlideButtonClick: (slideNo: number) => {
       dispatch(changeCurSlide(slideNo));
     },
-    onCanvasChange: (fabricObjects: Array<fabric.Object>) => {
+    onCanvasUpdate: (fabricObjects: Array<fabric.Object>) => {
       dispatch(setFabricObjectsInCurSlide(fabricObjects));
+    },
+    onItemAdd: (newItem: any, itemType: string) => {
+      dispatch(addItemInCurSlide(newItem, itemType));
+    },
+    onItemUpdate: (updatedItem: any, index: number, itemType: string) => {
+      dispatch(updateItemInCurSlide(updatedItem, index, itemType));
+    },
+    onItemDelete: (deleteIndex: number, itemType: string) => {
+      dispatch(deleteItemInCurSlide(deleteIndex, itemType));
     },
   };
 };
@@ -92,34 +121,19 @@ const mapStateToProps = (state: any): WorkbookProps => {
   };
 };
 
-const getStyles = ({ color2, color4, color5 }: any) => `
+const style = `
   .workbook-container {
+    width:100vw;
+    height:100vh;
     display:flex;
     flex-direction:row;
-    height:100vh;
+    max-width:100%;
   }
-  .workbook-container h1 {
-    color:white;
-    text-align:center;
+  .slide-container {
+    flex:14;
   }
-  .left-menu {
-    background-color:${color2};
-    padding:1rem;
-    width:11rem;
-    overflow-y:auto;
-  }
-  .add-button {
-    text-align:center;
-    margin-bottom:1rem;
-    background-color: ${color4};
-    padding:0.5rem;
-    cursor:pointer;
-  }
-  .add-button:hover {
-    background-color: ${color5};
-  }
-  .add-icon {
-    margin:0 auto;
+  .left-menu-container {
+    flex:2;
   }
 `;
 
