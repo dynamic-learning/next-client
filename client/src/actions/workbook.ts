@@ -27,9 +27,7 @@ export const changeCurSlide = (newCurSlide: number) => {
   };
 };
 
-export const setFabricObjectsInCurSlide = (
-  fabricObjects: Array<fabric.Object>
-) => {
+export const setFabricObjectsInCurSlide = (fabricObjects: string | null) => {
   return {
     type: actions.SET_FABRIC_OBJECTS_IN_CURSLIDE,
     payload: {

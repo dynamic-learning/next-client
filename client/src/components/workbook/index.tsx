@@ -18,7 +18,7 @@ interface WorkbookMethods {
   onAddSlideButtonClick(): void;
   onDeleteSlideButtonClick(slideNo: number): void;
   onSlideButtonClick(slideNo: number): void;
-  onCanvasUpdate(fabricObjects: Array<fabric.Object>): void;
+  onCanvasUpdate(fabricObjects: string | null): void;
 
   onItemAdd(newItem: any, itemType: string): void;
   onItemUpdate(updatedItem: any, index: number, itemType: string): void;
@@ -99,7 +99,7 @@ const mapDispatchToProps = (dispatch: Function): WorkbookMethods => {
     onSlideButtonClick: (slideNo: number) => {
       dispatch(changeCurSlide(slideNo));
     },
-    onCanvasUpdate: (fabricObjects: Array<fabric.Object>) => {
+    onCanvasUpdate: (fabricObjects: string | null) => {
       dispatch(setFabricObjectsInCurSlide(fabricObjects));
     },
     onItemAdd: (newItem: any, itemType: string) => {

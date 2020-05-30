@@ -7,10 +7,10 @@ interface Props {
 }
 
 const AddSlide = ({ onClick }: Props) => {
-  const { darkTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   return (
     <>
-      <style>{getStyle(darkTheme)}</style>
+      <style>{getStyle(theme)}</style>
       <div className="add-button" onClick={onClick}>
         <RiAddCircleLine size={20} className="add-icon" />
       </div>

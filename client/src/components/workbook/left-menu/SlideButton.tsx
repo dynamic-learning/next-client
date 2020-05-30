@@ -19,7 +19,7 @@ const SlideButton = (props: Props) => {
 
   const [isHoveredOnDeleteButton, setIsHoveredOnDeleteButton] = useState(false);
   const [isHoveredOnSlide, setIsHoveredOnSlide] = useState(false);
-  const { darkTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   const handleDeleteClick = () => {
     onDeleteButtonClick(slideNo);
@@ -51,7 +51,7 @@ const SlideButton = (props: Props) => {
 
   return (
     <div>
-      <style>{getStyle(darkTheme)}</style>
+      <style>{getStyle(theme)}</style>
       <div
         onMouseEnter={handleMouseEnterSlide}
         onMouseLeave={handleMouseLeaveSlide}

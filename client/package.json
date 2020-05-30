@@ -16,7 +16,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/preset-typescript": "^7.9.0",
     "antd": "^4.2.4",
     "fabric": "^3.6.3",
     "next": "^9.4.2",
