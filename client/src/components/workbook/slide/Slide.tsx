@@ -1,5 +1,4 @@
 import Canvas from "./Canvas";
-import { fabric } from "fabric";
 import { SlideType } from "../../../types";
 import Sims from "./sims";
 import ThemeContext from "../../../contexts/index";
