@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { connect } from "react-redux";
 import {
   addSlide,
@@ -11,7 +12,7 @@ import {
 import Slide from "./slide/Slide";
 import { SlideType } from "../../types";
 import LeftMenu from "./left-menu";
-import { useState } from "react";
+import TopBar from './top-bar/TopBar';
 import AddSimModal from "./modals/AddSimModal";
 
 interface WorkbookMethods {
@@ -59,6 +60,7 @@ const Workbook = (props: Props) => {
   return (
     <>
       <style>{style}</style>
+      <TopBar />
       <AddSimModal
         showAddSimModal={showAddSimModal}
         handleAddSimModalClose={handleAddSimModalClose}
