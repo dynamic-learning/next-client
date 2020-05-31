@@ -18,10 +18,10 @@ const LeftMenu = ({
   onDeleteSlideButtonClick,
   onAddSlideButtonClick,
 }: Props) => {
-  const { darkTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   return (
     <>
-      <style>{getStyle(darkTheme)}</style>
+      <style>{getStyle(theme)}</style>
       <div className="left-menu">
         <h1>{curSlide}</h1>
         <AddSlide onClick={onAddSlideButtonClick} />

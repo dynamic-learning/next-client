@@ -8,7 +8,7 @@ import {
 
 export const getNewSlide = (): SlideType => {
   return {
-    fabricObjects: [],
+    fabricObjects: null,
     sims: [],
   };
 };
