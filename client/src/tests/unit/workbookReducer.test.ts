@@ -1,6 +1,5 @@
 import workBookReducer, { getNewSlide } from "../../reducers/workbook";
 import * as actions from "../../actions/workbook";
-import { fabric } from "fabric";
 import workbookReducer from "../../reducers/workbook";
 
 const defaultState = {
@@ -22,18 +21,14 @@ describe("Workbook reducer tests", () => {
       slides: [getNewSlide(), getNewSlide(), getNewSlide()],
       curSlide: 1,
     };
-    const fabricObj = new fabric.Rect({
-      left: 100,
-    });
-    // Including a fabric object in 2nd slide
-    withThreeSlides.slides[1].fabricObjects.push(fabricObj);
+    withThreeSlides.slides[1].fabricObjects = "Dummy fabric string";
     const witTwoSlides = workBookReducer(
       withThreeSlides,
       actions.deleteSlide(1)
     );
     expect(witTwoSlides.slides.length).toBe(2);
-    expect(witTwoSlides.slides[0].fabricObjects.length).toStrictEqual(0);
-    expect(witTwoSlides.slides[1].fabricObjects.length).toStrictEqual(0);
+    expect(witTwoSlides.slides[0].fabricObjects).toBe(null);
+    expect(witTwoSlides.slides[1].fabricObjects).toBe(null);
   });
   it("deletes a slide when curSlide is at the last index and checks if curSlide is decremented", () => {
     const withTwoSlides = {
@@ -48,14 +43,12 @@ describe("Workbook reducer tests", () => {
       slides: [getNewSlide(), getNewSlide(), getNewSlide()],
       curSlide: 1,
     };
-    const fabricObj = new fabric.Rect({
-      left: 100,
-    });
+    const fabricObj = "dummy object";
     const { slides } = workBookReducer(
       withTwoSlides,
-      actions.setFabricObjectsInCurSlide([fabricObj])
+      actions.setFabricObjectsInCurSlide(fabricObj)
     );
-    expect(slides[1].fabricObjects[0].left).toBe(100);
+    expect(slides[1].fabricObjects).toBe(fabricObj);
   });
   it("adds an item to current slide", () => {
     let withThreeSlides = {

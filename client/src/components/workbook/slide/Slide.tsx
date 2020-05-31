@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { useState } from "react";
 
 type Props = {
-  onCanvasUpdate(fabricObjects: Array<fabric.Object>): void;
+  onCanvasUpdate(fabricObjects: string | null): void;
   slideContents: SlideType;
   onItemUpdate(updatedItem: any, index: number, itemType: string): void;
   onItemDelete(deleteIndex: number, itemType: string): void;
@@ -16,14 +16,14 @@ type Props = {
 const Slide = (props: Props) => {
   const { onCanvasUpdate, slideContents, onItemUpdate, onItemDelete } = props;
   const { fabricObjects, sims } = slideContents;
-  const { darkTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   // Used to disable the pointer events in moveable /resizeable items when
   // any of the item is moved or resized
   const [isTransforming, setIsTransforming] = useState(false);
   return (
     <>
-      <style>{getStyle(darkTheme)}</style>
+      <style>{getStyle(theme)}</style>
       <div className="slide">
         <Sims
           onItemDelete={onItemDelete}
