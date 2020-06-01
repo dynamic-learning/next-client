@@ -8,11 +8,11 @@ import {
   addItemInCurSlide,
   updateItemInCurSlide,
   deleteItemInCurSlide,
-} from "../../actions/workbook";
+} from "../../redux/actions/workbook";
 import Slide from "./slide";
 import { SlideType } from "../../types";
 import LeftMenu from "./left-menu";
-import TopBar from "./top-bar";
+import TopMenu from "./top-menu";
 import AddSimModal from "./modals/AddSimModal";
 import { useRouter } from "next/router";
 import { TextboxType } from "../../types";
@@ -77,12 +77,10 @@ const Workbook = (props: Props) => {
         handleAddSimModalClose={handleAddSimModalClose}
         onItemAdd={onItemAdd}
       />
-      <TopBar
-        actions={{
-          handleAddSimButtonClick,
-          goToPage,
-          handleAddTextboxButtonClick,
-        }}
+      <TopMenu
+        handleAddSimButtonClick={handleAddSimButtonClick}
+        goToPage={goToPage}
+        handleAddTextboxButtonClick={handleAddTextboxButtonClick}
       />
       <div className="workbook-container">
         <div className="left-menu-container">
