@@ -9,12 +9,13 @@ import {
   updateItemInCurSlide,
   deleteItemInCurSlide,
 } from "../../actions/workbook";
-import Slide from "./slide/Slide";
+import Slide from "./slide";
 import { SlideType } from "../../types";
 import LeftMenu from "./left-menu";
 import TopBar from "./top-bar";
 import AddSimModal from "./modals/AddSimModal";
 import { useRouter } from "next/router";
+import { TextboxType } from "../../types";
 
 interface WorkbookMethods {
   onAddSlideButtonClick(): void;
@@ -63,6 +64,11 @@ const Workbook = (props: Props) => {
     router.push(path);
   };
 
+  const handleAddTextboxButtonClick = () => {
+    const newTextbox = getNewTextbox();
+    onItemAdd(newTextbox, "textboxes");
+  };
+
   return (
     <>
       <style>{style}</style>
@@ -75,6 +81,7 @@ const Workbook = (props: Props) => {
         actions={{
           handleAddSimButtonClick,
           goToPage,
+          handleAddTextboxButtonClick,
         }}
       />
       <div className="workbook-container">
@@ -150,3 +157,17 @@ const style = `
 `;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Workbook);
+
+const getNewTextbox = (): TextboxType => {
+  return {
+    text: "",
+    position: {
+      x: 20,
+      y: 20,
+    },
+    size: {
+      width: "400px",
+      height: "200px",
+    },
+  };
+};

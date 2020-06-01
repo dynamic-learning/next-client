@@ -13,7 +13,11 @@ const { SubMenu } = Menu;
 
 const TopBar = ({ actions }: any) => {
   const { theme } = useContext(ThemeContext);
-  const { handleAddSimButtonClick, goToPage } = actions;
+  const {
+    handleAddSimButtonClick,
+    goToPage,
+    handleAddTextboxButtonClick,
+  } = actions;
 
   const handleLoginClick = () => goToPage("/login");
   const handleSignUpClick = () => goToPage("/signup");
@@ -30,12 +34,23 @@ const TopBar = ({ actions }: any) => {
   );
 
   const renderWorkbookMenu = () => (
-    <SubMenu title="Workbook" key="workbook" icon={<BorderOuterOutlined />}>
+    <SubMenu
+      className="workbook-menu"
+      title="Workbook"
+      key="workbook"
+      icon={<BorderOuterOutlined />}
+    >
       <Menu.ItemGroup>
         <Menu.Item onClick={handleAddSimButtonClick} key="simulation">
           Add Simulation
         </Menu.Item>
-        <Menu.Item key="text-box">Add text box</Menu.Item>
+        <Menu.Item
+          className="add-text-box-option"
+          key="text-box"
+          onClick={handleAddTextboxButtonClick}
+        >
+          Add text box
+        </Menu.Item>
       </Menu.ItemGroup>
     </SubMenu>
   );

@@ -10,6 +10,7 @@ export const getNewSlide = (): SlideType => {
   return {
     fabricObjects: null,
     sims: [],
+    textboxes: [],
   };
 };
 
