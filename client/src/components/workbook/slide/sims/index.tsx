@@ -1,5 +1,5 @@
 import { CanvasSimType } from "../../../../types";
-import MoveAndResize from "../MoveAndResize";
+import MoveAndResize from "../common/MoveAndResize";
 import Sim from "./Sim";
 import RightMenu from "./RightMenu";
 
@@ -29,6 +29,7 @@ const Sims = (props: Props) => {
           onItemUpdate={onItemUpdate}
           item={sim}
           index={index}
+          type="sims"
         >
           <div className="sim-and-menu">
             <Sim isTransforming={isTransforming} sim={sim} />
