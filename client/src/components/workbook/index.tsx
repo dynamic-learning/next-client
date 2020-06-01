@@ -12,8 +12,9 @@ import {
 import Slide from "./slide/Slide";
 import { SlideType } from "../../types";
 import LeftMenu from "./left-menu";
-import TopBar from './top-bar/TopBar';
+import TopBar from "./top-bar";
 import AddSimModal from "./modals/AddSimModal";
+import { useRouter } from "next/router";
 
 interface WorkbookMethods {
   onAddSlideButtonClick(): void;
@@ -48,6 +49,7 @@ const Workbook = (props: Props) => {
 
   const noOfSlides = slides.length;
   const [showAddSimModal, setShowAddSimModal] = useState(false);
+  const router = useRouter();
 
   const handleAddSimButtonClick = () => {
     setShowAddSimModal(true);
@@ -57,14 +59,23 @@ const Workbook = (props: Props) => {
     setShowAddSimModal(false);
   };
 
+  const goToPage = (path: string) => {
+    router.push(path);
+  };
+
   return (
     <>
       <style>{style}</style>
-      <TopBar />
       <AddSimModal
         showAddSimModal={showAddSimModal}
         handleAddSimModalClose={handleAddSimModalClose}
         onItemAdd={onItemAdd}
+      />
+      <TopBar
+        actions={{
+          handleAddSimButtonClick,
+          goToPage,
+        }}
       />
       <div className="workbook-container">
         <div className="left-menu-container">
@@ -85,7 +96,6 @@ const Workbook = (props: Props) => {
           />
         </div>
       </div>
-      <button onClick={handleAddSimButtonClick}>Add sim</button>
     </>
   );
 };
@@ -126,7 +136,7 @@ const mapStateToProps = (state: any): WorkbookProps => {
 const style = `
   .workbook-container {
     width:100vw;
-    height:100vh;
+    height:calc(100vh - 46px);
     display:flex;
     flex-direction:row;
     max-width:100%;

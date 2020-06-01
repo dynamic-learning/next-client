@@ -19,11 +19,18 @@ const LeftMenu = ({
   onAddSlideButtonClick,
 }: Props) => {
   const { theme } = useContext(ThemeContext);
+
+  const Logo = () => (
+    <div className="logo-container">
+      <img className="logo" src="logo.png" />
+    </div>
+  );
+
   return (
     <>
       <style>{getStyle(theme)}</style>
       <div className="left-menu">
-        <h1>{curSlide}</h1>
+        <Logo />
         <AddSlide onClick={onAddSlideButtonClick} />
         <SlideList
           noOfSlides={noOfSlides}
@@ -46,6 +53,16 @@ const getStyle = ({ color2 }: any) => `
   .left-menu h1 {
     color:white;
     text-align:center;
+  }
+  .logo {
+    width:50px;
+    height:50x;
+    margin-bottom:0.5rem;
+  }
+  .logo-container {
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
   }
 `;
 
