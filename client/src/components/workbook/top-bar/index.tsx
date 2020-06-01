@@ -3,7 +3,7 @@ import { Menu } from "antd";
 import ThemeContext from "../../../contexts/index";
 import { useContext } from "react";
 import {
-  LeftOutlined,
+  UserAddOutlined,
   LoginOutlined,
   FileOutlined,
   BorderOuterOutlined,
@@ -53,7 +53,7 @@ const TopBar = ({ actions }: any) => {
         <Menu.Item
           onClick={handleSignUpClick}
           key="signup"
-          icon={<LeftOutlined />}
+          icon={<UserAddOutlined />}
         >
           Sign Up
         </Menu.Item>
