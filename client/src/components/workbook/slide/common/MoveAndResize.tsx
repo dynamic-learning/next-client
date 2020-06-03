@@ -6,10 +6,11 @@ interface Props {
   onItemUpdate(updatedItem: any, index: number, itemType: string): void;
   children: any;
   setIsTransforming(isTransforming: boolean): void;
+  type: string;
 }
 
 const MoveAndResize = (props: Props) => {
-  const { item, index, onItemUpdate, setIsTransforming } = props;
+  const { item, index, onItemUpdate, setIsTransforming, type } = props;
   const handleDragStop = (index: number) => {
     return (_e: any, d: any) => {
       changePosition({ position: { x: d.x, y: d.y } }, index);
@@ -24,7 +25,7 @@ const MoveAndResize = (props: Props) => {
         ...position,
       },
       index,
-      "sims"
+      type
     );
   };
 
@@ -55,7 +56,7 @@ const MoveAndResize = (props: Props) => {
         ...size,
       },
       index,
-      "sims"
+      type
     );
   };
 

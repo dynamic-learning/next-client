@@ -4,6 +4,7 @@ import Sims from "./sims";
 import ThemeContext from "../../../contexts/index";
 import { useContext } from "react";
 import { useState } from "react";
+import Textboxes from "./textboxes";
 
 type Props = {
   onCanvasUpdate(fabricObjects: string | null): void;
@@ -14,7 +15,7 @@ type Props = {
 
 const Slide = (props: Props) => {
   const { onCanvasUpdate, slideContents, onItemUpdate, onItemDelete } = props;
-  const { fabricObjects, sims } = slideContents;
+  const { fabricObjects, sims, textboxes } = slideContents;
   const { theme } = useContext(ThemeContext);
 
   // Used to disable the pointer events in moveable /resizeable items when
@@ -27,8 +28,15 @@ const Slide = (props: Props) => {
         <Sims
           onItemDelete={onItemDelete}
           onItemUpdate={onItemUpdate}
-          sims={sims}
           setIsTransforming={setIsTransforming}
+          sims={sims}
+          isTransforming={isTransforming}
+        />
+        <Textboxes
+          onItemDelete={onItemDelete}
+          onItemUpdate={onItemUpdate}
+          setIsTransforming={setIsTransforming}
+          textboxes={textboxes}
           isTransforming={isTransforming}
         />
         <Canvas onChange={onCanvasUpdate} fabricObjects={fabricObjects} />

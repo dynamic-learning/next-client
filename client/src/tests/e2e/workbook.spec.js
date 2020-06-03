@@ -13,13 +13,13 @@ describe("Workbook", () => {
   it("makes a drawing on canvas", () => {
     cy.get("canvas")
       .eq(1)
-      .trigger("touchstart", {
+      .trigger("mousedown", {
         x: 20,
         y: 20,
         isPrimary: true,
       })
-      .trigger("touchmove", { x: 100, y: 100 })
-      .trigger("touchup", { x: 100, y: 100 });
+      .trigger("mousemove", { x: 100, y: 100 })
+      .trigger("mouseup", { x: 100, y: 100 });
   });
   it("checks if canvas fills its outer container", () => {
     checkIfDimensionsAreEqual(".canvas-container", ".upper-canvas");
