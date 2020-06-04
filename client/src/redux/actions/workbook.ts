@@ -1,6 +1,6 @@
 import * as actions from "../action-types/workbook";
 import { fabric } from "fabric";
-import { CanvasSimType } from "../types";
+import { CanvasSimType } from "../../types";
 
 export const addSlide = () => {
   return {

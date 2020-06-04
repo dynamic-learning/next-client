@@ -1,7 +1,5 @@
 import React from "react";
 import { Menu } from "antd";
-import ThemeContext from "../../../contexts/index";
-import { useContext } from "react";
 import {
   UserAddOutlined,
   LoginOutlined,
@@ -9,11 +7,11 @@ import {
   BorderOuterOutlined,
   EditOutlined,
 } from "@ant-design/icons";
+import Topbar from "../../top-bar/index";
 
 const { SubMenu } = Menu;
 
 const TopBar = ({ actions, actionDisablers }: any) => {
-  const { theme } = useContext(ThemeContext);
   const {
     handleAddSimButtonClick,
     goToPage,
@@ -26,12 +24,15 @@ const TopBar = ({ actions, actionDisablers }: any) => {
 
   const handleLoginClick = () => goToPage("/login");
   const handleSignUpClick = () => goToPage("/signup");
+  const handleOpenClick = () => goToPage("/workbooks");
 
   const renderFileMenu = () => (
     <SubMenu title="File" key="file" icon={<FileOutlined />}>
       <Menu.ItemGroup>
         <Menu.Item key="new">New</Menu.Item>
-        <Menu.Item key="open">Open</Menu.Item>
+        <Menu.Item onClick={handleOpenClick} key="open">
+          Open
+        </Menu.Item>
         <Menu.Item key="save">Save</Menu.Item>
         <Menu.Item key="examples">Examples</Menu.Item>
       </Menu.ItemGroup>
@@ -104,27 +105,24 @@ const TopBar = ({ actions, actionDisablers }: any) => {
 
   return (
     <>
-      <style>{getStyle(theme)}</style>
+      <style>{style}</style>
       <div className="topbar-container">
-        <Menu selectable={false} theme="dark" mode="horizontal">
+        <Topbar>
           {renderFileMenu()}
           {renderEditMenu()}
           {renderWorkbookMenu()}
           {renderLoginSignUp()}
-        </Menu>
+        </Topbar>
       </div>
     </>
   );
 };
 
-const getStyle = ({ color8 }: any) => `
+const style = `
     .navitems-right {
         background-color:black;
         float: right;
         margin-right: 10px;
-    }
-    .ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub {
-        background:${color8};
     }
 `;
 
