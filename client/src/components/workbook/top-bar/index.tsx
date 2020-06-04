@@ -7,17 +7,22 @@ import {
   LoginOutlined,
   FileOutlined,
   BorderOuterOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
 
 const { SubMenu } = Menu;
 
-const TopBar = ({ actions }: any) => {
+const TopBar = ({ actions, actionDisablers }: any) => {
   const { theme } = useContext(ThemeContext);
   const {
     handleAddSimButtonClick,
     goToPage,
     handleAddTextboxButtonClick,
+    handleUndoButtonClick,
+    handleRedoButtonClick,
   } = actions;
+
+  const { undoable, redoable } = actionDisablers;
 
   const handleLoginClick = () => goToPage("/login");
   const handleSignUpClick = () => goToPage("/signup");
@@ -29,6 +34,27 @@ const TopBar = ({ actions }: any) => {
         <Menu.Item key="open">Open</Menu.Item>
         <Menu.Item key="save">Save</Menu.Item>
         <Menu.Item key="examples">Examples</Menu.Item>
+      </Menu.ItemGroup>
+    </SubMenu>
+  );
+
+  const renderEditMenu = () => (
+    <SubMenu title="Edit" key="edit" icon={<EditOutlined />}>
+      <Menu.ItemGroup>
+        <Menu.Item
+          key="new"
+          disabled={!undoable}
+          onClick={handleUndoButtonClick}
+        >
+          Undo
+        </Menu.Item>
+        <Menu.Item
+          key="open"
+          disabled={!redoable}
+          onClick={handleRedoButtonClick}
+        >
+          Redo
+        </Menu.Item>
       </Menu.ItemGroup>
     </SubMenu>
   );
@@ -82,6 +108,7 @@ const TopBar = ({ actions }: any) => {
       <div className="topbar-container">
         <Menu selectable={false} theme="dark" mode="horizontal">
           {renderFileMenu()}
+          {renderEditMenu()}
           {renderWorkbookMenu()}
           {renderLoginSignUp()}
         </Menu>

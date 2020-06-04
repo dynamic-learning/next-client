@@ -16,6 +16,7 @@ import TopBar from "./top-bar";
 import AddSimModal from "./modals/AddSimModal";
 import { useRouter } from "next/router";
 import { TextboxType } from "../../types";
+import { ActionCreators } from "redux-undo";
 
 interface WorkbookMethods {
   onAddSlideButtonClick(): void;
@@ -26,11 +27,15 @@ interface WorkbookMethods {
   onItemAdd(newItem: any, itemType: string): void;
   onItemUpdate(updatedItem: any, index: number, itemType: string): void;
   onItemDelete(deleteIndex: number, itemType: string): void;
+  onUndoChange(): void;
+  onRedoChange(): void;
 }
 
 interface WorkbookProps {
   curSlide: number;
   slides: Array<SlideType>;
+  undoable: boolean;
+  redoable: boolean;
 }
 
 type Props = WorkbookMethods & WorkbookProps;
@@ -46,6 +51,10 @@ const Workbook = (props: Props) => {
     onItemAdd,
     onItemDelete,
     onItemUpdate,
+    onUndoChange,
+    onRedoChange,
+    undoable,
+    redoable,
   } = props;
 
   const noOfSlides = slides.length;
@@ -71,6 +80,7 @@ const Workbook = (props: Props) => {
 
   return (
     <>
+      {console.log(undoable, redoable)}
       <style>{style}</style>
       <AddSimModal
         showAddSimModal={showAddSimModal}
@@ -82,6 +92,12 @@ const Workbook = (props: Props) => {
           handleAddSimButtonClick,
           goToPage,
           handleAddTextboxButtonClick,
+          handleUndoButtonClick: onUndoChange,
+          handleRedoButtonClick: onRedoChange,
+        }}
+        actionDisablers={{
+          undoable,
+          redoable,
         }}
       />
       <div className="workbook-container">
@@ -130,13 +146,21 @@ const mapDispatchToProps = (dispatch: Function): WorkbookMethods => {
     onItemDelete: (deleteIndex: number, itemType: string) => {
       dispatch(deleteItemInCurSlide(deleteIndex, itemType));
     },
+    onUndoChange: () => {
+      dispatch(ActionCreators.undo());
+    },
+    onRedoChange: () => {
+      dispatch(ActionCreators.redo());
+    },
   };
 };
 
 const mapStateToProps = (state: any): WorkbookProps => {
   return {
-    curSlide: state.curSlide,
-    slides: state.slides,
+    curSlide: state.present.curSlide,
+    slides: state.present.slides,
+    undoable: state.past.length !== 0,
+    redoable: state.future.length !== 0,
   };
 };
 
