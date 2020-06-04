@@ -5,6 +5,7 @@ import {
   updateItemInArrayAtIndex,
   deleteItemInArrayAtIndex,
 } from "../utils";
+import undoable from "redux-undo";
 
 export const getNewSlide = (): SlideType => {
   return {
@@ -172,4 +173,6 @@ const deleteItemInCurSlide = (
   return updatedSlide;
 };
 
-export default workbookReducer;
+const undoableWorkBook = undoable(workbookReducer);
+
+export default undoableWorkBook;
