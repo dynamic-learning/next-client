@@ -2,7 +2,7 @@
 
 Dynamic learning strives to be a platform where teachers and coders collaborate to create lessons that make use of interactive visualizations.
 
-Currently, the focus is to reimplement the web app in [Dynamic learning](https://www.dynamiclearning.io/) using scalable practices like test driven development.
+Currently, the focus is to reimplement the web app in [Dynamic learning](https://www.dynamiclearning.io/) using scalable practices like writing clean code and extensive testing.
 
 The reimplementation is in its initial phase. If you wish to contribute, please email me at jithin@dynamiclearning.io
 

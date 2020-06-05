@@ -1,10 +1,10 @@
 import * as actions from "../action-types/workbook";
-import { SlideType } from "../types";
+import { SlideType } from "../../types";
 import {
   addAnItemToArray,
   updateItemInArrayAtIndex,
   deleteItemInArrayAtIndex,
-} from "../utils";
+} from "../../utils";
 import undoable from "redux-undo";
 
 export const getNewSlide = (): SlideType => {

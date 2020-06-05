@@ -8,15 +8,16 @@ import {
   addItemInCurSlide,
   updateItemInCurSlide,
   deleteItemInCurSlide,
-} from "../../actions/workbook";
+} from "../../redux/actions/workbook";
 import Slide from "./slide";
 import { SlideType } from "../../types";
 import LeftMenu from "./left-menu";
-import TopBar from "./top-bar";
+import TopBar from "./top-menu";
 import AddSimModal from "./modals/AddSimModal";
 import { useRouter } from "next/router";
 import { TextboxType } from "../../types";
 import { ActionCreators } from "redux-undo";
+import { useEffect } from "react";
 
 interface WorkbookMethods {
   onAddSlideButtonClick(): void;
@@ -77,6 +78,33 @@ const Workbook = (props: Props) => {
     const newTextbox = getNewTextbox();
     onItemAdd(newTextbox, "textboxes");
   };
+
+  let map: any = {};
+
+  const handleKeyDown = (e: any) => {
+    map[e.keyCode] = true;
+    // Ctrl + Z
+    if (map[17] && map[90]) {
+      onUndoChange();
+    }
+    // Ctrl + Y
+    if (map[17] && map[89]) {
+      onRedoChange();
+    }
+  };
+
+  const handleKeyUp = (e: any) => {
+    map[e.keyCode] = false;
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keyup", handleKeyUp);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keyup", handleKeyUp);
+    };
+  }, []);
 
   return (
     <>
