@@ -9,6 +9,7 @@ const themes = {
     color5: "#aeaeae", // light grey
     color6: "lightgrey", // lighter grey
     color7: "#4FE383", // light green
+    color8: "#040c12", // darkest blue
   },
 };
 

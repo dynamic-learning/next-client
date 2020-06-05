@@ -24,7 +24,8 @@
     "react-icons": "^3.10.0",
     "react-redux": "^7.2.0",
     "react-rnd": "^10.1.10",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "redux-undo": "^1.0.1"
   },
   "devDependencies": {
     "@types/fabric": "^3.6.3",
