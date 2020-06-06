@@ -1,6 +1,5 @@
-import workBookReducer, { getNewSlide } from "../../reducers/workbook";
-import * as actions from "../../actions/workbook";
-import workbookReducer from "../../reducers/workbook";
+import { workBookReducer, getNewSlide } from "../../redux/reducers/workbook";
+import * as actions from "../../redux/actions/workbook";
 
 const defaultState = {
   slides: [getNewSlide()],
@@ -55,7 +54,7 @@ describe("Workbook reducer tests", () => {
       slides: [getNewSlide(), getNewSlide(), getNewSlide()],
       curSlide: 1,
     };
-    const { slides } = workbookReducer(
+    const { slides } = workBookReducer(
       withThreeSlides,
       actions.addItemInCurSlide(sampleSim, "sims")
     );

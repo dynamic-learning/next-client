@@ -1,7 +1,7 @@
 import { Modal } from "antd";
 import AddSim from "./modal-contents/AddSim";
 import { useState } from "react";
-import { CanvasSimType } from "../../../types";
+import { getNewSim } from "../../../utils/workbook";
 
 interface Props {
   showAddSimModal: boolean;
@@ -58,18 +58,3 @@ const style = `
 `;
 
 export default AddSimModal;
-
-const getNewSim = (owner: string, id: string): CanvasSimType => {
-  return {
-    owner,
-    id,
-    position: {
-      x: 0,
-      y: 0,
-    },
-    size: {
-      width: 640,
-      height: 360,
-    },
-  };
-};

@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { connect } from "react-redux";
 import {
   addSlide,
   deleteSlide,
@@ -8,18 +6,24 @@ import {
   addItemInCurSlide,
   updateItemInCurSlide,
   deleteItemInCurSlide,
+  changePageCountInCurSlide,
 } from "../../redux/actions/workbook";
 import Slide from "./slide";
 import { SlideType } from "../../types";
 import LeftMenu from "./left-menu";
 import TopBar from "./top-menu";
 import AddSimModal from "./modals/AddSimModal";
-import { useRouter } from "next/router";
-import { TextboxType } from "../../types";
-import { ActionCreators } from "redux-undo";
-import { useEffect } from "react";
 import ThemeContext from "../../contexts/index";
+import {
+  findIfItsPossibleToReduceCanvasSize,
+  getNewTextbox,
+} from "../../utils/workbook";
+
+import { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import { useContext } from "react";
+import { useRouter } from "next/router";
+import { ActionCreators } from "redux-undo";
 
 interface WorkbookMethods {
   onAddSlideButtonClick(): void;
@@ -32,6 +36,7 @@ interface WorkbookMethods {
   onItemDelete(deleteIndex: number, itemType: string): void;
   onUndoChange(): void;
   onRedoChange(): void;
+  onPageCountChange(count: number): void;
 }
 
 interface WorkbookProps {
@@ -43,7 +48,7 @@ interface WorkbookProps {
 
 type Props = WorkbookMethods & WorkbookProps;
 
-const canvasSize = { width: 1366, height: 720 };
+const canvasSize = { width: 1366, height: 720, extraPageSize: 300 };
 
 const Workbook = (props: Props) => {
   const {
@@ -60,12 +65,37 @@ const Workbook = (props: Props) => {
     onRedoChange,
     undoable,
     redoable,
+    onPageCountChange,
   } = props;
 
   const noOfSlides = slides.length;
   const [showAddSimModal, setShowAddSimModal] = useState(false);
   const router = useRouter();
   const [scaleX, setScaleX] = useState(1);
+  const [canCanvasSizeBeReduced, setCanCanvasSizeBeReduced] = useState(false);
+
+  const { theme } = useContext(ThemeContext);
+
+  useEffect(() => {
+    return addKeyDownEventListeners();
+  }, []);
+
+  useEffect(() => {
+    setCanvasScale();
+    return addScaleCanvasOnResizeEventListener();
+  }, []);
+
+  useEffect(() => {
+    let canCanvasSizeBeReduced = findIfItsPossibleToReduceCanvasSize(
+      // As we add more items, they need to be included here
+      [...slides[curSlide].sims, ...slides[curSlide].textboxes],
+      slides[curSlide].pageCount,
+      //@ts-ignore
+      parseInt(document.querySelector(".upper-canvas").style.height),
+      canvasSize.extraPageSize
+    );
+    setCanCanvasSizeBeReduced(canCanvasSizeBeReduced);
+  }, [slides[curSlide]]);
 
   const handleAddSimButtonClick = () => {
     setShowAddSimModal(true);
@@ -83,10 +113,6 @@ const Workbook = (props: Props) => {
     const newTextbox = getNewTextbox();
     onItemAdd(newTextbox, "textboxes");
   };
-
-  useEffect(() => {
-    return addKeyDownEventListeners();
-  }, []);
 
   const addKeyDownEventListeners = () => {
     document.onkeydown = handleKeyDown;
@@ -115,12 +141,7 @@ const Workbook = (props: Props) => {
     map[e.keyCode] = false;
   };
 
-  useEffect(() => {
-    setCanvasScale();
-    return setScaleCanvasOnResize();
-  }, []);
-
-  const setScaleCanvasOnResize = () => {
+  const addScaleCanvasOnResizeEventListener = () => {
     window.onresize = setCanvasScale;
     return () => {
       window.onresize = null;
@@ -133,8 +154,6 @@ const Workbook = (props: Props) => {
       canvasSize.width;
     setScaleX(scaleX);
   };
-
-  const { theme } = useContext(ThemeContext);
 
   return (
     <>
@@ -151,10 +170,12 @@ const Workbook = (props: Props) => {
           handleAddTextboxButtonClick,
           handleUndoButtonClick: onUndoChange,
           handleRedoButtonClick: onRedoChange,
+          onPageCountChange,
         }}
-        undoRedoEnablers={{
+        actionDisablers={{
           undoable,
           redoable,
+          canCanvasSizeBeReduced,
         }}
       />
       <div className="workbook-container">
@@ -167,15 +188,17 @@ const Workbook = (props: Props) => {
             noOfSlides={noOfSlides}
           />
         </div>
-        <div className="slide-container">
-          <Slide
-            onCanvasUpdate={onCanvasUpdate}
-            onItemUpdate={onItemUpdate}
-            onItemDelete={onItemDelete}
-            slideContents={slides[curSlide]}
-            scaleX={scaleX}
-            canvasSize={canvasSize}
-          />
+        <div className="scroll-container">
+          <div className="slide-container">
+            <Slide
+              onCanvasUpdate={onCanvasUpdate}
+              onItemUpdate={onItemUpdate}
+              onItemDelete={onItemDelete}
+              slideContents={slides[curSlide]}
+              scaleX={scaleX}
+              canvasSize={canvasSize}
+            />
+          </div>
         </div>
       </div>
     </>
@@ -211,6 +234,9 @@ const mapDispatchToProps = (dispatch: Function): WorkbookMethods => {
     onRedoChange: () => {
       dispatch(ActionCreators.redo());
     },
+    onPageCountChange: (count: number) => {
+      dispatch(changePageCountInCurSlide(count));
+    },
   };
 };
 
@@ -234,26 +260,14 @@ const getStyle = (props: any) => `
   }
   .slide-container {
     max-width:88vw;
-    transform:scale(${props.scaleX});
-    transform-origin:top left;
+    max-height:100%;
   }
   .left-menu-container {
     width:12vw;
   }
+  .scroll-container {
+    overflow-y:auto;
+  }
 `;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Workbook);
-
-const getNewTextbox = (): TextboxType => {
-  return {
-    text: "",
-    position: {
-      x: 20,
-      y: 20,
-    },
-    size: {
-      width: "400px",
-      height: "200px",
-    },
-  };
-};

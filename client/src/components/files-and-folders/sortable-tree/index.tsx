@@ -7,7 +7,7 @@ import SortableTree, {
 // @ts-ignore
 import FileExplorerTheme from "react-sortable-tree-theme-minimal";
 
-import { canDrop } from "../workbooks/functions";
+import { canDrop } from "../../../utils/files-and-folders";
 
 const StyledSortableTree = (props: any) => {
   const {

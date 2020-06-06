@@ -4,7 +4,7 @@ import {
   isValidSketchUrl,
   getOwnerFromSketchUrl,
   getIdFromSketchUrl,
-} from "../../../../utils";
+} from "../../../../utils/sketch";
 
 const AddSim = ({ getSim }: any) => {
   const [inputUrl, setInputUrl] = useState("");

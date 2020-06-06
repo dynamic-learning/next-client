@@ -22,14 +22,14 @@ const Slide = (props: Props) => {
     scaleX,
     canvasSize,
   } = props;
-  const { fabricObjects, sims, textboxes } = slideContents;
+  const { fabricObjects, sims, textboxes, pageCount } = slideContents;
 
   // Used to disable the pointer events in moveable /resizeable items when
   // any of the item is moved or resized
   const [isTransforming, setIsTransforming] = useState(false);
   return (
     <>
-      <style>{getStyle(canvasSize)}</style>
+      <style>{getStyle({ ...canvasSize, pageCount, scaleX })}</style>
       <div className="slide">
         <Sims
           onItemDelete={onItemDelete}
@@ -47,17 +47,24 @@ const Slide = (props: Props) => {
           isTransforming={isTransforming}
           scaleX={scaleX}
         />
-        <Canvas onChange={onCanvasUpdate} fabricObjects={fabricObjects} />
+        <Canvas
+          pageCount={pageCount}
+          onChange={onCanvasUpdate}
+          fabricObjects={fabricObjects}
+        />
       </div>
     </>
   );
 };
 
-const getStyle = ({ width, height }: any) => `
+const getStyle = ({ width, height, pageCount, scaleX, extraPageSize }: any) => `
   .slide {
     padding:1rem;
-    height:${height}px;
+    height:${height + pageCount * extraPageSize}px;
     width:${width}px;
+    transform:scale(${scaleX});
+    transform-origin: top left;
+    overflow:hidden;
   }
 `;
 

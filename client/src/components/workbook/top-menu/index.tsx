@@ -11,20 +11,29 @@ import Topbar from "../../top-bar/index";
 
 const { SubMenu } = Menu;
 
-const TopBar = ({ actions, undoRedoEnablers }: any) => {
+const TopBar = ({ actions, actionDisablers }: any) => {
   const {
     handleAddSimButtonClick,
     goToPage,
     handleAddTextboxButtonClick,
     handleUndoButtonClick,
     handleRedoButtonClick,
+    onPageCountChange,
   } = actions;
 
-  const { undoable, redoable } = undoRedoEnablers;
+  const { undoable, redoable, canCanvasSizeBeReduced } = actionDisablers;
 
   const handleLoginClick = () => goToPage("/login");
   const handleSignUpClick = () => goToPage("/signup");
   const handleOpenClick = () => goToPage("/workbooks");
+
+  const handleIncreaseSizeClick = () => {
+    onPageCountChange(1);
+  };
+
+  const handleDecreaseSizeClick = () => {
+    onPageCountChange(-1);
+  };
 
   const renderFileMenu = () => (
     <SubMenu title="File" key="file" icon={<FileOutlined />}>
@@ -60,11 +69,11 @@ const TopBar = ({ actions, undoRedoEnablers }: any) => {
     </SubMenu>
   );
 
-  const renderWorkbookMenu = () => (
+  const renderSlideMenu = () => (
     <SubMenu
-      className="workbook-menu"
-      title="Workbook"
-      key="workbook"
+      className="slide-menu"
+      title="Slide"
+      key="slide"
       icon={<BorderOuterOutlined />}
     >
       <Menu.ItemGroup>
@@ -77,6 +86,16 @@ const TopBar = ({ actions, undoRedoEnablers }: any) => {
           onClick={handleAddTextboxButtonClick}
         >
           Add text box
+        </Menu.Item>
+        <Menu.Item key="increase-size" onClick={handleIncreaseSizeClick}>
+          Increase size
+        </Menu.Item>
+        <Menu.Item
+          disabled={!canCanvasSizeBeReduced}
+          key="decrease-size"
+          onClick={handleDecreaseSizeClick}
+        >
+          Decrease size
         </Menu.Item>
       </Menu.ItemGroup>
     </SubMenu>
@@ -110,7 +129,7 @@ const TopBar = ({ actions, undoRedoEnablers }: any) => {
         <Topbar>
           {renderFileMenu()}
           {renderEditMenu()}
-          {renderWorkbookMenu()}
+          {renderSlideMenu()}
           {renderLoginSignUp()}
         </Topbar>
       </div>
