@@ -9,10 +9,17 @@ type Props = {
   onItemDelete(deleteIndex: number, itemType: string): void;
   setIsTransforming(isTransforming: boolean): void;
   isTransforming: boolean;
+  scaleX: number;
 };
 
 const Textboxes = (props: Props) => {
-  const { textboxes, setIsTransforming, onItemUpdate, onItemDelete } = props;
+  const {
+    textboxes,
+    setIsTransforming,
+    onItemUpdate,
+    onItemDelete,
+    scaleX,
+  } = props;
 
   return (
     <>
@@ -24,6 +31,7 @@ const Textboxes = (props: Props) => {
           index={index}
           item={textbox}
           type="textboxes"
+          scaleX={scaleX}
         >
           <div className="text-box-and-menu">
             <Textbox

@@ -25,6 +25,9 @@ describe("Workbook", () => {
     checkIfDimensionsAreEqual(".canvas-container", ".upper-canvas");
     checkIfDimensionsAreEqual(".canvas-container", ".lower-canvas");
   });
+  /**
+   * To do - write test case for the scaling of canvas
+   */
 });
 
 const checkIfDimensionsAreEqual = (selector1, selector2) => {
@@ -35,7 +38,11 @@ const checkIfDimensionsAreEqual = (selector1, selector2) => {
 const checkIfPropsAreEqual = (selector1, selector2, prop) => {
   cy.get(selector1)
     .invoke(prop)
-    .then((propValue) => {
-      cy.get(selector2).invoke(prop).should("eq", Math.floor(propValue));
+    .then((selector1Prop) => {
+      cy.get(selector2)
+        .invoke(prop)
+        .then((selector2Prop) => {
+          expect(Math.floor(selector1Prop)).to.eq(Math.floor(selector2Prop));
+        });
     });
 };
