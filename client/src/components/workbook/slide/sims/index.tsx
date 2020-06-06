@@ -9,6 +9,7 @@ interface Props {
   onItemDelete(deleteIndex: number, itemType: string): void;
   setIsTransforming(isTransforming: boolean): void;
   isTransforming: boolean;
+  scaleX: number;
 }
 
 const Sims = (props: Props) => {
@@ -18,6 +19,7 @@ const Sims = (props: Props) => {
     onItemDelete,
     setIsTransforming,
     isTransforming,
+    scaleX,
   } = props;
 
   return (
@@ -30,6 +32,7 @@ const Sims = (props: Props) => {
           item={sim}
           index={index}
           type="sims"
+          scaleX={scaleX}
         >
           <div className="sim-and-menu">
             <Sim isTransforming={isTransforming} sim={sim} />

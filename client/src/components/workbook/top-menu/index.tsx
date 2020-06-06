@@ -11,7 +11,7 @@ import Topbar from "../../top-bar/index";
 
 const { SubMenu } = Menu;
 
-const TopBar = ({ actions, actionDisablers }: any) => {
+const TopBar = ({ actions, undoRedoEnablers }: any) => {
   const {
     handleAddSimButtonClick,
     goToPage,
@@ -20,7 +20,7 @@ const TopBar = ({ actions, actionDisablers }: any) => {
     handleRedoButtonClick,
   } = actions;
 
-  const { undoable, redoable } = actionDisablers;
+  const { undoable, redoable } = undoRedoEnablers;
 
   const handleLoginClick = () => goToPage("/login");
   const handleSignUpClick = () => goToPage("/signup");

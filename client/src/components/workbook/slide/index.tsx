@@ -1,8 +1,6 @@
 import Canvas from "./Canvas";
 import { SlideType } from "../../../types";
 import Sims from "./sims";
-import ThemeContext from "../../../contexts/index";
-import { useContext } from "react";
 import { useState } from "react";
 import Textboxes from "./textboxes";
 
@@ -11,19 +9,27 @@ type Props = {
   slideContents: SlideType;
   onItemUpdate(updatedItem: any, index: number, itemType: string): void;
   onItemDelete(deleteIndex: number, itemType: string): void;
+  scaleX: number;
+  canvasSize: any;
 };
 
 const Slide = (props: Props) => {
-  const { onCanvasUpdate, slideContents, onItemUpdate, onItemDelete } = props;
+  const {
+    onCanvasUpdate,
+    slideContents,
+    onItemUpdate,
+    onItemDelete,
+    scaleX,
+    canvasSize,
+  } = props;
   const { fabricObjects, sims, textboxes } = slideContents;
-  const { theme } = useContext(ThemeContext);
 
   // Used to disable the pointer events in moveable /resizeable items when
   // any of the item is moved or resized
   const [isTransforming, setIsTransforming] = useState(false);
   return (
     <>
-      <style>{getStyle(theme)}</style>
+      <style>{getStyle(canvasSize)}</style>
       <div className="slide">
         <Sims
           onItemDelete={onItemDelete}
@@ -31,6 +37,7 @@ const Slide = (props: Props) => {
           setIsTransforming={setIsTransforming}
           sims={sims}
           isTransforming={isTransforming}
+          scaleX={scaleX}
         />
         <Textboxes
           onItemDelete={onItemDelete}
@@ -38,6 +45,7 @@ const Slide = (props: Props) => {
           setIsTransforming={setIsTransforming}
           textboxes={textboxes}
           isTransforming={isTransforming}
+          scaleX={scaleX}
         />
         <Canvas onChange={onCanvasUpdate} fabricObjects={fabricObjects} />
       </div>
@@ -45,11 +53,11 @@ const Slide = (props: Props) => {
   );
 };
 
-const getStyle = ({ color3 }: any) => `
+const getStyle = ({ width, height }: any) => `
   .slide {
     padding:1rem;
-    background-color:${color3};
-    height:100%;
+    height:${height}px;
+    width:${width}px;
   }
 `;
 

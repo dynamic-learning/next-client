@@ -18,6 +18,8 @@ import { useRouter } from "next/router";
 import { TextboxType } from "../../types";
 import { ActionCreators } from "redux-undo";
 import { useEffect } from "react";
+import ThemeContext from "../../contexts/index";
+import { useContext } from "react";
 
 interface WorkbookMethods {
   onAddSlideButtonClick(): void;
@@ -41,6 +43,8 @@ interface WorkbookProps {
 
 type Props = WorkbookMethods & WorkbookProps;
 
+const canvasSize = { width: 1366, height: 720 };
+
 const Workbook = (props: Props) => {
   const {
     onAddSlideButtonClick,
@@ -61,6 +65,7 @@ const Workbook = (props: Props) => {
   const noOfSlides = slides.length;
   const [showAddSimModal, setShowAddSimModal] = useState(false);
   const router = useRouter();
+  const [scaleX, setScaleX] = useState(1);
 
   const handleAddSimButtonClick = () => {
     setShowAddSimModal(true);
@@ -77,6 +82,19 @@ const Workbook = (props: Props) => {
   const handleAddTextboxButtonClick = () => {
     const newTextbox = getNewTextbox();
     onItemAdd(newTextbox, "textboxes");
+  };
+
+  useEffect(() => {
+    return addKeyDownEventListeners();
+  }, []);
+
+  const addKeyDownEventListeners = () => {
+    document.onkeydown = handleKeyDown;
+    document.onkeyup = handleKeyUp;
+    return () => {
+      document.onkeydown = null;
+      document.onkeyup = null;
+    };
   };
 
   let map: any = {};
@@ -98,18 +116,29 @@ const Workbook = (props: Props) => {
   };
 
   useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("keyup", handleKeyUp);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("keyup", handleKeyUp);
-    };
+    setCanvasScale();
+    return setScaleCanvasOnResize();
   }, []);
+
+  const setScaleCanvasOnResize = () => {
+    window.onresize = setCanvasScale;
+    return () => {
+      window.onresize = null;
+    };
+  };
+
+  const setCanvasScale = () => {
+    const scaleX =
+      document.getElementsByClassName("slide-container")[0].clientWidth /
+      canvasSize.width;
+    setScaleX(scaleX);
+  };
+
+  const { theme } = useContext(ThemeContext);
 
   return (
     <>
-      {console.log(undoable, redoable)}
-      <style>{style}</style>
+      <style>{getStyle({ scaleX, ...theme })}</style>
       <AddSimModal
         showAddSimModal={showAddSimModal}
         handleAddSimModalClose={handleAddSimModalClose}
@@ -123,7 +152,7 @@ const Workbook = (props: Props) => {
           handleUndoButtonClick: onUndoChange,
           handleRedoButtonClick: onRedoChange,
         }}
-        actionDisablers={{
+        undoRedoEnablers={{
           undoable,
           redoable,
         }}
@@ -144,6 +173,8 @@ const Workbook = (props: Props) => {
             onItemUpdate={onItemUpdate}
             onItemDelete={onItemDelete}
             slideContents={slides[curSlide]}
+            scaleX={scaleX}
+            canvasSize={canvasSize}
           />
         </div>
       </div>
@@ -192,19 +223,22 @@ const mapStateToProps = (state: any): WorkbookProps => {
   };
 };
 
-const style = `
+const getStyle = (props: any) => `
   .workbook-container {
     width:100vw;
     height:calc(100vh - 46px);
     display:flex;
     flex-direction:row;
     max-width:100%;
+    background-color:${props.color3};
   }
   .slide-container {
-    flex:14;
+    max-width:88vw;
+    transform:scale(${props.scaleX});
+    transform-origin:top left;
   }
   .left-menu-container {
-    flex:2;
+    width:12vw;
   }
 `;
 
