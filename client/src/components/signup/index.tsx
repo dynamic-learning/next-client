@@ -1,9 +1,13 @@
 import ThemeContext from "../../contexts";
 import { useContext } from "react";
 import { Input } from "antd";
+import { useRouter } from "next/router";
 
-const Login = () => {
+const SignUp = () => {
   const { theme } = useContext(ThemeContext);
+  const router= useRouter();
+
+  const goToLogin= () => router.push('/login') 
 
   const Logo = () => (
     <div className="logo-container">
@@ -23,7 +27,7 @@ const Login = () => {
   const AlreadyHaveAnAccount = () => (
     <div className="already-have-message">
       <span>Already have an account?</span>
-      <span className="login-message"> Log In</span>
+      <span className="login-message" onClick={goToLogin}> Log In</span>
     </div>
   );
 
@@ -122,4 +126,4 @@ const getStyle = ({ color1, color7, color5 }: any) => `
     }
 `;
 
-export default Login;
+export default SignUp;
