@@ -1,9 +1,15 @@
 import ThemeContext from "../../contexts";
 import { useContext } from "react";
 import { Input } from "antd";
+import { useRouter } from "next/router";
+
+
 
 const Login = () => {
   const { theme } = useContext(ThemeContext);
+  const router= useRouter();
+
+  const goToSignUp= ()=>router.push('/signup')
 
   const Logo = () => (
     <div className="logo-container">
@@ -32,7 +38,7 @@ const Login = () => {
   const CreateNewAccount = () => (
     <div className="new-account-message">
       <span>Don't have an account ?</span>
-      <span className="create-new"> Create new</span>
+      <span className="create-new" onClick={goToSignUp}> Create new</span>
     </div>
   );
 
@@ -146,7 +152,8 @@ const getStyle = ({ color1, color7, color5 }: any) => `
       justify-content:center;
     }
     .new-account-message {
-      width:200px;
+      width: fit-content;
+      padding: 15px 0;
       margin:auto;
       font-size:12px;
     }
