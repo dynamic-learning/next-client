@@ -7,5 +7,6 @@ cache: npm
 install:
   - npm install
 script:
+  local_dir: client
   - npm run all-unit-tests
   - npm run build
