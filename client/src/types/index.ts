@@ -2,6 +2,7 @@ export type SlideType = {
   fabricObjects: string | null;
   sims: Array<CanvasSimType>;
   textboxes: Array<TextboxType>;
+  pageCount: number;
 };
 
 export type CanvasSimType = {

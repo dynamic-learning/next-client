@@ -1,12 +1,16 @@
 import SortableTree from "../sortable-tree";
 import { useState } from "react";
 import { TreeItem } from "react-sortable-tree";
-import { getNewFile, getNewFolder, findIdsOfItemsToDelete } from "./functions";
+import {
+  getNewFile,
+  getNewFolder,
+  findIdsOfItemsToDelete,
+} from "../../../utils/files-and-folders";
 import { AiOutlineFolder, AiOutlineFile } from "react-icons/ai";
 import { FiTrash2, FiEdit3 } from "react-icons/fi";
 import AddFileFolder from "./AddFileFolder";
 import Header from "./Header";
-import { updateItemInArrayAtIndex } from "../../../utils";
+import { updateItemInArrayAtIndex } from "../../../utils/array";
 import Topbar from "../../top-bar";
 import { Menu } from "antd";
 import { useRouter } from "next/router";

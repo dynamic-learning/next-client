@@ -1,19 +1,16 @@
 import * as actions from "../action-types/workbook";
-import { SlideType } from "../../types";
 import {
   addAnItemToArray,
   updateItemInArrayAtIndex,
   deleteItemInArrayAtIndex,
-} from "../../utils";
+} from "../../utils/array";
+import {
+  getNewSlide,
+  updateItemInCurSlide,
+  addItemInCurSlide,
+  deleteItemInCurSlide,
+} from "../../utils/workbook";
 import undoable from "redux-undo";
-
-export const getNewSlide = (): SlideType => {
-  return {
-    fabricObjects: null,
-    sims: [],
-    textboxes: [],
-  };
-};
 
 const defaultState = {
   slides: [getNewSlide()],
@@ -25,7 +22,7 @@ type Action = {
   payload: any;
 };
 
-const workbookReducer = (state = defaultState, action: Action) => {
+export const workBookReducer = (state = defaultState, action: Action) => {
   let updatedSlides, updatedSlide;
   switch (action.type) {
     case actions.ADD_SLIDE:
@@ -126,6 +123,25 @@ const workbookReducer = (state = defaultState, action: Action) => {
         slides: updatedSlides,
       };
 
+    case actions.CHANGE_PAGE_COUNT_IN_CURSLIDE:
+      // To ensure page count is either 0 or greater
+      const newPageCount =
+        state.slides[state.curSlide].pageCount + action.payload.count >= 0
+          ? state.slides[state.curSlide].pageCount + action.payload.count
+          : state.slides[state.curSlide].pageCount;
+      updatedSlide = {
+        ...state.slides[state.curSlide],
+        pageCount: newPageCount,
+      };
+      updatedSlides = updateItemInArrayAtIndex(
+        state.slides,
+        state.curSlide,
+        updatedSlide
+      );
+      return {
+        ...state,
+        slides: updatedSlides,
+      };
     default:
       return {
         ...state,
@@ -133,46 +149,6 @@ const workbookReducer = (state = defaultState, action: Action) => {
   }
 };
 
-const addItemInCurSlide = (state: any, itemType: string, newItem: any) => {
-  const updatedSlide = {
-    ...state.slides[state.curSlide],
-    [itemType]: [...state.slides[state.curSlide][itemType], newItem],
-  };
-  return updatedSlide;
-};
-
-const updateItemInCurSlide = (
-  state: any,
-  itemType: string,
-  updatedItem: any,
-  index: number
-) => {
-  const itemsInCurSlide = state.slides[state.curSlide][itemType];
-  const updateIndex = index;
-  const updatedSlide = {
-    ...state.slides[state.curSlide],
-    [itemType]: updateItemInArrayAtIndex(
-      itemsInCurSlide,
-      updateIndex,
-      updatedItem
-    ),
-  };
-  return updatedSlide;
-};
-
-const deleteItemInCurSlide = (
-  state: any,
-  itemType: string,
-  deleteIndex: number
-) => {
-  const itemsInCurSlide = state.slides[state.curSlide][itemType];
-  const updatedSlide = {
-    ...state.slides[state.curSlide],
-    [itemType]: deleteItemInArrayAtIndex(itemsInCurSlide, deleteIndex),
-  };
-  return updatedSlide;
-};
-
-const undoableWorkBook = undoable(workbookReducer);
+const undoableWorkBook = undoable(workBookReducer);
 
 export default undoableWorkBook;

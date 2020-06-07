@@ -11,20 +11,27 @@ let canvasConfig = {
 type Props = {
   onChange(fabricObjects: string | null): void;
   fabricObjects: string | null;
+  pageCount: number;
 };
 
 let canvas: fabric.Canvas;
 
 const Slide = (props: Props) => {
-  const { fabricObjects, onChange } = props;
+  const { fabricObjects, onChange, pageCount } = props;
 
   useEffect(() => {
     canvas = new fabric.Canvas("canvas", canvasConfig);
     canvas.freeDrawingBrush.color = "white";
     canvas.freeDrawingBrush.width = 2;
     registerEvents();
-    resizeCanvasToFillItsContainer();
   }, []);
+
+  useEffect(() => {
+    resizeCanvasToFillItsContainer();
+    clearCanvas();
+    //@ts-ignore
+    canvas.loadFromJSON(fabricObjects);
+  }, [pageCount]);
 
   const registerEvents = () => {
     canvas.on("mouse:up", handleMouseUp);

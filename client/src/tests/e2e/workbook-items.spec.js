@@ -9,9 +9,9 @@ describe("Working related to items", () => {
     cy.visit("localhost:3000");
   });
   it("checks addition of an item (here textbox) to the canvas", () => {
-    cy.get(".workbook-menu").trigger("mouseover");
+    cy.get(".slide-menu").trigger("mouseover");
     cy.get(".add-text-box-option", { timeout }).click();
-    cy.get(".workbook-menu").trigger("mouseover");
+    cy.get(".slide-menu").trigger("mouseover");
     cy.get(".add-text-box-option", { timeout }).click();
     cy.get("textarea").should("have.length", 2);
   });

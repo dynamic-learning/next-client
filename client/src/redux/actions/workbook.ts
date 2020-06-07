@@ -1,6 +1,4 @@
 import * as actions from "../action-types/workbook";
-import { fabric } from "fabric";
-import { CanvasSimType } from "../../types";
 
 export const addSlide = () => {
   return {
@@ -67,6 +65,15 @@ export const deleteItemInCurSlide = (deleteIndex: number, itemType: string) => {
     payload: {
       deleteIndex,
       itemType,
+    },
+  };
+};
+
+export const changePageCountInCurSlide = (count: number) => {
+  return {
+    type: actions.CHANGE_PAGE_COUNT_IN_CURSLIDE,
+    payload: {
+      count,
     },
   };
 };
