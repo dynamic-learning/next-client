@@ -259,13 +259,13 @@ const getStyle = (props: any) => `
     background-color:${props.color3};
   }
   .slide-container {
-    max-width:88vw;
     max-height:100%;
   }
   .left-menu-container {
-    width:12vw;
+    flex:2;
   }
   .scroll-container {
+    flex:14;
     overflow-y:auto;
   }
 `;
