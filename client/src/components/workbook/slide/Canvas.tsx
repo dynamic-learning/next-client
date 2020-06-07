@@ -60,7 +60,6 @@ const Slide = (props: Props) => {
     // Fabric canvas reference, upper canvas, lower canvas
 
     // @ts-ignore
-    canvas[prop] = value;
     setPropInSelector(".upper-canvas", prop, value);
     setPropInSelector(".lower-canvas", prop, value);
   };
@@ -69,6 +68,8 @@ const Slide = (props: Props) => {
     const canvasRef = document.querySelector(selector) as MappingWithStringKey;
     canvasRef.style[prop] = `${value}px`;
     canvasRef[prop] = value;
+    // @ts-ignore
+    canvas.setDimensions({ [prop]: value });
   };
 
   // MappingWithStringKey is defined to specify index signature (prop)
