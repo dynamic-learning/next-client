@@ -18,6 +18,11 @@ export type CanvasSimType = {
   };
 };
 
+export type Sim = {
+  owner: string;
+  id: string;
+};
+
 export type TextboxType = {
   text: string;
   size: {

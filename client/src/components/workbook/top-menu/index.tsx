@@ -26,6 +26,7 @@ const TopBar = ({ actions, actionDisablers }: any) => {
   const handleLoginClick = () => goToPage("/login");
   const handleSignUpClick = () => goToPage("/signup");
   const handleOpenClick = () => goToPage("/workbooks");
+  const handlSimulationCollectionClick = () => goToPage("/simulations");
 
   const handleIncreaseSizeClick = () => {
     onPageCountChange(1);
@@ -76,28 +77,34 @@ const TopBar = ({ actions, actionDisablers }: any) => {
       key="slide"
       icon={<BorderOuterOutlined />}
     >
-      <Menu.ItemGroup>
-        <Menu.Item onClick={handleAddSimButtonClick} key="simulation">
-          Add Simulation
+      <SubMenu title="Add Simulation">
+        <Menu.Item key="add-p5-url" onClick={handleAddSimButtonClick}>
+          Via p5 web editor sketch url
         </Menu.Item>
         <Menu.Item
-          className="add-text-box-option"
-          key="text-box"
-          onClick={handleAddTextboxButtonClick}
+          onClick={handlSimulationCollectionClick}
+          key="add-from-collection"
         >
-          Add text box
+          From simulation collection
         </Menu.Item>
-        <Menu.Item key="increase-size" onClick={handleIncreaseSizeClick}>
-          Increase size
-        </Menu.Item>
-        <Menu.Item
-          disabled={!canCanvasSizeBeReduced}
-          key="decrease-size"
-          onClick={handleDecreaseSizeClick}
-        >
-          Decrease size
-        </Menu.Item>
-      </Menu.ItemGroup>
+      </SubMenu>
+      <Menu.Item
+        className="add-text-box-option"
+        key="text-box"
+        onClick={handleAddTextboxButtonClick}
+      >
+        Add text box
+      </Menu.Item>
+      <Menu.Item key="increase-size" onClick={handleIncreaseSizeClick}>
+        Increase size
+      </Menu.Item>
+      <Menu.Item
+        disabled={!canCanvasSizeBeReduced}
+        key="decrease-size"
+        onClick={handleDecreaseSizeClick}
+      >
+        Decrease size
+      </Menu.Item>
     </SubMenu>
   );
 
