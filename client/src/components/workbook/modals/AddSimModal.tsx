@@ -31,7 +31,7 @@ const AddSimModal = (props: Props) => {
       <style>{style}</style>
       <P5SimModal
         destroyOnClose
-        onOK={handleOk}
+        onOk={handleOk}
         okText="Add"
         wrapClassName="vertical-center-modal"
         onCancel={handleAddSimModalClose}
