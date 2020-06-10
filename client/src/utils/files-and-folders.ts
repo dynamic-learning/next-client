@@ -1,4 +1,5 @@
 import { TreeItem } from "react-sortable-tree";
+import { getRandomNo } from "./common";
 
 export const getNewFile = (fileCount: number) => {
   const newFile = {
@@ -19,13 +20,6 @@ export const getNewFolder = (folderCount: number) => {
     id: getRandomNo(),
   };
   return newFolder;
-};
-
-const getRandomNo = () => {
-  return (
-    Math.random().toString(36).substring(2, 15) +
-    Math.random().toString(36).substring(2, 15)
-  );
 };
 
 export const findIdsOfItemsToDelete = (

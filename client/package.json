@@ -26,6 +26,7 @@
     "react-rnd": "^10.1.10",
     "react-sortable-tree": "^2.7.1",
     "react-sortable-tree-theme-minimal": "0.0.14",
+    "react-tag-autocomplete": "^5.13.1",
     "redux": "^4.0.5",
     "redux-undo": "^1.0.1"
   },
@@ -36,6 +37,7 @@
     "@types/react": "^16.9.35",
     "@types/react-redux": "^7.1.9",
     "@types/react-sortable-tree": "^0.3.11",
+    "@types/react-tag-autocomplete": "^5.12.0",
     "@types/redux": "^3.6.0",
     "cypress": "^4.6.0",
     "jest": "^26.0.1",
