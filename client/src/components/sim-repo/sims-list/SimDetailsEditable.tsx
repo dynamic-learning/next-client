@@ -82,6 +82,9 @@ const SimDetails = (props: Props) => {
 };
 
 const style = `
+  .ant-divider {
+    margin:12px 0;
+  }
   .sim-detail {
     margin-top:1rem;
     padding:0.5rem;
@@ -90,7 +93,6 @@ const style = `
     margin-top:1rem;
   }
   .delete {
-    margin-top:1rem;
     margin-left:1rem;
   }
 `;
