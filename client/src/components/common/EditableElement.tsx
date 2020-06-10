@@ -51,11 +51,11 @@ const EditableElement = (props: Props) => {
           <Element
             Element={Element}
             onChange={handleChange}
-            value={setTempValue}
+            value={tempValue}
           />
         ) : (
           <div className="text" style={style}>
-            {setTempValue}
+            {tempValue}
           </div>
         )}
         {isEditable ? <EditIcon /> : null}
