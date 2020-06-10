@@ -11,6 +11,7 @@ type Props = {
   onItemDelete(deleteIndex: number, itemType: string): void;
   scaleX: number;
   canvasSize: any;
+  canvasOptions: any;
 };
 
 const Slide = (props: Props) => {
@@ -21,7 +22,9 @@ const Slide = (props: Props) => {
     onItemDelete,
     scaleX,
     canvasSize,
+    canvasOptions,
   } = props;
+
   const { fabricObjects, sims, textboxes, pageCount } = slideContents;
 
   // Used to disable the pointer events in moveable /resizeable items when
@@ -51,6 +54,7 @@ const Slide = (props: Props) => {
           pageCount={pageCount}
           onChange={onCanvasUpdate}
           fabricObjects={fabricObjects}
+          canvasOptions={canvasOptions}
         />
       </div>
     </>

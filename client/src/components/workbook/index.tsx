@@ -7,6 +7,7 @@ import {
   updateItemInCurSlide,
   deleteItemInCurSlide,
   changePageCountInCurSlide,
+  changeCanvasOption,
 } from "../../redux/actions/workbook";
 import Slide from "./slide";
 import { SlideType } from "../../types";
@@ -37,6 +38,7 @@ interface WorkbookMethods {
   onUndoChange(): void;
   onRedoChange(): void;
   onPageCountChange(count: number): void;
+  onCanvasOptionChange(option: string, value: any): void;
 }
 
 interface WorkbookProps {
@@ -44,6 +46,7 @@ interface WorkbookProps {
   slides: Array<SlideType>;
   undoable: boolean;
   redoable: boolean;
+  canvasOptions: any;
 }
 
 type Props = WorkbookMethods & WorkbookProps;
@@ -66,6 +69,8 @@ const Workbook = (props: Props) => {
     undoable,
     redoable,
     onPageCountChange,
+    canvasOptions,
+    onCanvasOptionChange,
   } = props;
 
   const noOfSlides = slides.length;
@@ -171,12 +176,14 @@ const Workbook = (props: Props) => {
           handleUndoButtonClick: onUndoChange,
           handleRedoButtonClick: onRedoChange,
           onPageCountChange,
+          onCanvasOptionChange,
         }}
         actionDisablers={{
           undoable,
           redoable,
           canCanvasSizeBeReduced,
         }}
+        canvasOptions={canvasOptions}
       />
       <div className="workbook-container">
         <div className="left-menu-container">
@@ -197,6 +204,7 @@ const Workbook = (props: Props) => {
               slideContents={slides[curSlide]}
               scaleX={scaleX}
               canvasSize={canvasSize}
+              canvasOptions={canvasOptions}
             />
           </div>
         </div>
@@ -237,6 +245,9 @@ const mapDispatchToProps = (dispatch: Function): WorkbookMethods => {
     onPageCountChange: (count: number) => {
       dispatch(changePageCountInCurSlide(count));
     },
+    onCanvasOptionChange: (option: string, value: any) => {
+      dispatch(changeCanvasOption(option, value));
+    },
   };
 };
 
@@ -246,6 +257,7 @@ const mapStateToProps = (state: any): WorkbookProps => {
     slides: state.present.slides,
     undoable: state.past.length !== 0,
     redoable: state.future.length !== 0,
+    canvasOptions: state.present.canvasOptions,
   };
 };
 

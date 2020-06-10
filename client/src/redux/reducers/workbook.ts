@@ -15,6 +15,10 @@ import undoable from "redux-undo";
 const defaultState = {
   slides: [getNewSlide()],
   curSlide: 0,
+  canvasOptions: {
+    brushStroke: 30,
+    color: "#fff",
+  },
 };
 
 type Action = {
@@ -142,6 +146,16 @@ export const workBookReducer = (state = defaultState, action: Action) => {
         ...state,
         slides: updatedSlides,
       };
+
+    case actions.CHANGE_CANVAS_OPTION:
+      return {
+        ...state,
+        canvasOptions: {
+          ...state.canvasOptions,
+          [action.payload.option]: action.payload.value,
+        },
+      };
+
     default:
       return {
         ...state,

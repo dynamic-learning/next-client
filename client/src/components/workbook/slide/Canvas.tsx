@@ -12,12 +12,13 @@ type Props = {
   onChange(fabricObjects: string | null): void;
   fabricObjects: string | null;
   pageCount: number;
+  canvasOptions: any;
 };
 
 let canvas: fabric.Canvas;
 
 const Slide = (props: Props) => {
-  const { fabricObjects, onChange, pageCount } = props;
+  const { fabricObjects, onChange, pageCount, canvasOptions } = props;
 
   useEffect(() => {
     canvas = new fabric.Canvas("canvas", canvasConfig);
@@ -25,6 +26,11 @@ const Slide = (props: Props) => {
     canvas.freeDrawingBrush.width = 2;
     registerEvents();
   }, []);
+
+  useEffect(() => {
+    canvas.freeDrawingBrush.width = canvasOptions.brushStroke / 10;
+    canvas.freeDrawingBrush.color = canvasOptions.color;
+  }, [canvasOptions]);
 
   useEffect(() => {
     resizeCanvasToFillItsContainer();
