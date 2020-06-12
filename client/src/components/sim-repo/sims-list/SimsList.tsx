@@ -2,6 +2,7 @@ import P5SimModal from "../../common/P5SimModal";
 import { useState } from "react";
 import SimDetails from "./SimDetails";
 import SimDetailsEditable from "./SimDetailsEditable";
+import ImageUpload from "../../common/ImageUpload";
 
 let defaultSim: any;
 
@@ -49,9 +50,12 @@ const SimsList = (props: Props) => {
   const SimsList = () => (
     <>
       {sims.map((sim: any, index: number) => (
-        <li key={sim.id} onClick={handleSimClick(index)} className="flex-item">
-          {sim.title}
-        </li>
+        <img
+          className="sim-block"
+          src={sim.imgUrl}
+          key={sim.id}
+          onClick={handleSimClick(index)}
+        />
       ))}
     </>
   );
@@ -94,17 +98,13 @@ const style = `
         margin:0;
         display: flex;
     }
-    .flex-item {
-        background-color:lightblue;
+    .sim-block {
+        padding:5px;
         width: 100px;
         height: 100px;
         margin: 1rem;
-        
-        line-height: 100px;
-        color: black;
-        font-size: 1rem;
-        text-align: center;
         cursor:pointer;
+        border:1px solid lightgrey;
     }
     .flex-item:hover {
         background-color:#1890ff;

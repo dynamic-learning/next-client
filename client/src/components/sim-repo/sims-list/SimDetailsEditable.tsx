@@ -1,6 +1,7 @@
 import { Divider, Input, Button } from "antd";
 import EditableElement from "../../common/EditableElement";
 import ReactTags from "react-tag-autocomplete";
+import ImageUpload from "../../common/ImageUpload";
 
 const { TextArea } = Input;
 
@@ -30,6 +31,10 @@ const SimDetails = (props: Props) => {
 
   const onDescriptionEdit = (value: any) => {
     updateSelectedSim(value, "description");
+  };
+
+  const setImgUrl = (imgUrl: string) => {
+    updateSelectedSim(imgUrl, "imgUrl");
   };
 
   const Title = () => (
@@ -68,13 +73,20 @@ const SimDetails = (props: Props) => {
       <div className="sim-detail">
         <Title />
         <Divider />
-        <Description />
-        <Divider />
-        <Tags />
-        <Divider />
-        <div>
-          <Button onClick={handleApplyClick}>Apply changes</Button>
-          <Button className="delete">Delete Sim</Button>
+        <div className="details-and-image">
+          <div className="details">
+            <Description />
+            <Divider />
+            <Tags />
+            <Divider />
+            <div>
+              <Button onClick={handleApplyClick}>Apply changes</Button>
+              <Button className="delete">Delete Sim</Button>
+            </div>
+          </div>
+          <div className="img">
+            <ImageUpload setImgUrl={setImgUrl} imgUrl={selectedSim.imgUrl} />
+          </div>
         </div>
       </div>
     </>
@@ -94,6 +106,19 @@ const style = `
   }
   .delete {
     margin-left:1rem;
+  }
+  .details-and-image {
+    display:flex;
+    flex-direction:row;
+  }
+  .details {
+    flex:8;
+  }
+  .img {
+    flex:2;
+    margin:1rem;
+    margin-right:0;
+    max-width:102px;
   }
 `;
 

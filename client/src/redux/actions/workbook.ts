@@ -77,3 +77,13 @@ export const changePageCountInCurSlide = (count: number) => {
     },
   };
 };
+
+export const changeCanvasOption = (option: string, value: any) => {
+  return {
+    type: actions.CHANGE_CANVAS_OPTION,
+    payload: {
+      option,
+      value,
+    },
+  };
+};

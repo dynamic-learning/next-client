@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu } from "antd";
+import { Menu, Slider } from "antd";
 import {
   UserAddOutlined,
   LoginOutlined,
@@ -7,11 +7,14 @@ import {
   BorderOuterOutlined,
   EditOutlined,
 } from "@ant-design/icons";
+import { FaPen } from "react-icons/fa";
 import Topbar from "../../top-bar/index";
+import { SwatchesPicker } from "react-color";
+import { BsSquareFill } from "react-icons/bs";
 
 const { SubMenu } = Menu;
 
-const TopBar = ({ actions, actionDisablers }: any) => {
+const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
   const {
     handleAddSimButtonClick,
     goToPage,
@@ -19,6 +22,7 @@ const TopBar = ({ actions, actionDisablers }: any) => {
     handleUndoButtonClick,
     handleRedoButtonClick,
     onPageCountChange,
+    onCanvasOptionChange,
   } = actions;
 
   const { undoable, redoable, canCanvasSizeBeReduced } = actionDisablers;
@@ -129,6 +133,37 @@ const TopBar = ({ actions, actionDisablers }: any) => {
     </div>
   );
 
+  const handleBrushStrokeChange = (e: any) => {
+    onCanvasOptionChange("brushStroke", e);
+  };
+
+  const renderBrushStroke = () => (
+    <SubMenu key="brushStroke" icon={<FaPen />}>
+      <Menu.ItemGroup>
+        <Menu.Item key="brushStroke">
+          <Slider onAfterChange={handleBrushStrokeChange} defaultValue={30} />
+        </Menu.Item>
+      </Menu.ItemGroup>
+    </SubMenu>
+  );
+
+  const handleChangeComplete = (color: any) => {
+    onCanvasOptionChange("color", color.hex);
+  };
+
+  const renderColorPicker = () => (
+    <SubMenu
+      key="colorPicker"
+      icon={<BsSquareFill fill={canvasOptions.color} />}
+    >
+      <Menu.ItemGroup>
+        <Menu.Item style={colorPickerStyle} key="colorPicker">
+          <SwatchesPicker onChangeComplete={handleChangeComplete} />
+        </Menu.Item>
+      </Menu.ItemGroup>
+    </SubMenu>
+  );
+
   return (
     <>
       <style>{style}</style>
@@ -137,6 +172,8 @@ const TopBar = ({ actions, actionDisablers }: any) => {
           {renderFileMenu()}
           {renderEditMenu()}
           {renderSlideMenu()}
+          {renderBrushStroke()}
+          {renderColorPicker()}
           {renderLoginSignUp()}
         </Topbar>
       </div>
@@ -151,5 +188,11 @@ const style = `
         margin-right: 10px;
     }
 `;
+
+const colorPickerStyle = {
+  height: "100%",
+  padding: "15px",
+  margin: "0",
+};
 
 export default TopBar;

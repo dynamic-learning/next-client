@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Input } from "antd";
 import ReactTags from "react-tag-autocomplete";
 import P5SimModal from "../../common/P5SimModal";
+import ImageUpload from "../../common/ImageUpload";
 
 const { TextArea } = Input;
 
@@ -23,6 +24,7 @@ const AddSimModal = (props: Props) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState(defaultTags);
+  const [imgUrl, setImgUrl] = useState("");
 
   const onTitleChange = (e: any) => {
     setTitle(e.target.value);
@@ -50,6 +52,7 @@ const AddSimModal = (props: Props) => {
     setTitle("");
     setDescription("");
     setTags([]);
+    setImgUrl("");
   };
 
   const onSubmitPress = () => {
@@ -58,12 +61,18 @@ const AddSimModal = (props: Props) => {
       title,
       description,
       tags,
+      imgUrl,
     };
     onSimAdd(simObject);
     clearFieldsAndCloseModal();
   };
 
-  const isTitleOrDescriptionMissing = !(title && description);
+  const areAllDetailsFilled = !(
+    title &&
+    description &&
+    imgUrl &&
+    tags.length > 0
+  );
 
   return (
     <>
@@ -76,7 +85,7 @@ const AddSimModal = (props: Props) => {
         onOk={onSubmitPress}
         visible={visible}
         title="Add simulation"
-        okButtonProps={{ disabled: isTitleOrDescriptionMissing }}
+        okButtonProps={{ disabled: areAllDetailsFilled }}
       >
         <P5SketchUrlInput setSim={setSim} />
         {sim ? (
@@ -87,19 +96,26 @@ const AddSimModal = (props: Props) => {
               className="detail"
               placeholder="Enter title"
             />
-            <TextArea
-              value={description}
-              onChange={onDescriptionChange}
-              className="detail"
-              placeholder="Enter description"
-            />
-            <div className="react-tag">
-              <ReactTags
-                tags={tags.map((tag: string) => ({ id: name, name: tag }))}
-                handleDelete={handleDeleteTag}
-                handleAddition={handleAddTag}
-                allowNew={true}
-              />
+            <div className="details-and-image">
+              <div className="details">
+                <TextArea
+                  value={description}
+                  onChange={onDescriptionChange}
+                  className="detail"
+                  placeholder="Enter description"
+                />
+                <div className="react-tag">
+                  <ReactTags
+                    tags={tags.map((tag: string) => ({ id: name, name: tag }))}
+                    handleDelete={handleDeleteTag}
+                    handleAddition={handleAddTag}
+                    allowNew={true}
+                  />
+                </div>
+              </div>
+              <div className="img-upld">
+                <ImageUpload imgUrl={imgUrl} setImgUrl={setImgUrl} />
+              </div>
             </div>
           </>
         ) : null}
@@ -114,6 +130,23 @@ const style = `
   }
   .react-tag {
     margin-top:1rem;
+  }
+  .details-and-image {
+    display: flex;
+    flex-direction:row;
+    justify-content:space-between;
+  }
+  .details {
+    flex:8;
+  }
+  .img-upld {
+    margin:1rem;
+    flex:2;
+    margin-right:0;
+    max-width:102px;
+  }
+  .ant-upload ant-upload-select ant-upload-select-picture-card {
+    margin:0;
   }
 `;
 

@@ -38,7 +38,7 @@ const P5SimModal = (props: any) => {
 
   let { width, height } = size;
 
-  if (!sim) {
+  if (!(sim && sim.id && sim.owner)) {
     height = 0;
   }
 
@@ -77,7 +77,7 @@ const P5SimModal = (props: any) => {
           onResize={handleResize}
           size={{ width, height }}
         >
-          {sim ? (
+          {sim && sim.id && sim.owner ? (
             <iframe
               width={width}
               height={height}
