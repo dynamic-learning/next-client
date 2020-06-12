@@ -1,4 +1,5 @@
-# Dynamic Learning [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=dynamic-learning_dynamic-learning)
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=dynamic-learning_dynamic-learning)
+# Dynamic Learning
 
 Dynamic learning strives to be a platform where teachers and coders collaborate to create lessons that make use of interactive visualizations.
 
