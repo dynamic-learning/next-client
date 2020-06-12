@@ -56,14 +56,14 @@ const P5SketchUrlInput = (props: Props) => {
         value={inputUrl}
         onChange={handleInputChange}
         placeholder="Link to p5 web editor sketch"
-        className="input"
+        className="p5-sketch-url-input"
       />
     </>
   );
 };
 
 const style = `
-    .input {
+    .p5-sketch-url-input {
         width:100%;
         margin-top:1rem;
     }

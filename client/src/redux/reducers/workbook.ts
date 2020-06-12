@@ -18,6 +18,8 @@ const defaultState = {
   canvasOptions: {
     brushStroke: 30,
     color: "#fff",
+    interact: true,
+    isDrawingMode: true,
   },
 };
 
@@ -89,6 +91,18 @@ export const workBookReducer = (state = defaultState, action: Action) => {
         state.curSlide,
         updatedSlide
       );
+      return {
+        ...state,
+        slides: updatedSlides,
+      };
+
+    case actions.CLEAR_SLIDE:
+      updatedSlides = updateItemInArrayAtIndex(
+        state.slides,
+        state.curSlide,
+        getNewSlide()
+      );
+      console.log(updatedSlides);
       return {
         ...state,
         slides: updatedSlides,

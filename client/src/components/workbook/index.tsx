@@ -1,14 +1,4 @@
-import {
-  addSlide,
-  deleteSlide,
-  changeCurSlide,
-  setFabricObjectsInCurSlide,
-  addItemInCurSlide,
-  updateItemInCurSlide,
-  deleteItemInCurSlide,
-  changePageCountInCurSlide,
-  changeCanvasOption,
-} from "../../redux/actions/workbook";
+import * as actions from "../../redux/actions/workbook";
 import Slide from "./slide";
 import { SlideType } from "../../types";
 import LeftMenu from "./left-menu";
@@ -39,6 +29,7 @@ interface WorkbookMethods {
   onRedoChange(): void;
   onPageCountChange(count: number): void;
   onCanvasOptionChange(option: string, value: any): void;
+  onClearSlide(): void;
 }
 
 interface WorkbookProps {
@@ -71,6 +62,7 @@ const Workbook = (props: Props) => {
     onPageCountChange,
     canvasOptions,
     onCanvasOptionChange,
+    onClearSlide,
   } = props;
 
   const noOfSlides = slides.length;
@@ -177,6 +169,7 @@ const Workbook = (props: Props) => {
           handleRedoButtonClick: onRedoChange,
           onPageCountChange,
           onCanvasOptionChange,
+          onClearSlide,
         }}
         actionDisablers={{
           undoable,
@@ -216,25 +209,25 @@ const Workbook = (props: Props) => {
 const mapDispatchToProps = (dispatch: Function): WorkbookMethods => {
   return {
     onAddSlideButtonClick: () => {
-      dispatch(addSlide());
+      dispatch(actions.addSlide());
     },
     onDeleteSlideButtonClick: (index: number) => {
-      dispatch(deleteSlide(index));
+      dispatch(actions.deleteSlide(index));
     },
     onSlideButtonClick: (slideNo: number) => {
-      dispatch(changeCurSlide(slideNo));
+      dispatch(actions.changeCurSlide(slideNo));
     },
     onCanvasUpdate: (fabricObjects: string | null) => {
-      dispatch(setFabricObjectsInCurSlide(fabricObjects));
+      dispatch(actions.setFabricObjectsInCurSlide(fabricObjects));
     },
     onItemAdd: (newItem: any, itemType: string) => {
-      dispatch(addItemInCurSlide(newItem, itemType));
+      dispatch(actions.addItemInCurSlide(newItem, itemType));
     },
     onItemUpdate: (updatedItem: any, index: number, itemType: string) => {
-      dispatch(updateItemInCurSlide(updatedItem, index, itemType));
+      dispatch(actions.updateItemInCurSlide(updatedItem, index, itemType));
     },
     onItemDelete: (deleteIndex: number, itemType: string) => {
-      dispatch(deleteItemInCurSlide(deleteIndex, itemType));
+      dispatch(actions.deleteItemInCurSlide(deleteIndex, itemType));
     },
     onUndoChange: () => {
       dispatch(ActionCreators.undo());
@@ -243,10 +236,13 @@ const mapDispatchToProps = (dispatch: Function): WorkbookMethods => {
       dispatch(ActionCreators.redo());
     },
     onPageCountChange: (count: number) => {
-      dispatch(changePageCountInCurSlide(count));
+      dispatch(actions.changePageCountInCurSlide(count));
     },
     onCanvasOptionChange: (option: string, value: any) => {
-      dispatch(changeCanvasOption(option, value));
+      dispatch(actions.changeCanvasOption(option, value));
+    },
+    onClearSlide: () => {
+      dispatch(actions.clearSlide());
     },
   };
 };

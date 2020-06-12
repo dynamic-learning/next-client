@@ -25,6 +25,12 @@ export const changeCurSlide = (newCurSlide: number) => {
   };
 };
 
+export const clearSlide = () => {
+  return {
+    type: actions.CLEAR_SLIDE,
+  };
+};
+
 export const setFabricObjectsInCurSlide = (fabricObjects: string | null) => {
   return {
     type: actions.SET_FABRIC_OBJECTS_IN_CURSLIDE,
