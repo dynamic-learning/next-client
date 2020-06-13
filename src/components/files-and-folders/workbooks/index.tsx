@@ -21,69 +21,67 @@ emptyList = [];
 
 const { SubMenu } = Menu;
 
-const Workbooks = () => {
-  const [flatData, updateFlatData] = useState(emptyList);
-
+const Workbooks = (props: any) => {
   const [fileCount, setFileCount] = useState(1);
   const [folderCount, setFolderCount] = useState(1);
   const router = useRouter();
 
-  const handleAddFileClick = () => {
-    // Replace wih Api call
-    const newFile = getNewFile(fileCount);
-    setFileCount(fileCount + 1);
-    updateFlatData([...flatData, newFile]);
-  };
+  // const handleAddFileClick = () => {
+  //   // Replace wih Api call
+  //   const newFile = getNewFile(fileCount);
+  //   setFileCount(fileCount + 1);
+  //   updateFlatData([...flatData, newFile]);
+  // };
 
-  const handleAddFolderClick = () => {
-    // Replace wih Api call
-    const newFolder = getNewFolder(folderCount);
-    setFolderCount(folderCount + 1);
-    updateFlatData([...flatData, newFolder]);
-  };
+  // const handleAddFolderClick = () => {
+  //   // Replace wih Api call
+  //   const newFolder = getNewFolder(folderCount);
+  //   setFolderCount(folderCount + 1);
+  //   updateFlatData([...flatData, newFolder]);
+  // };
 
-  const handleDeleteClick = (node: TreeItem) => {
-    return () => {
-      const idsOfItemsToDelete: Array<any> = [];
-      findIdsOfItemsToDelete(node, idsOfItemsToDelete);
-      // Replace with Api call
-      deleteItems(idsOfItemsToDelete);
-    };
-  };
+  // const handleDeleteClick = (node: TreeItem) => {
+  //   return () => {
+  //     const idsOfItemsToDelete: Array<any> = [];
+  //     findIdsOfItemsToDelete(node, idsOfItemsToDelete);
+  //     // Replace with Api call
+  //     deleteItems(idsOfItemsToDelete);
+  //   };
+  // };
 
-  const deleteItems = (idsOfItemsToDelete: Array<string>) => {
-    const newFlatData = flatData.filter(
-      (datum: TreeItem) => !idsOfItemsToDelete.includes(datum.id)
-    );
+  // const deleteItems = (idsOfItemsToDelete: Array<string>) => {
+  //   const newFlatData = flatData.filter(
+  //     (datum: TreeItem) => !idsOfItemsToDelete.includes(datum.id)
+  //   );
 
-    newFlatData.forEach((d) => {
-      delete d.children;
-    });
+  //   newFlatData.forEach((d) => {
+  //     delete d.children;
+  //   });
 
-    updateFlatData(newFlatData);
-  };
+  //   updateFlatData(newFlatData);
+  // };
 
-  const onMoveNode = ({ node, nextParentNode }: any) => {
-    if (nextParentNode) {
-      // Replace with Api call
-      changeParentOfNode(node.id, nextParentNode.id);
-    } else {
-      // Replace with Api call
-      changeParentOfNode(node.id, "0");
-    }
-  };
+  // const onMoveNode = ({ node, nextParentNode }: any) => {
+  //   if (nextParentNode) {
+  //     // Replace with Api call
+  //     changeParentOfNode(node.id, nextParentNode.id);
+  //   } else {
+  //     // Replace with Api call
+  //     changeParentOfNode(node.id, "0");
+  //   }
+  // };
 
-  const changeParentOfNode = (id: string, newParentId: string) => {
-    const indexOfNode = flatData.findIndex(
-      (datum: TreeItem) => datum.id === id
-    );
-    const node = flatData[indexOfNode];
-    const newFlatData = updateItemInArrayAtIndex(flatData, indexOfNode, {
-      ...node,
-      parentId: newParentId,
-    });
-    updateFlatData(newFlatData);
-  };
+  // const changeParentOfNode = (id: string, newParentId: string) => {
+  //   const indexOfNode = flatData.findIndex(
+  //     (datum: TreeItem) => datum.id === id
+  //   );
+  //   const node = flatData[indexOfNode];
+  //   const newFlatData = updateItemInArrayAtIndex(flatData, indexOfNode, {
+  //     ...node,
+  //     parentId: newParentId,
+  //   });
+  //   updateFlatData(newFlatData);
+  // };
 
   const WorkbookTitle = ({ node }: any) => (
     <div className="workbook-title-container">
@@ -106,7 +104,7 @@ const Workbooks = () => {
         <FiTrash2
           size={16}
           className="right-icon"
-          onClick={handleDeleteClick(node)}
+          // onClick={handleDeleteClick(node)}
         />,
       ],
     };
@@ -118,6 +116,13 @@ const Workbooks = () => {
     <SubMenu onTitleClick={handleGoBackClick} title="Go back to workbook" />
   );
 
+  const mappedWorkbooks = props.workbooks.map((w: any) => {
+    return {
+      ...w,
+      parentId: "0",
+    };
+  });
+
   return (
     <>
       <style>{style}</style>
@@ -127,16 +132,16 @@ const Workbooks = () => {
           <Header />
           <div className="tree-container">
             <SortableTree
-              flatData={flatData}
-              updateFlatData={updateFlatData}
-              onMoveNode={onMoveNode}
+              flatData={mappedWorkbooks}
+              updateFlatData={() => {}}
+              onMoveNode={() => {}}
               getNodeKey={(node: TreeItem) => node.id}
               generateNodeProps={generateNodeProps}
             />
           </div>
           <AddFileFolder
-            handleAddFileClick={handleAddFileClick}
-            handleAddFolderClick={handleAddFolderClick}
+            handleAddFileClick={() => {}}
+            handleAddFolderClick={() => {}}
           />
         </div>
       </div>

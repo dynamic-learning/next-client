@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import { getWorkbooks } from "../api/index";
 
 // To get rid of window error
 const WorkbooksWithNoSSR = dynamic(
@@ -6,14 +7,24 @@ const WorkbooksWithNoSSR = dynamic(
   { ssr: false }
 );
 
-const WorkbooksPage = () => (
-  <>
-    <style>{style}</style>
-    <div className="page-container">
-      <WorkbooksWithNoSSR />
-    </div>
-  </>
-);
+const WorkbooksPage = (props: any) => {
+  const { workbooks } = props;
+
+  return (
+    <>
+      <style>{style}</style>
+      <div className="page-container">
+        <WorkbooksWithNoSSR workbooks={workbooks} />
+      </div>
+    </>
+  );
+};
+
+WorkbooksPage.getInitialProps = async () => {
+  const res = await getWorkbooks;
+  const { workbooks } = res;
+  return { workbooks };
+};
 
 const style = `
   .page-container {
