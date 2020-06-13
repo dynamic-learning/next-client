@@ -30,6 +30,7 @@ interface WorkbookMethods {
   onPageCountChange(count: number): void;
   onCanvasOptionChange(option: string, value: any): void;
   onClearSlide(): void;
+  onFinishReorder(startIndex: number, endIndex: number): void;
 }
 
 interface WorkbookProps {
@@ -63,6 +64,7 @@ const Workbook = (props: Props) => {
     canvasOptions,
     onCanvasOptionChange,
     onClearSlide,
+    onFinishReorder,
   } = props;
 
   const noOfSlides = slides.length;
@@ -186,6 +188,7 @@ const Workbook = (props: Props) => {
             onDeleteSlideButtonClick={onDeleteSlideButtonClick}
             curSlide={curSlide}
             noOfSlides={noOfSlides}
+            onFinishReorder={onFinishReorder}
           />
         </div>
         <div className="scroll-container">
@@ -243,6 +246,9 @@ const mapDispatchToProps = (dispatch: Function): WorkbookMethods => {
     },
     onClearSlide: () => {
       dispatch(actions.clearSlide());
+    },
+    onFinishReorder: (startIndex: number, endIndex: number) => {
+      dispatch(actions.reorderSlides(startIndex, endIndex));
     },
   };
 };

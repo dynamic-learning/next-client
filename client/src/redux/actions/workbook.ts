@@ -93,3 +93,13 @@ export const changeCanvasOption = (option: string, value: any) => {
     },
   };
 };
+
+export const reorderSlides = (startIndex: number, endIndex: number) => {
+  return {
+    type: actions.REORDER_SLIDES,
+    payload: {
+      startIndex,
+      endIndex,
+    },
+  };
+};
