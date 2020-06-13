@@ -2,7 +2,6 @@ import P5SimModal from "../../common/P5SimModal";
 import { useState } from "react";
 import SimDetails from "./SimDetails";
 import SimDetailsEditable from "./SimDetailsEditable";
-import ImageUpload from "../../common/ImageUpload";
 
 let defaultSim: any;
 

@@ -2,7 +2,6 @@ import P5SketchUrlInput from "../../common/P5SketchUrlInput";
 import { useState } from "react";
 import { getNewSim } from "../../../utils/workbook";
 import P5SimModal from "../../common/P5SimModal";
-import { Sim } from "../../../types";
 
 interface Props {
   showAddSimModal: boolean;

@@ -5,7 +5,7 @@ let canvasConfig = {
   isDrawingMode: true,
   width: 640,
   height: 360,
-  backgroundColor: "black",
+  backgroundColor: "rgba(0,0,0,0)",
 };
 
 type Props = {
@@ -34,16 +34,26 @@ const Slide = (props: Props) => {
 
   useEffect(() => {
     resizeCanvasToFillItsContainer();
-    clearCanvas();
+    canvas.clear();
     //@ts-ignore
     canvas.loadFromJSON(fabricObjects);
   }, [pageCount]);
 
   const registerEvents = () => {
-    canvas.on("mouse:up", handleMouseUp);
+    canvas.on("mouse:up", setCanvasState);
+    window.onkeydown = handleKeyPress;
   };
 
-  const handleMouseUp = () => {
+  const handleKeyPress = (e: any) => {
+    if (e.key === "Delete") {
+      canvas
+        .getActiveObjects()
+        .map((activeObject) => canvas.remove(activeObject));
+      canvas.discardActiveObject();
+    }
+  };
+
+  const setCanvasState = () => {
     onChange(JSON.stringify(canvas));
   };
 
@@ -86,22 +96,21 @@ const Slide = (props: Props) => {
 
   useEffect(() => {
     if (!fabricObjects) {
-      clearCanvas();
+      canvas.clear();
     } else {
-      clearCanvas();
+      canvas.clear();
       // @ts-ignore
       canvas.loadFromJSON(fabricObjects);
     }
   }, [fabricObjects]);
 
-  const clearCanvas = () => {
-    canvas.clear();
-    canvas.backgroundColor = "black";
-  };
+  useEffect(() => {
+    canvas.isDrawingMode = canvasOptions.isDrawingMode;
+  }, [canvasOptions.isDrawingMode]);
 
   return (
     <>
-      <style>{style}</style>
+      <style>{getStyle({ canvasOptions })}</style>
       <canvas id="canvas"></canvas>
     </>
   );
@@ -109,11 +118,16 @@ const Slide = (props: Props) => {
 
 // canvas-container is a class specified by fabric library
 // Unless !important is provided, the styles in fabric is not overridden
-const style = `
+const getStyle = ({ canvasOptions }: any) => `
   .canvas-container {
     width:100% !important;
     height:100% !important;
     max-width:100% !important;
+    background-color:black;
+  }
+  canvas {
+    z-index:10;
+    pointer-events:${canvasOptions.interact ? "none" : "auto"};
   }
 `;
 
