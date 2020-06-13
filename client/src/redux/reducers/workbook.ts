@@ -3,6 +3,7 @@ import {
   addAnItemToArray,
   updateItemInArrayAtIndex,
   deleteItemInArrayAtIndex,
+  reorderArrayItems,
 } from "../../utils/array";
 import {
   getNewSlide,
@@ -168,6 +169,18 @@ export const workBookReducer = (state = defaultState, action: Action) => {
           ...state.canvasOptions,
           [action.payload.option]: action.payload.value,
         },
+      };
+
+    case actions.REORDER_SLIDES:
+      updatedSlides = reorderArrayItems(
+        state.slides,
+        action.payload.startIndex,
+        action.payload.endIndex
+      );
+      return {
+        ...state,
+        slides: updatedSlides,
+        curSlide: action.payload.endIndex,
       };
 
     default:
