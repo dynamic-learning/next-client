@@ -168,6 +168,16 @@ export const workBookReducer = (state = defaultState, action: Action) => {
         canvasOptions: {
           ...state.canvasOptions,
           [action.payload.option]: action.payload.value,
+          interact: getInteractValue(
+            action.payload.option,
+            action.payload.value,
+            state
+          ),
+          isDrawingMode: getIsDrawingMode(
+            action.payload.option,
+            action.payload.value,
+            state
+          ),
         },
       };
 
@@ -187,6 +197,27 @@ export const workBookReducer = (state = defaultState, action: Action) => {
       return {
         ...state,
       };
+  }
+};
+
+const getInteractValue = (option: string, value: Boolean, state: any) => {
+  if (option === "interact") {
+    return value;
+  } else if (["isDrawingMode", "brishStroke", "color"].includes(option)) {
+    return false;
+  } else {
+    return state.canvasOptions.interact;
+  }
+};
+
+const getIsDrawingMode = (option: string, value: Boolean, state: any) => {
+  if (option === "isDrawingMode") {
+    return value;
+  }
+  if (option === "interact") {
+    return null;
+  } else {
+    return state.canvasOptions.isDrawingMode;
   }
 };
 

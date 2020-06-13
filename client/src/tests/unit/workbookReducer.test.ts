@@ -9,6 +9,7 @@ const defaultState = {
     brushStroke: 30,
     color: "#fff",
     interact: true,
+    isDrawingMode: null,
   },
 };
 

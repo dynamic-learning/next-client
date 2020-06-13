@@ -113,11 +113,10 @@ const Slide = (props: Props) => {
   }, [canvasOptions.color]);
 
   const changeColorOfSelectedItems = () => {
-    if (canvas.getActiveObjects()) {
+    if (canvas.getActiveObjects().length > 0) {
       canvas.getActiveObjects().forEach((activeObject) => {
         activeObject.stroke = canvasOptions.color;
       });
-      canvas.renderAll();
       setCanvasState();
     }
   };
