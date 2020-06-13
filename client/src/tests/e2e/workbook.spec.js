@@ -1,3 +1,9 @@
+const timeout = 10000;
+
+Cypress.on("uncaught:exception", (_err, _runnable) => {
+  return false;
+});
+
 describe("Workbook", () => {
   it("adds a slide", () => {
     cy.visit("localhost:3000");
@@ -11,6 +17,7 @@ describe("Workbook", () => {
     cy.get(".slide-button-container").should("have.length", 1);
   });
   it("makes a drawing on canvas", () => {
+    cy.get(".switch").click();
     cy.get("canvas")
       .eq(1)
       .trigger("mousedown", {
@@ -28,8 +35,29 @@ describe("Workbook", () => {
   /**
    * To do - write test case for the scaling of canvas
    */
+  it("checks the increase in height of canvas", () => {
+    cy.get(".canvas-container")
+      .invoke("height")
+      .then((initialHeight) => {
+        cy.get(".slide-menu").trigger("mouseover");
+        cy.get(".increase-size", { timeout }).click();
+        cy.get(".canvas-container")
+          .invoke("height")
+          .should("gt", initialHeight);
+      });
+  });
+  it("checks the decrese in height of canvas", () => {
+    cy.get(".canvas-container")
+      .invoke("height")
+      .then((initialHeight) => {
+        cy.get(".slide-menu").trigger("mouseover");
+        cy.get(".decrease-size", { timeout }).click();
+        cy.get(".canvas-container")
+          .invoke("height")
+          .should("lt", initialHeight);
+      });
+  });
 });
-
 const checkIfDimensionsAreEqual = (selector1, selector2) => {
   checkIfPropsAreEqual(selector1, selector2, "width");
   checkIfPropsAreEqual(selector1, selector2, "height");

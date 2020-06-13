@@ -1,9 +1,15 @@
-import { workBookReducer, getNewSlide } from "../../redux/reducers/workbook";
+import { workBookReducer } from "../../redux/reducers/workbook";
+import { getNewSlide } from "../../utils/workbook";
 import * as actions from "../../redux/actions/workbook";
 
 const defaultState = {
   slides: [getNewSlide()],
   curSlide: 0,
+  canvasOptions: {
+    brushStroke: 30,
+    color: "#fff",
+    interact: true,
+  },
 };
 
 describe("Workbook reducer tests", () => {
@@ -17,6 +23,7 @@ describe("Workbook reducer tests", () => {
   });
   it("correctly deletes a slide at an index", () => {
     let withThreeSlides = {
+      ...defaultState,
       slides: [getNewSlide(), getNewSlide(), getNewSlide()],
       curSlide: 1,
     };
@@ -31,6 +38,7 @@ describe("Workbook reducer tests", () => {
   });
   it("deletes a slide when curSlide is at the last index and checks if curSlide is decremented", () => {
     const withTwoSlides = {
+      ...defaultState,
       slides: [getNewSlide(), getNewSlide()],
       curSlide: 1,
     };
@@ -39,6 +47,7 @@ describe("Workbook reducer tests", () => {
   });
   it("sets a fabric object in the current slide", () => {
     let withTwoSlides = {
+      ...defaultState,
       slides: [getNewSlide(), getNewSlide(), getNewSlide()],
       curSlide: 1,
     };
@@ -51,6 +60,7 @@ describe("Workbook reducer tests", () => {
   });
   it("adds an item to current slide", () => {
     let withThreeSlides = {
+      ...defaultState,
       slides: [getNewSlide(), getNewSlide(), getNewSlide()],
       curSlide: 1,
     };
@@ -63,6 +73,7 @@ describe("Workbook reducer tests", () => {
   });
   it("updates an item in current slide", () => {
     let withThreeSlides = {
+      ...defaultState,
       slides: [getNewSlide(), getNewSlide(), getNewSlide()],
       curSlide: 1,
     };
@@ -84,6 +95,7 @@ describe("Workbook reducer tests", () => {
   });
   it("deletes an item in current slide", () => {
     let withTwoSlides = {
+      ...defaultState,
       slides: [getNewSlide(), getNewSlide()],
       curSlide: 1,
     };

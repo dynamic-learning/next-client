@@ -1,13 +1,4 @@
-import {
-  addSlide,
-  deleteSlide,
-  changeCurSlide,
-  setFabricObjectsInCurSlide,
-  addItemInCurSlide,
-  updateItemInCurSlide,
-  deleteItemInCurSlide,
-  changePageCountInCurSlide,
-} from "../../redux/actions/workbook";
+import * as actions from "../../redux/actions/workbook";
 import Slide from "./slide";
 import { SlideType } from "../../types";
 import LeftMenu from "./left-menu";
@@ -37,6 +28,9 @@ interface WorkbookMethods {
   onUndoChange(): void;
   onRedoChange(): void;
   onPageCountChange(count: number): void;
+  onCanvasOptionChange(option: string, value: any): void;
+  onClearSlide(): void;
+  onFinishReorder(startIndex: number, endIndex: number): void;
 }
 
 interface WorkbookProps {
@@ -44,6 +38,7 @@ interface WorkbookProps {
   slides: Array<SlideType>;
   undoable: boolean;
   redoable: boolean;
+  canvasOptions: any;
 }
 
 type Props = WorkbookMethods & WorkbookProps;
@@ -66,6 +61,10 @@ const Workbook = (props: Props) => {
     undoable,
     redoable,
     onPageCountChange,
+    canvasOptions,
+    onCanvasOptionChange,
+    onClearSlide,
+    onFinishReorder,
   } = props;
 
   const noOfSlides = slides.length;
@@ -171,12 +170,15 @@ const Workbook = (props: Props) => {
           handleUndoButtonClick: onUndoChange,
           handleRedoButtonClick: onRedoChange,
           onPageCountChange,
+          onCanvasOptionChange,
+          onClearSlide,
         }}
         actionDisablers={{
           undoable,
           redoable,
           canCanvasSizeBeReduced,
         }}
+        canvasOptions={canvasOptions}
       />
       <div className="workbook-container">
         <div className="left-menu-container">
@@ -186,6 +188,7 @@ const Workbook = (props: Props) => {
             onDeleteSlideButtonClick={onDeleteSlideButtonClick}
             curSlide={curSlide}
             noOfSlides={noOfSlides}
+            onFinishReorder={onFinishReorder}
           />
         </div>
         <div className="scroll-container">
@@ -197,6 +200,7 @@ const Workbook = (props: Props) => {
               slideContents={slides[curSlide]}
               scaleX={scaleX}
               canvasSize={canvasSize}
+              canvasOptions={canvasOptions}
             />
           </div>
         </div>
@@ -208,25 +212,25 @@ const Workbook = (props: Props) => {
 const mapDispatchToProps = (dispatch: Function): WorkbookMethods => {
   return {
     onAddSlideButtonClick: () => {
-      dispatch(addSlide());
+      dispatch(actions.addSlide());
     },
     onDeleteSlideButtonClick: (index: number) => {
-      dispatch(deleteSlide(index));
+      dispatch(actions.deleteSlide(index));
     },
     onSlideButtonClick: (slideNo: number) => {
-      dispatch(changeCurSlide(slideNo));
+      dispatch(actions.changeCurSlide(slideNo));
     },
     onCanvasUpdate: (fabricObjects: string | null) => {
-      dispatch(setFabricObjectsInCurSlide(fabricObjects));
+      dispatch(actions.setFabricObjectsInCurSlide(fabricObjects));
     },
     onItemAdd: (newItem: any, itemType: string) => {
-      dispatch(addItemInCurSlide(newItem, itemType));
+      dispatch(actions.addItemInCurSlide(newItem, itemType));
     },
     onItemUpdate: (updatedItem: any, index: number, itemType: string) => {
-      dispatch(updateItemInCurSlide(updatedItem, index, itemType));
+      dispatch(actions.updateItemInCurSlide(updatedItem, index, itemType));
     },
     onItemDelete: (deleteIndex: number, itemType: string) => {
-      dispatch(deleteItemInCurSlide(deleteIndex, itemType));
+      dispatch(actions.deleteItemInCurSlide(deleteIndex, itemType));
     },
     onUndoChange: () => {
       dispatch(ActionCreators.undo());
@@ -235,7 +239,16 @@ const mapDispatchToProps = (dispatch: Function): WorkbookMethods => {
       dispatch(ActionCreators.redo());
     },
     onPageCountChange: (count: number) => {
-      dispatch(changePageCountInCurSlide(count));
+      dispatch(actions.changePageCountInCurSlide(count));
+    },
+    onCanvasOptionChange: (option: string, value: any) => {
+      dispatch(actions.changeCanvasOption(option, value));
+    },
+    onClearSlide: () => {
+      dispatch(actions.clearSlide());
+    },
+    onFinishReorder: (startIndex: number, endIndex: number) => {
+      dispatch(actions.reorderSlides(startIndex, endIndex));
     },
   };
 };
@@ -246,6 +259,7 @@ const mapStateToProps = (state: any): WorkbookProps => {
     slides: state.present.slides,
     undoable: state.past.length !== 0,
     redoable: state.future.length !== 0,
+    canvasOptions: state.present.canvasOptions,
   };
 };
 
@@ -259,13 +273,13 @@ const getStyle = (props: any) => `
     background-color:${props.color3};
   }
   .slide-container {
-    max-width:88vw;
     max-height:100%;
   }
   .left-menu-container {
-    width:12vw;
+    flex:2;
   }
   .scroll-container {
+    flex:14;
     overflow-y:auto;
   }
 `;

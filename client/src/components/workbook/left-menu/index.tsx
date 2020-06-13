@@ -1,7 +1,9 @@
-import SlideList from "./SlideList";
 import AddSlide from "./AddSlide";
 import ThemeContext from "../../../contexts";
 import { useContext, memo } from "react";
+import dynamic from "next/dynamic";
+// Using this beacause react-beautiful-rnd causes some error in ssr
+const SlideListWithNoSSR = dynamic(() => import("./SlideList"), { ssr: false });
 
 interface Props {
   curSlide: number;
@@ -9,6 +11,7 @@ interface Props {
   onSlideButtonClick(slideNo: number): void;
   onDeleteSlideButtonClick(slideNo: number): void;
   onAddSlideButtonClick(): void;
+  onFinishReorder(startIndex: number, endIndex: number): void;
 }
 
 const LeftMenu = ({
@@ -17,6 +20,7 @@ const LeftMenu = ({
   onSlideButtonClick,
   onDeleteSlideButtonClick,
   onAddSlideButtonClick,
+  onFinishReorder,
 }: Props) => {
   const { theme } = useContext(ThemeContext);
 
@@ -32,11 +36,12 @@ const LeftMenu = ({
       <div className="left-menu">
         <Logo />
         <AddSlide onClick={onAddSlideButtonClick} />
-        <SlideList
+        <SlideListWithNoSSR
           noOfSlides={noOfSlides}
           onSlideButtonClick={onSlideButtonClick}
           onDeleteSlideButtonClick={onDeleteSlideButtonClick}
           curSlide={curSlide}
+          onFinishReorder={onFinishReorder}
         />
       </div>
     </>

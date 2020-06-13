@@ -1,17 +1,21 @@
 import React from "react";
-import { Menu } from "antd";
+import { Menu, Slider } from "antd";
 import {
   UserAddOutlined,
   LoginOutlined,
   FileOutlined,
   BorderOuterOutlined,
   EditOutlined,
+  SelectOutlined,
 } from "@ant-design/icons";
+import { FaPen } from "react-icons/fa";
 import Topbar from "../../top-bar/index";
-
+import { SwatchesPicker } from "react-color";
+import { BsSquareFill } from "react-icons/bs";
+import { Switch } from "antd";
 const { SubMenu } = Menu;
 
-const TopBar = ({ actions, actionDisablers }: any) => {
+const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
   const {
     handleAddSimButtonClick,
     goToPage,
@@ -19,21 +23,13 @@ const TopBar = ({ actions, actionDisablers }: any) => {
     handleUndoButtonClick,
     handleRedoButtonClick,
     onPageCountChange,
+    onCanvasOptionChange,
+    onClearSlide,
   } = actions;
 
   const { undoable, redoable, canCanvasSizeBeReduced } = actionDisablers;
 
-  const handleLoginClick = () => goToPage("/login");
-  const handleSignUpClick = () => goToPage("/signup");
   const handleOpenClick = () => goToPage("/workbooks");
-
-  const handleIncreaseSizeClick = () => {
-    onPageCountChange(1);
-  };
-
-  const handleDecreaseSizeClick = () => {
-    onPageCountChange(-1);
-  };
 
   const renderFileMenu = () => (
     <SubMenu title="File" key="file" icon={<FileOutlined />}>
@@ -69,6 +65,20 @@ const TopBar = ({ actions, actionDisablers }: any) => {
     </SubMenu>
   );
 
+  const handleIncreaseSizeClick = () => {
+    onPageCountChange(1);
+  };
+
+  const handleDecreaseSizeClick = () => {
+    onPageCountChange(-1);
+  };
+
+  const handlSimulationCollectionClick = () => goToPage("/simulations");
+
+  const handleClearClick = () => {
+    onClearSlide();
+  };
+
   const renderSlideMenu = () => (
     <SubMenu
       className="slide-menu"
@@ -76,30 +86,51 @@ const TopBar = ({ actions, actionDisablers }: any) => {
       key="slide"
       icon={<BorderOuterOutlined />}
     >
-      <Menu.ItemGroup>
-        <Menu.Item onClick={handleAddSimButtonClick} key="simulation">
-          Add Simulation
+      <SubMenu className="add-simulation" title="Add Simulation">
+        <Menu.Item
+          className="add-p5-url"
+          key="add-p5-url"
+          onClick={handleAddSimButtonClick}
+        >
+          Via p5 web editor sketch url
         </Menu.Item>
         <Menu.Item
-          className="add-text-box-option"
-          key="text-box"
-          onClick={handleAddTextboxButtonClick}
+          onClick={handlSimulationCollectionClick}
+          key="add-from-collection"
         >
-          Add text box
+          From simulation collection
         </Menu.Item>
-        <Menu.Item key="increase-size" onClick={handleIncreaseSizeClick}>
-          Increase size
-        </Menu.Item>
-        <Menu.Item
-          disabled={!canCanvasSizeBeReduced}
-          key="decrease-size"
-          onClick={handleDecreaseSizeClick}
-        >
-          Decrease size
-        </Menu.Item>
-      </Menu.ItemGroup>
+      </SubMenu>
+      <Menu.Item
+        className="add-text-box-option"
+        key="text-box"
+        onClick={handleAddTextboxButtonClick}
+      >
+        Add text box
+      </Menu.Item>
+      <Menu.Item
+        className="increase-size"
+        key="increase-size"
+        onClick={handleIncreaseSizeClick}
+      >
+        Increase size
+      </Menu.Item>
+      <Menu.Item
+        className="decrease-size"
+        disabled={!canCanvasSizeBeReduced}
+        key="decrease-size"
+        onClick={handleDecreaseSizeClick}
+      >
+        Decrease size
+      </Menu.Item>
+      <Menu.Item className="clear-slide" onClick={handleClearClick}>
+        Clear slide
+      </Menu.Item>
     </SubMenu>
   );
+
+  const handleLoginClick = () => goToPage("/login");
+  const handleSignUpClick = () => goToPage("/signup");
 
   const renderLoginSignUp = () => (
     <div className="navitems-right">
@@ -122,6 +153,94 @@ const TopBar = ({ actions, actionDisablers }: any) => {
     </div>
   );
 
+  const handleBrushStrokeChange = (e: any) => {
+    onCanvasOptionChange("brushStroke", e);
+  };
+
+  const handleBrushClick = () => {
+    onCanvasOptionChange("isDrawingMode", true);
+    onCanvasOptionChange("interact", false);
+  };
+
+  const renderBrushStroke = () => (
+    <SubMenu
+      onTitleClick={handleBrushClick}
+      key="brushStroke"
+      icon={
+        <FaPen
+          className={
+            canvasOptions.isDrawingMode && canvasOptions.isDrawingMode !== null
+              ? "selected"
+              : ""
+          }
+        />
+      }
+    >
+      <Menu.ItemGroup>
+        <Menu.Item key="brushStroke">
+          <Slider onAfterChange={handleBrushStrokeChange} defaultValue={30} />
+        </Menu.Item>
+      </Menu.ItemGroup>
+    </SubMenu>
+  );
+
+  const onSelectClick = () => {
+    onCanvasOptionChange("isDrawingMode", false);
+    onCanvasOptionChange("interact", false);
+  };
+
+  const renderSelect = () => (
+    <SubMenu
+      onTitleClick={onSelectClick}
+      key="select"
+      icon={
+        <SelectOutlined
+          className={
+            !canvasOptions.isDrawingMode && canvasOptions.isDrawingMode !== null
+              ? "selected"
+              : ""
+          }
+        />
+      }
+    />
+  );
+
+  const handleChangeComplete = (color: any) => {
+    onCanvasOptionChange("color", color.hex);
+  };
+
+  const renderColorPicker = () => (
+    <SubMenu
+      key="colorPicker"
+      icon={<BsSquareFill fill={canvasOptions.color} />}
+    >
+      <Menu.ItemGroup>
+        <Menu.Item style={colorPickerStyle} key="colorPicker">
+          <SwatchesPicker onChangeComplete={handleChangeComplete} />
+        </Menu.Item>
+      </Menu.ItemGroup>
+    </SubMenu>
+  );
+
+  const handleToggleChange = (interact: any) => {
+    onCanvasOptionChange("interact", interact);
+    if (interact) {
+      onCanvasOptionChange("isDrawingMode", null);
+    }
+  };
+
+  const renderSwitch = () => (
+    <div className="switch">
+      <Switch
+        checked={canvasOptions.interact}
+        onChange={handleToggleChange}
+        checkedChildren="Draw"
+        defaultChecked
+        unCheckedChildren="Interact"
+      />
+    </div>
+  );
+
   return (
     <>
       <style>{style}</style>
@@ -130,7 +249,13 @@ const TopBar = ({ actions, actionDisablers }: any) => {
           {renderFileMenu()}
           {renderEditMenu()}
           {renderSlideMenu()}
-          {renderLoginSignUp()}
+          {renderSelect()}
+          {renderBrushStroke()}
+          {renderColorPicker()}
+          <div className="navitems-right">
+            {renderSwitch()}
+            {renderLoginSignUp()}
+          </div>
         </Topbar>
       </div>
     </>
@@ -138,11 +263,23 @@ const TopBar = ({ actions, actionDisablers }: any) => {
 };
 
 const style = `
-    .navitems-right {
-        background-color:black;
-        float: right;
-        margin-right: 10px;
-    }
+  .switch {
+     display:block;
+  }
+  .navitems-right {
+      float:right;
+      display:flex;
+      flex-direction:row;
+  }
+  .selected {
+    color:#1890ff;
+  }
 `;
+
+const colorPickerStyle = {
+  height: "100%",
+  padding: "15px",
+  margin: "0",
+};
 
 export default TopBar;

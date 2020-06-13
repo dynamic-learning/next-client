@@ -17,3 +17,15 @@ export const deleteItemInArrayAtIndex = (array: Array<any>, index: number) => {
 export const addAnItemToArray = (array: Array<any>, newItem: any) => {
   return [...array, newItem];
 };
+
+export const reorderArrayItems = (
+  array: Array<any>,
+  startIndex: number,
+  endIndex: number
+) => {
+  const result = Array.from(array);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};

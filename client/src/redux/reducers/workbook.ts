@@ -3,6 +3,7 @@ import {
   addAnItemToArray,
   updateItemInArrayAtIndex,
   deleteItemInArrayAtIndex,
+  reorderArrayItems,
 } from "../../utils/array";
 import {
   getNewSlide,
@@ -15,6 +16,12 @@ import undoable from "redux-undo";
 const defaultState = {
   slides: [getNewSlide()],
   curSlide: 0,
+  canvasOptions: {
+    brushStroke: 30,
+    color: "#fff",
+    interact: true,
+    isDrawingMode: null,
+  },
 };
 
 type Action = {
@@ -90,6 +97,18 @@ export const workBookReducer = (state = defaultState, action: Action) => {
         slides: updatedSlides,
       };
 
+    case actions.CLEAR_SLIDE:
+      updatedSlides = updateItemInArrayAtIndex(
+        state.slides,
+        state.curSlide,
+        getNewSlide()
+      );
+      console.log(updatedSlides);
+      return {
+        ...state,
+        slides: updatedSlides,
+      };
+
     case actions.UPDATE_ITEM_IN_CURSLIDE:
       updatedSlide = updateItemInCurSlide(
         state,
@@ -142,6 +161,28 @@ export const workBookReducer = (state = defaultState, action: Action) => {
         ...state,
         slides: updatedSlides,
       };
+
+    case actions.CHANGE_CANVAS_OPTION:
+      return {
+        ...state,
+        canvasOptions: {
+          ...state.canvasOptions,
+          [action.payload.option]: action.payload.value,
+        },
+      };
+
+    case actions.REORDER_SLIDES:
+      updatedSlides = reorderArrayItems(
+        state.slides,
+        action.payload.startIndex,
+        action.payload.endIndex
+      );
+      return {
+        ...state,
+        slides: updatedSlides,
+        curSlide: action.payload.endIndex,
+      };
+
     default:
       return {
         ...state,

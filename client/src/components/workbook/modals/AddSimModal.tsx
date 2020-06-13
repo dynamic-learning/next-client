@@ -1,7 +1,7 @@
-import { Modal } from "antd";
-import AddSim from "./modal-contents/AddSim";
+import P5SketchUrlInput from "../../common/P5SketchUrlInput";
 import { useState } from "react";
 import { getNewSim } from "../../../utils/workbook";
+import P5SimModal from "../../common/P5SimModal";
 
 interface Props {
   showAddSimModal: boolean;
@@ -9,12 +9,15 @@ interface Props {
   onItemAdd(newItem: any, itemType: string): void;
 }
 
+const defaultSim: any = { owner: "", id: "" };
+
 const AddSimModal = (props: Props) => {
-  const [sim, setSim] = useState({ owner: "", id: "" });
+  const [sim, setSim] = useState(defaultSim);
   const { showAddSimModal, handleAddSimModalClose, onItemAdd } = props;
 
   const handleOk = () => {
     handleAddSimModalClose();
+    //@ts-ignore
     const { owner, id } = sim;
     if (owner && id) {
       const newSim = getNewSim(owner, id);
@@ -22,25 +25,22 @@ const AddSimModal = (props: Props) => {
     }
   };
 
-  const getSim = (sim: any) => {
-    setSim(sim);
-  };
-
   return (
     <>
       <style>{style}</style>
-      <Modal
+      <P5SimModal
         destroyOnClose
         onOk={handleOk}
         okText="Add"
         wrapClassName="vertical-center-modal"
-        width={692}
         onCancel={handleAddSimModalClose}
         title="Add simulation"
         visible={showAddSimModal}
+        sim={sim}
+        maskClosable={false}
       >
-        <AddSim getSim={getSim} />
-      </Modal>
+        <P5SketchUrlInput setSim={setSim} />
+      </P5SimModal>
     </>
   );
 };

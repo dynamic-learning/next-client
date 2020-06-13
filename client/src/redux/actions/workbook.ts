@@ -25,6 +25,12 @@ export const changeCurSlide = (newCurSlide: number) => {
   };
 };
 
+export const clearSlide = () => {
+  return {
+    type: actions.CLEAR_SLIDE,
+  };
+};
+
 export const setFabricObjectsInCurSlide = (fabricObjects: string | null) => {
   return {
     type: actions.SET_FABRIC_OBJECTS_IN_CURSLIDE,
@@ -74,6 +80,26 @@ export const changePageCountInCurSlide = (count: number) => {
     type: actions.CHANGE_PAGE_COUNT_IN_CURSLIDE,
     payload: {
       count,
+    },
+  };
+};
+
+export const changeCanvasOption = (option: string, value: any) => {
+  return {
+    type: actions.CHANGE_CANVAS_OPTION,
+    payload: {
+      option,
+      value,
+    },
+  };
+};
+
+export const reorderSlides = (startIndex: number, endIndex: number) => {
+  return {
+    type: actions.REORDER_SLIDES,
+    payload: {
+      startIndex,
+      endIndex,
     },
   };
 };

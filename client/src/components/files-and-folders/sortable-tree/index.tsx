@@ -54,12 +54,12 @@ const style = `
     border:none;
   }
   .tree-container {
-    background-color:#f3f3f3 !important;
+    background-color:white !important;
     border:1px solid lightgrey !important;
     outline: none !important;
   }
   .rstcustom__rowContents {
-    background-color:#f3f3f3;
+    background-color:white;;
     box-shadow:none;
     border-bottom:1px solid  darkgrey;
     font-weight:bold;
@@ -72,7 +72,7 @@ const style = `
     color:black;
   }
   .rstcustom__node {
-    background-color:#f3f3f3;
+    background-color:white;
     color:black;
   }
 `;

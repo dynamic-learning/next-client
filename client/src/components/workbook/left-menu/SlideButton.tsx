@@ -1,6 +1,7 @@
 import ThemeContext from "../../../contexts";
 import { useContext, useState } from "react";
 import { FiTrash } from "react-icons/fi";
+import { Draggable, resetServerContext } from "react-beautiful-dnd";
 
 type Props = {
   slideNo: number;
@@ -49,26 +50,36 @@ const SlideButton = (props: Props) => {
     ? "delete-button-visible"
     : "delete-button-hidden";
 
+  resetServerContext();
+
   return (
-    <div>
-      <style>{getStyle(theme)}</style>
-      <div
-        onMouseEnter={handleMouseEnterSlide}
-        onMouseLeave={handleMouseLeaveSlide}
-        onClick={handleSlideClick}
-        className={`slide-button-container ${isSelected}`}
-      >
-        <div>Slide {slideNo + 1}</div>
+    <Draggable key={slideNo} draggableId={`id-${slideNo}`} index={slideNo}>
+      {(provided) => (
         <div
-          className="slide-delete-button"
-          onMouseLeave={handleMouseLeaveDeleteButton}
-          onMouseEnter={handleMouseEnterDeleteButton}
-          onClick={handleDeleteClick}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
         >
-          <FiTrash className={isDeleteButtonVisible} size={16} />
+          <style>{getStyle(theme)}</style>
+          <div
+            onMouseEnter={handleMouseEnterSlide}
+            onMouseLeave={handleMouseLeaveSlide}
+            onClick={handleSlideClick}
+            className={`slide-button-container ${isSelected}`}
+          >
+            <div>Slide {slideNo + 1}</div>
+            <div
+              className="slide-delete-button"
+              onMouseLeave={handleMouseLeaveDeleteButton}
+              onMouseEnter={handleMouseEnterDeleteButton}
+              onClick={handleDeleteClick}
+            >
+              <FiTrash className={isDeleteButtonVisible} size={16} />
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </Draggable>
   );
 };
 

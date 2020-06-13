@@ -32,6 +32,7 @@ const Textboxes = (props: Props) => {
           item={textbox}
           type="textboxes"
           scaleX={scaleX}
+          key={index}
         >
           <div className="text-box-and-menu">
             <Textbox
