@@ -159,6 +159,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
 
   const handleBrushClick = () => {
     onCanvasOptionChange("isDrawingMode", true);
+    onCanvasOptionChange("interact", false);
   };
 
   const renderBrushStroke = () => (
@@ -177,6 +178,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
 
   const onSelectClick = () => {
     onCanvasOptionChange("isDrawingMode", false);
+    onCanvasOptionChange("interact", false);
   };
 
   const renderSelect = () => (
