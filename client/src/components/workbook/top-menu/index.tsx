@@ -224,6 +224,9 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
 
   const handleToggleChange = (interact: any) => {
     onCanvasOptionChange("interact", interact);
+    if (interact) {
+      onCanvasOptionChange("isDrawingMode", null);
+    }
   };
 
   const renderSwitch = () => (
