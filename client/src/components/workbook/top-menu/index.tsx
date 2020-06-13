@@ -166,7 +166,15 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
     <SubMenu
       onTitleClick={handleBrushClick}
       key="brushStroke"
-      icon={<FaPen className={canvasOptions.isDrawingMode ? "selected" : ""} />}
+      icon={
+        <FaPen
+          className={
+            canvasOptions.isDrawingMode && canvasOptions.isDrawingMode !== null
+              ? "selected"
+              : ""
+          }
+        />
+      }
     >
       <Menu.ItemGroup>
         <Menu.Item key="brushStroke">
@@ -187,7 +195,11 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
       key="select"
       icon={
         <SelectOutlined
-          className={!canvasOptions.isDrawingMode ? "selected" : ""}
+          className={
+            !canvasOptions.isDrawingMode && canvasOptions.isDrawingMode !== null
+              ? "selected"
+              : ""
+          }
         />
       }
     />

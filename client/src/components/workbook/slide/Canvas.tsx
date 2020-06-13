@@ -108,6 +108,20 @@ const Slide = (props: Props) => {
     canvas.isDrawingMode = canvasOptions.isDrawingMode;
   }, [canvasOptions.isDrawingMode]);
 
+  useEffect(() => {
+    changeColorOfSelectedItems();
+  }, [canvasOptions.color]);
+
+  const changeColorOfSelectedItems = () => {
+    if (canvas.getActiveObjects()) {
+      canvas.getActiveObjects().forEach((activeObject) => {
+        activeObject.stroke = canvasOptions.color;
+      });
+      canvas.renderAll();
+      setCanvasState();
+    }
+  };
+
   return (
     <>
       <style>{getStyle({ canvasOptions })}</style>
