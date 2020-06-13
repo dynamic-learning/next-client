@@ -7,10 +7,11 @@ interface Props {
   children: any;
   setIsTransforming(isTransforming: boolean): void;
   type: string;
+  scaleX: number;
 }
 
 const MoveAndResize = (props: Props) => {
-  const { item, index, onItemUpdate, setIsTransforming, type } = props;
+  const { item, index, onItemUpdate, setIsTransforming, type, scaleX } = props;
   const handleDragStop = (index: number) => {
     return (_e: any, d: any) => {
       changePosition({ position: { x: d.x, y: d.y } }, index);
@@ -98,6 +99,7 @@ const MoveAndResize = (props: Props) => {
         onDragStart={handleDragStart}
         onResizeStart={handleResizeStart}
         onResizeStop={handleResizeStop}
+        scale={scaleX}
       >
         {props.children}
       </Rnd>

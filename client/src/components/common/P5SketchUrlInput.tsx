@@ -4,12 +4,17 @@ import {
   isValidSketchUrl,
   getOwnerFromSketchUrl,
   getIdFromSketchUrl,
-} from "../../../../utils";
+} from "../../utils/sketch";
+import { Sim } from "../../types";
 
-const AddSim = ({ getSim }: any) => {
+interface Props {
+  setSim(sim: Sim | null): void;
+}
+
+const P5SketchUrlInput = (props: Props) => {
+  const { setSim } = props;
+
   const [inputUrl, setInputUrl] = useState("");
-  const [sketchOwner, setSketchOwner] = useState("");
-  const [sketchId, setSketchId] = useState("");
 
   useEffect(() => {
     navigator.clipboard.readText().then((valueInClipboard) => {
@@ -33,41 +38,35 @@ const AddSim = ({ getSim }: any) => {
     }
   };
 
-  const setSketchOwnerAndId = (inputUrl: string) => {
-    setSketchOwner(getOwnerFromSketchUrl(inputUrl));
-    setSketchId(getIdFromSketchUrl(inputUrl));
-    getSim({
+  const setSketchOwnerAndId = (inputUrl: any) => {
+    if (!inputUrl) {
+      setSim(null);
+      return;
+    }
+    setSim({
       owner: getOwnerFromSketchUrl(inputUrl),
       id: getIdFromSketchUrl(inputUrl),
     });
   };
 
   return (
-    <div>
+    <>
       <style>{style}</style>
       <Input
         value={inputUrl}
         onChange={handleInputChange}
         placeholder="Link to p5 web editor sketch"
-        className="input"
+        className="p5-sketch-url-input"
       />
-      {sketchOwner && sketchId ? (
-        <iframe
-          width={640}
-          height={360}
-          scrolling="no"
-          src={`https://editor.p5js.org/${sketchOwner}/embed/${sketchId}`}
-        ></iframe>
-      ) : null}
-    </div>
+    </>
   );
 };
 
 const style = `
-    .input {
-        width:640px;
-        margin-bottom:1rem;
+    .p5-sketch-url-input {
+        width:100%;
+        margin-top:1rem;
     }
 `;
 
-export default AddSim;
+export default P5SketchUrlInput;

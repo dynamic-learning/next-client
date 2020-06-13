@@ -7,7 +7,7 @@ export default (props: any) => {
   return (
     <>
       <style>{getStyle(theme)}</style>
-      <Menu selectable={false} theme="dark" mode="horizontal">
+      <Menu className="menu" selectable={false} theme="dark" mode="horizontal">
         {props.children}
       </Menu>
     </>
@@ -17,5 +17,8 @@ export default (props: any) => {
 const getStyle = ({ color8 }: any) => `
     .ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub {
         background:${color8};
+    }
+    .menu {
+      filter: drop-shadow(0px 0px 3px black);
     }
 `;

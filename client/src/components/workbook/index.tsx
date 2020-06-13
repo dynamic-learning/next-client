@@ -1,23 +1,20 @@
-import { useState } from "react";
-import { connect } from "react-redux";
-import {
-  addSlide,
-  deleteSlide,
-  changeCurSlide,
-  setFabricObjectsInCurSlide,
-  addItemInCurSlide,
-  updateItemInCurSlide,
-  deleteItemInCurSlide,
-} from "../../redux/actions/workbook";
+import * as actions from "../../redux/actions/workbook";
 import Slide from "./slide";
 import { SlideType } from "../../types";
 import LeftMenu from "./left-menu";
 import TopBar from "./top-menu";
 import AddSimModal from "./modals/AddSimModal";
+import ThemeContext from "../../contexts/index";
+import {
+  findIfItsPossibleToReduceCanvasSize,
+  getNewTextbox,
+} from "../../utils/workbook";
+
+import { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { useContext } from "react";
 import { useRouter } from "next/router";
-import { TextboxType } from "../../types";
 import { ActionCreators } from "redux-undo";
-import { useEffect } from "react";
 
 interface WorkbookMethods {
   onAddSlideButtonClick(): void;
@@ -30,6 +27,9 @@ interface WorkbookMethods {
   onItemDelete(deleteIndex: number, itemType: string): void;
   onUndoChange(): void;
   onRedoChange(): void;
+  onPageCountChange(count: number): void;
+  onCanvasOptionChange(option: string, value: any): void;
+  onClearSlide(): void;
 }
 
 interface WorkbookProps {
@@ -37,9 +37,12 @@ interface WorkbookProps {
   slides: Array<SlideType>;
   undoable: boolean;
   redoable: boolean;
+  canvasOptions: any;
 }
 
 type Props = WorkbookMethods & WorkbookProps;
+
+const canvasSize = { width: 1366, height: 720, extraPageSize: 300 };
 
 const Workbook = (props: Props) => {
   const {
@@ -56,11 +59,40 @@ const Workbook = (props: Props) => {
     onRedoChange,
     undoable,
     redoable,
+    onPageCountChange,
+    canvasOptions,
+    onCanvasOptionChange,
+    onClearSlide,
   } = props;
 
   const noOfSlides = slides.length;
   const [showAddSimModal, setShowAddSimModal] = useState(false);
   const router = useRouter();
+  const [scaleX, setScaleX] = useState(1);
+  const [canCanvasSizeBeReduced, setCanCanvasSizeBeReduced] = useState(false);
+
+  const { theme } = useContext(ThemeContext);
+
+  useEffect(() => {
+    return addKeyDownEventListeners();
+  }, []);
+
+  useEffect(() => {
+    setCanvasScale();
+    return addScaleCanvasOnResizeEventListener();
+  }, []);
+
+  useEffect(() => {
+    let canCanvasSizeBeReduced = findIfItsPossibleToReduceCanvasSize(
+      // As we add more items, they need to be included here
+      [...slides[curSlide].sims, ...slides[curSlide].textboxes],
+      slides[curSlide].pageCount,
+      //@ts-ignore
+      parseInt(document.querySelector(".upper-canvas").style.height),
+      canvasSize.extraPageSize
+    );
+    setCanCanvasSizeBeReduced(canCanvasSizeBeReduced);
+  }, [slides[curSlide]]);
 
   const handleAddSimButtonClick = () => {
     setShowAddSimModal(true);
@@ -77,6 +109,15 @@ const Workbook = (props: Props) => {
   const handleAddTextboxButtonClick = () => {
     const newTextbox = getNewTextbox();
     onItemAdd(newTextbox, "textboxes");
+  };
+
+  const addKeyDownEventListeners = () => {
+    document.onkeydown = handleKeyDown;
+    document.onkeyup = handleKeyUp;
+    return () => {
+      document.onkeydown = null;
+      document.onkeyup = null;
+    };
   };
 
   let map: any = {};
@@ -97,19 +138,23 @@ const Workbook = (props: Props) => {
     map[e.keyCode] = false;
   };
 
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("keyup", handleKeyUp);
+  const addScaleCanvasOnResizeEventListener = () => {
+    window.onresize = setCanvasScale;
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("keyup", handleKeyUp);
+      window.onresize = null;
     };
-  }, []);
+  };
+
+  const setCanvasScale = () => {
+    const scaleX =
+      document.getElementsByClassName("slide-container")[0].clientWidth /
+      canvasSize.width;
+    setScaleX(scaleX);
+  };
 
   return (
     <>
-      {console.log(undoable, redoable)}
-      <style>{style}</style>
+      <style>{getStyle({ scaleX, ...theme })}</style>
       <AddSimModal
         showAddSimModal={showAddSimModal}
         handleAddSimModalClose={handleAddSimModalClose}
@@ -122,11 +167,16 @@ const Workbook = (props: Props) => {
           handleAddTextboxButtonClick,
           handleUndoButtonClick: onUndoChange,
           handleRedoButtonClick: onRedoChange,
+          onPageCountChange,
+          onCanvasOptionChange,
+          onClearSlide,
         }}
         actionDisablers={{
           undoable,
           redoable,
+          canCanvasSizeBeReduced,
         }}
+        canvasOptions={canvasOptions}
       />
       <div className="workbook-container">
         <div className="left-menu-container">
@@ -138,13 +188,18 @@ const Workbook = (props: Props) => {
             noOfSlides={noOfSlides}
           />
         </div>
-        <div className="slide-container">
-          <Slide
-            onCanvasUpdate={onCanvasUpdate}
-            onItemUpdate={onItemUpdate}
-            onItemDelete={onItemDelete}
-            slideContents={slides[curSlide]}
-          />
+        <div className="scroll-container">
+          <div className="slide-container">
+            <Slide
+              onCanvasUpdate={onCanvasUpdate}
+              onItemUpdate={onItemUpdate}
+              onItemDelete={onItemDelete}
+              slideContents={slides[curSlide]}
+              scaleX={scaleX}
+              canvasSize={canvasSize}
+              canvasOptions={canvasOptions}
+            />
+          </div>
         </div>
       </div>
     </>
@@ -154,31 +209,40 @@ const Workbook = (props: Props) => {
 const mapDispatchToProps = (dispatch: Function): WorkbookMethods => {
   return {
     onAddSlideButtonClick: () => {
-      dispatch(addSlide());
+      dispatch(actions.addSlide());
     },
     onDeleteSlideButtonClick: (index: number) => {
-      dispatch(deleteSlide(index));
+      dispatch(actions.deleteSlide(index));
     },
     onSlideButtonClick: (slideNo: number) => {
-      dispatch(changeCurSlide(slideNo));
+      dispatch(actions.changeCurSlide(slideNo));
     },
     onCanvasUpdate: (fabricObjects: string | null) => {
-      dispatch(setFabricObjectsInCurSlide(fabricObjects));
+      dispatch(actions.setFabricObjectsInCurSlide(fabricObjects));
     },
     onItemAdd: (newItem: any, itemType: string) => {
-      dispatch(addItemInCurSlide(newItem, itemType));
+      dispatch(actions.addItemInCurSlide(newItem, itemType));
     },
     onItemUpdate: (updatedItem: any, index: number, itemType: string) => {
-      dispatch(updateItemInCurSlide(updatedItem, index, itemType));
+      dispatch(actions.updateItemInCurSlide(updatedItem, index, itemType));
     },
     onItemDelete: (deleteIndex: number, itemType: string) => {
-      dispatch(deleteItemInCurSlide(deleteIndex, itemType));
+      dispatch(actions.deleteItemInCurSlide(deleteIndex, itemType));
     },
     onUndoChange: () => {
       dispatch(ActionCreators.undo());
     },
     onRedoChange: () => {
       dispatch(ActionCreators.redo());
+    },
+    onPageCountChange: (count: number) => {
+      dispatch(actions.changePageCountInCurSlide(count));
+    },
+    onCanvasOptionChange: (option: string, value: any) => {
+      dispatch(actions.changeCanvasOption(option, value));
+    },
+    onClearSlide: () => {
+      dispatch(actions.clearSlide());
     },
   };
 };
@@ -189,37 +253,29 @@ const mapStateToProps = (state: any): WorkbookProps => {
     slides: state.present.slides,
     undoable: state.past.length !== 0,
     redoable: state.future.length !== 0,
+    canvasOptions: state.present.canvasOptions,
   };
 };
 
-const style = `
+const getStyle = (props: any) => `
   .workbook-container {
     width:100vw;
     height:calc(100vh - 46px);
     display:flex;
     flex-direction:row;
     max-width:100%;
+    background-color:${props.color3};
   }
   .slide-container {
-    flex:14;
+    max-height:100%;
   }
   .left-menu-container {
     flex:2;
   }
+  .scroll-container {
+    flex:14;
+    overflow-y:auto;
+  }
 `;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Workbook);
-
-const getNewTextbox = (): TextboxType => {
-  return {
-    text: "",
-    position: {
-      x: 20,
-      y: 20,
-    },
-    size: {
-      width: "400px",
-      height: "200px",
-    },
-  };
-};

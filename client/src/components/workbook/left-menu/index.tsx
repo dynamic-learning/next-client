@@ -1,7 +1,7 @@
 import SlideList from "./SlideList";
 import AddSlide from "./AddSlide";
 import ThemeContext from "../../../contexts";
-import { useContext } from "react";
+import { useContext, memo } from "react";
 
 interface Props {
   curSlide: number;
@@ -66,4 +66,4 @@ const getStyle = ({ color2 }: any) => `
   }
 `;
 
-export default LeftMenu;
+export default memo(LeftMenu);
