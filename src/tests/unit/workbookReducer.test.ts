@@ -1,6 +1,6 @@
-import { workBookReducer } from "../../redux/reducers/workbook";
+import { workBookReducer } from "../../redux/workbook/reducer";
 import { getNewSlide } from "../../utils/workbook";
-import * as actions from "../../redux/actions/workbook";
+import * as actions from "../../redux/workbook/actions";
 
 const defaultState = {
   slides: [getNewSlide()],

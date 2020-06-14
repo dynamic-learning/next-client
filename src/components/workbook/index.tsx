@@ -1,4 +1,4 @@
-import * as actions from "../../redux/actions/workbook";
+import * as actions from "../../redux/workbook/actions";
 import Slide from "./slide";
 import { SlideType } from "../../types";
 import LeftMenu from "./left-menu";

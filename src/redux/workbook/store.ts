@@ -1,5 +1,5 @@
 import { createStore } from "redux";
-import workbookReducer from "../reducers/workbook";
+import workbookReducer from "./reducer";
 
 const store = createStore(workbookReducer);
 

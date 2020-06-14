@@ -1,4 +1,4 @@
-import * as actions from "../action-types/workbook";
+import * as actions from "../action-types/action-types";
 import {
   addAnItemToArray,
   updateItemInArrayAtIndex,
