@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { getWorkbooks } from "../api/index";
+import { getWorkbooks } from "../src/api/workbook/index";
 
 // To get rid of window error
 const WorkbooksWithNoSSR = dynamic(

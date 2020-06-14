@@ -1,4 +1,4 @@
-import * as actions from "../action-types/action-types";
+import * as actions from "./action-types";
 import {
   addAnItemToArray,
   updateItemInArrayAtIndex,
@@ -168,12 +168,12 @@ export const workBookReducer = (state = defaultState, action: Action) => {
         canvasOptions: {
           ...state.canvasOptions,
           [action.payload.option]: action.payload.value,
-          interact: getInteractValue(
+          interact: shouldInteractBeEnabled(
             action.payload.option,
             action.payload.value,
             state
           ),
-          isDrawingMode: getIsDrawingMode(
+          isDrawingMode: getDrawingModeValue(
             action.payload.option,
             action.payload.value,
             state
@@ -200,7 +200,11 @@ export const workBookReducer = (state = defaultState, action: Action) => {
   }
 };
 
-const getInteractValue = (option: string, value: Boolean, state: any) => {
+const shouldInteractBeEnabled = (
+  option: string,
+  value: Boolean,
+  state: any
+) => {
   if (option === "interact") {
     return value;
   } else if (["isDrawingMode", "brishStroke", "color"].includes(option)) {
@@ -210,7 +214,7 @@ const getInteractValue = (option: string, value: Boolean, state: any) => {
   }
 };
 
-const getIsDrawingMode = (option: string, value: Boolean, state: any) => {
+const getDrawingModeValue = (option: string, value: Boolean, state: any) => {
   if (option === "isDrawingMode") {
     return value;
   }

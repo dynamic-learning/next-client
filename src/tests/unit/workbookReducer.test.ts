@@ -15,11 +15,11 @@ const defaultState = {
 
 describe("Workbook reducer tests", () => {
   it("adds a slide to the slides array", () => {
-    const { slides } = workBookReducer(defaultState, actions.addSlide());
+    const { slides } = workBookReducer(undefined, actions.addSlide());
     expect(slides.length).toBe(2);
   });
   it("does not make slides array empty when we try to delete the only slide", () => {
-    const { slides } = workBookReducer(defaultState, actions.deleteSlide(0));
+    const { slides } = workBookReducer(undefined, actions.deleteSlide(0));
     expect(slides.length).toBe(1);
   });
   it("correctly deletes a slide at an index", () => {

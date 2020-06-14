@@ -11,7 +11,7 @@ import {
   GithubOutlined,
 } from "@ant-design/icons";
 import { FaPen } from "react-icons/fa";
-import Topbar from "../../top-bar/index";
+import Topbar from "../../layout/top-bar/index";
 import { SwatchesPicker } from "react-color";
 import { BsSquareFill } from "react-icons/bs";
 import { Switch } from "antd";

@@ -11,7 +11,7 @@ import { FiTrash2, FiEdit3 } from "react-icons/fi";
 import AddFileFolder from "./AddFileFolder";
 import Header from "./Header";
 import { updateItemInArrayAtIndex } from "../../../utils/array";
-import Topbar from "../../top-bar";
+import Topbar from "../../layout/top-bar";
 import { Menu } from "antd";
 import { useRouter } from "next/router";
 
