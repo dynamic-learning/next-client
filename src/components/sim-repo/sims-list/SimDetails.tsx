@@ -6,8 +6,8 @@ interface Props {
 
 const SimDetails = (props: Props) => {
   const { selectedSim } = props;
-  const Title = () => <div className="title">{selectedSim.title}}</div>;
-  const Description = () => <div>{selectedSim.description}}</div>;
+  const Title = () => <div className="title">{selectedSim.title}</div>;
+  const Description = () => <div>{selectedSim.description}</div>;
 
   return (
     <>
