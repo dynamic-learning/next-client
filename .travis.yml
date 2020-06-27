@@ -1,0 +1,22 @@
+language: node_js
+
+node_js:
+  - "8.11.1"
+
+cache:
+  directories:
+    - node_modules
+
+install:
+  - npm install
+
+script:
+  # - sonar-scanner
+  - npm run all-unit-tests
+  - npm run build
+
+addons:
+  sonarcloud:
+    organization: "dynamic-learning"
+    token:
+      secure: "Fz3Kj3VKMnZxu4CpHPj/Br7KZK02A2K+TZwWagG/lU7WoO3EE0WT+lMcwRN87j9s+Vwtsqy9tkQgDAd74rpxQOKNDgVOjHA8cEuEA32Paf6CAbDOEHM/vPtt0kyReNeooRQYkoRQ3erG7Q3+JGRJU5XpqC4IYquEAXLDO8G679o75sXBDd2GU7tBuElHzjXb2JDfiVTDxhVoM682yFgd0bPaU22eEzLMiQt7BU32xF943xa6VaZm70bk9/rTm4kwchOxUUfYKTPz+G/ISSLU/XmASnYhST4aOZurCIYRMCKzs6nnL4errcm1Ad5cUb6qQhTDEO+lSScEopMgvf1ZOSBt++FUz/eCv+a9fI4SC1eJ3HH+X8vMlg/XMlbZEELbnKAAuwZOV85g32Rn//cfxs67VWtukSBpBk3F3D2jQrphtjz3cizZeD7Ixaeck96pnOMFEobrJ9DfA7dMquHaQA69pBn4lRTo0gn9iwUu9w9Z4Mcewn4ENr+y52lPrERpKb7/mE0uYtM8uJSN8V0r3/cRbeOI2zk8qADuWvXExKhttwFLhwSkfNNyMwDuaM8PNa2iyWPYYl2RyNB5Yzf9gDaoitFzN2ugKCijf9sLH1TnzXSy6WhAfjw+ktR3jk+/skx7PxTAiaJ1/zbYi9s+qrR2NXorzYibYQwCcmJSAUo=" 
