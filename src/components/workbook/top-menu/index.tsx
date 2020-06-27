@@ -7,6 +7,8 @@ import {
   BorderOuterOutlined,
   EditOutlined,
   SelectOutlined,
+  ExclamationCircleOutlined,
+  GithubOutlined,
 } from "@ant-design/icons";
 import { FaPen } from "react-icons/fa";
 import Topbar from "../../top-bar/index";
@@ -79,6 +81,10 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
     onClearSlide();
   };
 
+  const handleAboutClick = () => {
+    goToPage("/about");
+  };
+
   const renderSlideMenu = () => (
     <SubMenu
       className="slide-menu"
@@ -135,20 +141,33 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
   const renderLoginSignUp = () => (
     <div className="navitems-right">
       <Menu selectable={false} theme="dark" mode="horizontal">
-        <Menu.Item
-          onClick={handleLoginClick}
-          key="login"
-          icon={<LoginOutlined />}
-        >
-          Login
-        </Menu.Item>
-        <Menu.Item
-          onClick={handleSignUpClick}
-          key="signup"
-          icon={<UserAddOutlined />}
-        >
-          Sign Up
-        </Menu.Item>
+        <SubMenu title="App">
+          <Menu.Item
+            onClick={handleLoginClick}
+            key="login"
+            icon={<LoginOutlined />}
+          >
+            Login
+          </Menu.Item>
+          <Menu.Item
+            onClick={handleSignUpClick}
+            key="signup"
+            icon={<UserAddOutlined />}
+          >
+            Sign Up
+          </Menu.Item>
+          <Menu.Item
+            icon={<ExclamationCircleOutlined />}
+            onClick={handleAboutClick}
+          >
+            About
+          </Menu.Item>
+          <Menu.Item icon={<GithubOutlined />}>
+            <a target="_blank" href="https://github.com/dynamic-learning">
+              Contribute
+            </a>
+          </Menu.Item>
+        </SubMenu>
       </Menu>
     </div>
   );
@@ -262,9 +281,9 @@ const style = `
      display:block;
   }
   .navitems-right {
-      float:right;
-      display:flex;
-      flex-direction:row;
+    float:right;
+    display:flex;
+    flex-direction:row;
   }
   .selected {
     color:#1890ff;
