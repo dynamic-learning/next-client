@@ -11,7 +11,7 @@ install:
   - npm install
 
 script:
-  # - sonar-scanner
+  - sonar-scanner
   - npm run all-unit-tests
   - npm run build
 
