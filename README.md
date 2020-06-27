@@ -1,5 +1,6 @@
 # Dynamic Learning
-[![Build Status](https://travis-ci.com/anandsimmy/dynamiclearning.svg?branch=travis-setup)](https://travis-ci.com/anandsimmy/dynamiclearning)
+
+[![Build Status](https://travis-ci.com/dynamic-learning/next-client.svg?branch=dev)](https://travis-ci.com/dynamic-learning/next-client)
 
 Dynamic learning strives to be a platform where teachers and coders collaborate to create lessons that make use of interactive visualizations.
 
