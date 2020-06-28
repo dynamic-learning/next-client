@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.com/dynamic-learning/next-client.svg?branch=dev)](https://travis-ci.com/dynamic-learning/next-client)
 
+![Cover image](<a href="https://ibb.co/mJVX9w7"><img src="https://i.ibb.co/Pxv9cn8/cover.png" alt="cover" border="0"></a>)
+
 Dynamic learning strives to be a platform where teachers and coders collaborate to create lessons that make use of interactive visualizations.
 
 Currently, the focus is to reimplement the web app in [Dynamic learning](https://www.dynamiclearning.io/) using scalable practices like writing clean code and extensive testing.
