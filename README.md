@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/dynamic-learning/next-client.svg?branch=dev)](https://travis-ci.com/dynamic-learning/next-client)
 
-![Cover](https://i.ibb.co/8syhhGR/cover.png)
+<img src="https://i.ibb.co/8syhhGR/cover.png" width="1000px"/>
 
 
 Dynamic learning strives to be a platform where teachers and coders collaborate to create lessons that make use of interactive visualizations.
