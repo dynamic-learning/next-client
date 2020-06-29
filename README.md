@@ -1,6 +1,6 @@
 # Dynamic Learning
 
-![Cover image](https://i.ibb.co/1dJDy1D/New-Project.png)
+![Cover image](https://i.ibb.co/bHpHh4W/New-Project-1.png)
 
 [![Build Status](https://travis-ci.com/dynamic-learning/next-client.svg?branch=dev)](https://travis-ci.com/dynamic-learning/next-client)
 
