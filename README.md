@@ -1,6 +1,6 @@
 # Dynamic Learning
 
-<img align="right" width="1280" height="640" src="https://i.ibb.co/RTXfStV/cover.png">
+<img align="right" width="1280" height="500" src="https://i.ibb.co/RTXfStV/cover.png">
 
 [![Build Status](https://travis-ci.com/dynamic-learning/next-client.svg?branch=dev)](https://travis-ci.com/dynamic-learning/next-client)
 
