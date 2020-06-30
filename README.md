@@ -1,6 +1,6 @@
 # Dynamic Learning
 
-<img align="center" src="https://i.ibb.co/WBvhPB4/cover.png">
+<img align="center" src="https://raw.githubusercontent.com/dynamic-learning/next-client/cover-image/public/cover.png">
 
 [![Build Status](https://travis-ci.com/dynamic-learning/next-client.svg?branch=dev)](https://travis-ci.com/dynamic-learning/next-client)
 
