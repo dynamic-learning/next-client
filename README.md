@@ -15,3 +15,12 @@ The reimplementation is in its initial phase. If you wish to contribute, please 
 [Improving Science and Math education using p5.js](https://medium.com/processing-foundation/improving-science-and-math-education-using-p5-js-d434beea465c)
 
 [Visualizing STEM Education with Dynamic Learning](https://medium.com/processing-foundation/visualizing-stem-education-with-dynamic-learning-4106748c6fcd)
+
+## An example of what we are trying to achieve
+
+If you see this video lesson on Khan academy about [plotting points in 3d space](https://www.youtube.com/watch?v=iBgOoaeLUcM) made by Grant Sanderson (creator of 3Blue1Brown), you can see he is using an interactive visualization in the black board for explaining concepts. In dynamic learning, we are trying to provide a similar functionality. But here any interactive visualization that we create can be used in that space. Apart from this we are also providing certain other features which will improve the whole teaching experience.
+
+1. Ability to save the slides which has interactive visualizations along with textboxes and annotations.
+2. Ability to save the state of the simulation.
+3. Interactive questions.
+4. We are also on a mission to provide you with a very large collection of interactive visualizations which you can customize and use in your lesson.
