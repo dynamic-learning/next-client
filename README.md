@@ -18,7 +18,7 @@ The reimplementation is in its initial phase. If you wish to contribute, please 
 
 ## An example of what we are trying to achieve
 
-If you see this video lesson on Khan academy about plotting points in 3d space made by Grant Sanderson (creator of 3Blue1Brown), you can find that he is using an interactive visualization in the blackboard for explaining concepts. In dynamic learning, we are trying to provide similar functionality. But here any interactive visualization that we create can be used in that space. Apart from this, we are also providing certain other features which will improve the whole teaching experience.
+If you see this video lesson on Khan academy about [plotting points in 3d space](https://www.youtube.com/watch?v=iBgOoaeLUcM) made by Grant Sanderson (creator of 3Blue1Brown), you can find that he is using an interactive visualization in the blackboard for explaining concepts. In dynamic learning, we are trying to provide similar functionality. But here any interactive visualization that we create can be used in that space. Apart from this, we are also providing certain other features which will improve the whole teaching experience.
 1. Ability to save the slides which have interactive visualizations along with textboxes and annotations.
 2. Ability to save the state of the simulation.
 3. Interactive questions.
