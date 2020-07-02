@@ -23,6 +23,12 @@ describe("Sketch utils", () => {
   it("tests if owner Id is extracted correctly from url", () => {
     expect(getOwnerFromSketchUrl(validSketchUrl)).toBe("jithunni.ks");
   });
+  it("tests if empty String is returned from wrong url", () => {
+    expect(getOwnerFromSketchUrl('random_string')).toBe("");
+  });
+  it("tests if empty String is returned from wrong url", () => {
+    expect(getIdFromSketchUrl('random_string')).toBe("");
+  });
 });
 
 describe("Workbooks", () => {
@@ -30,7 +36,7 @@ describe("Workbooks", () => {
     {
       position: {
         x: 20,
-        y: 30,
+        y: 400,
       },
       size: {
         height: 50,
@@ -40,7 +46,7 @@ describe("Workbooks", () => {
     {
       position: {
         x: 20,
-        y: 400,
+        y: 30,
       },
       size: {
         height: 100,

@@ -91,7 +91,7 @@ const getStyle = ({ color1, color3, color4, color6 }: any) => `
     cursor:pointer;
     justify-content:space-between;
     margin-bottom:0.5rem;
-    padding:0.5rem;
+    padding:0.3rem;
     color:${color4};
   }
   .slide-button-container:hover {

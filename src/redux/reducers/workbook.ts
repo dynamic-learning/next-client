@@ -40,6 +40,12 @@ export const workBookReducer = (state = defaultState, action: Action) => {
         curSlide: updatedSlides.length - 1,
       };
 
+    case actions.SET_SLIDES:
+      return {
+        ...state,
+        slides: action.payload.slides,
+      };
+
     case actions.DELETE_SLIDE:
       const deleteIndex = action.payload.index;
       if (state.slides.length === 1) {
@@ -203,7 +209,7 @@ export const workBookReducer = (state = defaultState, action: Action) => {
 const getInteractValue = (option: string, value: Boolean, state: any) => {
   if (option === "interact") {
     return value;
-  } else if (["isDrawingMode", "brishStroke", "color"].includes(option)) {
+  } else if (["isDrawingMode", "brushStroke", "color"].includes(option)) {
     return false;
   } else {
     return state.canvasOptions.interact;

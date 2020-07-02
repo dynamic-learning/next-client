@@ -1,37 +1,33 @@
 import { TreeItem } from "react-sortable-tree";
-import { getRandomNo } from "./common";
 
-export const getNewFile = (fileCount: number) => {
+export const getNewFile = ({ title, _id }: any) => {
   const newFile = {
-    title: `file-${fileCount}`,
+    title,
     type: "file",
     parentId: "0",
-    id: getRandomNo(),
+    _id,
   };
   return newFile;
 };
 
-export const getNewFolder = (folderCount: number) => {
+export const getNewFolder = ({ title, _id }: any) => {
   const newFolder = {
-    title: `folder-${folderCount}`,
+    title,
     type: "folder",
     children: [],
     parentId: "0",
-    id: getRandomNo(),
+    _id,
   };
   return newFolder;
 };
 
-export const findIdsOfItemsToDelete = (
-  node: any,
-  idsOfItemsToDelete: Array<number>
-) => {
-  idsOfItemsToDelete.push(node.id);
+export const findItemsToDelete = (node: any, itemsToDelete: Array<any>) => {
+  itemsToDelete.push({ _id: node._id, type: node.type });
   if (!node.children) {
     return;
   } else {
     node.children.forEach((child: TreeItem) => {
-      findIdsOfItemsToDelete(child, idsOfItemsToDelete);
+      findItemsToDelete(child, itemsToDelete);
     });
   }
 };

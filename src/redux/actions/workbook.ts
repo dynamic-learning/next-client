@@ -1,4 +1,5 @@
 import * as actions from "../action-types/workbook";
+import { SlideType } from "../../types";
 
 export const addSlide = () => {
   return {
@@ -28,6 +29,7 @@ export const changeCurSlide = (newCurSlide: number) => {
 export const clearSlide = () => {
   return {
     type: actions.CLEAR_SLIDE,
+    payload: {},
   };
 };
 
@@ -100,6 +102,15 @@ export const reorderSlides = (startIndex: number, endIndex: number) => {
     payload: {
       startIndex,
       endIndex,
+    },
+  };
+};
+
+export const setSlides = (slides: Array<SlideType>) => {
+  return {
+    type: actions.SET_SLIDES,
+    payload: {
+      slides,
     },
   };
 };

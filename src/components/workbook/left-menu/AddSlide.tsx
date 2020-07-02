@@ -23,7 +23,7 @@ const getStyle = ({ color4, color5 }: any) => `
     text-align:center;
     margin-bottom:1rem;
     background-color: ${color4};
-    padding:0.5rem;
+    padding:0.3rem;
     cursor:pointer;
     display:flex;
     vertical-align:center;
