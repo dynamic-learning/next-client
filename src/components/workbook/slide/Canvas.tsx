@@ -50,6 +50,7 @@ const Slide = (props: Props) => {
         .getActiveObjects()
         .map((activeObject) => canvas.remove(activeObject));
       canvas.discardActiveObject();
+      setCanvasState();
     }
   };
 
