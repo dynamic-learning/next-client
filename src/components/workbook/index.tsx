@@ -31,6 +31,8 @@ interface WorkbookMethods {
   onCanvasOptionChange(option: string, value: any): void;
   onClearSlide(): void;
   onFinishReorder(startIndex: number, endIndex: number): void;
+  setSlides(slides: Array<SlideType>): void;
+  updateWorkbook(values: any): Promise<any>;
 }
 
 interface WorkbookProps {
@@ -39,6 +41,8 @@ interface WorkbookProps {
   undoable: boolean;
   redoable: boolean;
   canvasOptions: any;
+  initialSlides: Array<SlideType>;
+  _id: string;
 }
 
 type Props = WorkbookMethods & WorkbookProps;
@@ -65,6 +69,10 @@ const Workbook = (props: Props) => {
     onCanvasOptionChange,
     onClearSlide,
     onFinishReorder,
+    initialSlides,
+    setSlides,
+    updateWorkbook,
+    _id,
   } = props;
 
   const noOfSlides = slides.length;
@@ -76,6 +84,7 @@ const Workbook = (props: Props) => {
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
+    setInitialState();
     return addKeyDownEventListeners();
   }, []);
 
@@ -95,6 +104,21 @@ const Workbook = (props: Props) => {
     );
     setCanCanvasSizeBeReduced(canCanvasSizeBeReduced);
   }, [slides[curSlide]]);
+
+  const setInitialState = () => {
+    if (initialSlides) {
+      setSlides(initialSlides);
+    }
+  };
+
+  const saveWorkbook = async () => {
+    await updateWorkbook({
+      _id,
+      field: "slides",
+      value: JSON.stringify(JSON.stringify(slides)),
+    });
+    alert("Saved successfully");
+  };
 
   const handleAddSimButtonClick = () => {
     setShowAddSimModal(true);
@@ -172,6 +196,7 @@ const Workbook = (props: Props) => {
           onPageCountChange,
           onCanvasOptionChange,
           onClearSlide,
+          saveWorkbook,
         }}
         actionDisablers={{
           undoable,
@@ -209,7 +234,7 @@ const Workbook = (props: Props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Function): WorkbookMethods => {
+const mapDispatchToProps = (dispatch: Function): any => {
   return {
     onAddSlideButtonClick: () => {
       dispatch(actions.addSlide());
@@ -250,10 +275,13 @@ const mapDispatchToProps = (dispatch: Function): WorkbookMethods => {
     onFinishReorder: (startIndex: number, endIndex: number) => {
       dispatch(actions.reorderSlides(startIndex, endIndex));
     },
+    setSlides: (slides: Array<SlideType>) => {
+      dispatch(actions.setSlides(slides));
+    },
   };
 };
 
-const mapStateToProps = (state: any): WorkbookProps => {
+const mapStateToProps = (state: any): any => {
   return {
     curSlide: state.present.curSlide,
     slides: state.present.slides,
@@ -279,7 +307,7 @@ const getStyle = (props: any) => `
     flex:2;
   }
   .scroll-container {
-    flex:14;
+    flex:16;
     overflow-y:auto;
   }
 `;

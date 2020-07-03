@@ -29,6 +29,7 @@ const StyledSortableTree = (props: any) => {
 
   const treeData = getTreeFromFlatData({
     flatData,
+    getKey: getNodeKey,
   });
 
   return (

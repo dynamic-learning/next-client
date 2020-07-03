@@ -12,8 +12,9 @@ export const findIfItsPossibleToReduceCanvasSize = (
     return false;
   }
   const bottomMostPointOfItems = items.reduce((lowestPoint, curItem) => {
-    if (curItem.position.y + parseInt(curItem.size.height) > lowestPoint) {
-      return curItem.position.y + parseInt(curItem.size.height);
+    const bottomPtOfCurItem = curItem.position.y + parseInt(curItem.size.height)
+    if (bottomPtOfCurItem > lowestPoint) {
+      return bottomPtOfCurItem;
     } else {
       return lowestPoint;
     }

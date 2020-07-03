@@ -26,7 +26,7 @@ const LeftMenu = ({
 
   const Logo = () => (
     <div className="logo-container">
-      <img className="logo" src="logo.png" />
+      <img className="logo" src="/logo.png" />
     </div>
   );
 

@@ -27,11 +27,16 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
     onPageCountChange,
     onCanvasOptionChange,
     onClearSlide,
+    saveWorkbook,
   } = actions;
 
   const { undoable, redoable, canCanvasSizeBeReduced } = actionDisablers;
 
   const handleOpenClick = () => goToPage("/workbooks");
+
+  const handleSaveClick = () => {
+    saveWorkbook();
+  };
 
   const renderFileMenu = () => (
     <SubMenu title="File" key="file" icon={<FileOutlined />}>
@@ -40,7 +45,9 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
         <Menu.Item onClick={handleOpenClick} key="open">
           Open
         </Menu.Item>
-        <Menu.Item key="save">Save</Menu.Item>
+        <Menu.Item onClick={handleSaveClick} key="save">
+          Save
+        </Menu.Item>
         <Menu.Item key="examples">Examples</Menu.Item>
       </Menu.ItemGroup>
     </SubMenu>

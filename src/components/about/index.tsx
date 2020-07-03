@@ -3,12 +3,12 @@ import LogoWithCaption from "./LogoWithCaption";
 import Description from "./Description";
 import CloseButton from "./CloseButton";
 
-const About = () => {
+const About = ({ description }: any) => {
   return (
     <>
       <TeacherAndProgrammer />
       <LogoWithCaption />
-      <Description />
+      <Description description={description} />
       <CloseButton />
     </>
   );
