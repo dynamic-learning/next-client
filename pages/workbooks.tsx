@@ -8,13 +8,13 @@ const WorkbooksWithNoSSR = dynamic(
   { ssr: false }
 );
 
-const WorkbooksPage = (workbooks: any) => {
+const WorkbooksPage = ({ workbooks }: any) => {
   return (
     <>
       <style>{style}</style>
       <div className="page-container">
         <WorkbooksWithNoSSR
-          initialWorkbooks={workbooks.workbookViewer}
+          initialWorkbooks={workbooks}
           addWorkbook={mutations.createWorkbook}
           addWorkbookFolder={mutations.createWorkbookFolder}
           deleteWorkbook={mutations.deleteWorkbook}
@@ -27,9 +27,13 @@ const WorkbooksPage = (workbooks: any) => {
   );
 };
 
-WorkbooksPage.getInitialProps = async () => {
+export const getServerSideProps = async () => {
   const res = await queries.getWorkbooks();
-  return res;
+  return {
+    props: {
+      workbooks: res.workbookViewer,
+    },
+  };
 };
 
 //////////////////////////////////////////
