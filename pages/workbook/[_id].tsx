@@ -21,16 +21,21 @@ const WorkbookPage = ({ workbook }: any) => {
   );
 };
 
-WorkbookPage.getInitialProps = async (context: any) => {
+export const getServerSideProps = async (context: any) => {
   try {
     const _id = context.query._id;
     const res = await getWorkbook(_id);
+    console.log(res);
     return {
-      workbook: res.workbook,
+      props: {
+        workbook: res.workbook,
+      },
     };
   } catch (err) {
     return {
-      workbook: null,
+      props: {
+        workbook: null,
+      },
     };
   }
 };
