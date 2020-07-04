@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p $PORT",
+    "heroku-postbuild": "npm run build",
     "all-unit-tests": "jest src/tests/unit --coverage",
     "unit-tests": "jest",
     "e2e-tests": "cypress open",
