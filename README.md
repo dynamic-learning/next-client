@@ -2,9 +2,7 @@
 
 <img align="center" src="https://github.com/dynamic-learning/next-client/blob/dev/public/cover.png">
 
-[![Build Status](https://travis-ci.com/dynamic-learning/next-client.svg?branch=dev)](https://travis-ci.com/dynamic-learning/next-client)
-
-[![Coverage Status](https://coveralls.io/repos/github/dynamic-learning/next-client/badge.svg?branch=cypress-jest-combine)](https://coveralls.io/github/dynamic-learning/next-client?branch=cypress-jest-combine)
+[![Build Status](https://travis-ci.com/dynamic-learning/next-client.svg?branch=dev)](https://travis-ci.com/dynamic-learning/next-client) [![Coverage Status](https://coveralls.io/repos/github/dynamic-learning/next-client/badge.svg?branch=cypress-jest-combine)](https://coveralls.io/github/dynamic-learning/next-client?branch=cypress-jest-combine)
 
 Dynamic learning strives to be a platform where teachers and coders collaborate to create lessons that make use of interactive visualizations.
 
