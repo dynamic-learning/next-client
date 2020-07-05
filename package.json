@@ -63,7 +63,8 @@
     "jest": "^26.0.1",
     "prettier": "^2.0.5",
     "ts-jest": "^26.0.0",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.3",
+    "wait-on": "^5.0.1"
   },
   "nyc": {
     "report-dir": "cypress-coverage"
