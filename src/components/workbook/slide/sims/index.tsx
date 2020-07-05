@@ -33,9 +33,15 @@ const Sims = (props: Props) => {
           index={index}
           type="sims"
           scaleX={scaleX}
+          key={index}
         >
           <div className="sim-and-menu">
-            <Sim isTransforming={isTransforming} sim={sim} />
+            <Sim
+              onItemUpdate={onItemUpdate}
+              isTransforming={isTransforming}
+              sim={sim}
+              index={index}
+            />
             <RightMenu sim={sim} index={index} onItemDelete={onItemDelete} />
           </div>
         </MoveAndResize>

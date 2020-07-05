@@ -16,6 +16,7 @@ export type CanvasSimType = {
     x: number;
     y: number;
   };
+  savedState: any;
 };
 
 export type Sim = {

@@ -12,7 +12,8 @@ export const findIfItsPossibleToReduceCanvasSize = (
     return false;
   }
   const bottomMostPointOfItems = items.reduce((lowestPoint, curItem) => {
-    const bottomPtOfCurItem = curItem.position.y + parseInt(curItem.size.height)
+    const bottomPtOfCurItem =
+      curItem.position.y + parseInt(curItem.size.height);
     if (bottomPtOfCurItem > lowestPoint) {
       return bottomPtOfCurItem;
     } else {
@@ -48,6 +49,7 @@ export const getNewSim = (owner: string, id: string): CanvasSimType => {
       width: 640,
       height: 360,
     },
+    savedState: null,
   };
 };
 

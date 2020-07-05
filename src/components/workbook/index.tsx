@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import { useContext } from "react";
 import { useRouter } from "next/router";
 import { ActionCreators } from "redux-undo";
+import { Spin } from "antd";
 
 interface WorkbookMethods {
   onAddSlideButtonClick(): void;
@@ -80,6 +81,7 @@ const Workbook = (props: Props) => {
   const router = useRouter();
   const [scaleX, setScaleX] = useState(1);
   const [canCanvasSizeBeReduced, setCanCanvasSizeBeReduced] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const { theme } = useContext(ThemeContext);
 
@@ -90,6 +92,7 @@ const Workbook = (props: Props) => {
 
   useEffect(() => {
     setCanvasScale();
+    setLoading(false);
     return addScaleCanvasOnResizeEventListener();
   }, []);
 
@@ -112,12 +115,14 @@ const Workbook = (props: Props) => {
   };
 
   const saveWorkbook = async () => {
+    setLoading(true);
     await updateWorkbook({
       _id,
       field: "slides",
       value: JSON.stringify(JSON.stringify(slides)),
     });
     alert("Saved successfully");
+    setLoading(false);
   };
 
   const handleAddSimButtonClick = () => {
@@ -180,56 +185,58 @@ const Workbook = (props: Props) => {
 
   return (
     <>
-      <style>{getStyle({ scaleX, ...theme })}</style>
-      <AddSimModal
-        showAddSimModal={showAddSimModal}
-        handleAddSimModalClose={handleAddSimModalClose}
-        onItemAdd={onItemAdd}
-      />
-      <TopBar
-        actions={{
-          handleAddSimButtonClick,
-          goToPage,
-          handleAddTextboxButtonClick,
-          handleUndoButtonClick: onUndoChange,
-          handleRedoButtonClick: onRedoChange,
-          onPageCountChange,
-          onCanvasOptionChange,
-          onClearSlide,
-          saveWorkbook,
-        }}
-        actionDisablers={{
-          undoable,
-          redoable,
-          canCanvasSizeBeReduced,
-        }}
-        canvasOptions={canvasOptions}
-      />
-      <div className="workbook-container">
-        <div className="left-menu-container">
-          <LeftMenu
-            onAddSlideButtonClick={onAddSlideButtonClick}
-            onSlideButtonClick={onSlideButtonClick}
-            onDeleteSlideButtonClick={onDeleteSlideButtonClick}
-            curSlide={curSlide}
-            noOfSlides={noOfSlides}
-            onFinishReorder={onFinishReorder}
-          />
-        </div>
-        <div className="scroll-container">
-          <div className="slide-container">
-            <Slide
-              onCanvasUpdate={onCanvasUpdate}
-              onItemUpdate={onItemUpdate}
-              onItemDelete={onItemDelete}
-              slideContents={slides[curSlide]}
-              scaleX={scaleX}
-              canvasSize={canvasSize}
-              canvasOptions={canvasOptions}
+      <Spin spinning={loading} size="large">
+        <style>{getStyle({ scaleX, ...theme })}</style>
+        <AddSimModal
+          showAddSimModal={showAddSimModal}
+          handleAddSimModalClose={handleAddSimModalClose}
+          onItemAdd={onItemAdd}
+        />
+        <TopBar
+          actions={{
+            handleAddSimButtonClick,
+            goToPage,
+            handleAddTextboxButtonClick,
+            handleUndoButtonClick: onUndoChange,
+            handleRedoButtonClick: onRedoChange,
+            onPageCountChange,
+            onCanvasOptionChange,
+            onClearSlide,
+            saveWorkbook,
+          }}
+          actionDisablers={{
+            undoable,
+            redoable,
+            canCanvasSizeBeReduced,
+          }}
+          canvasOptions={canvasOptions}
+        />
+        <div className="workbook-container">
+          <div className="left-menu-container">
+            <LeftMenu
+              onAddSlideButtonClick={onAddSlideButtonClick}
+              onSlideButtonClick={onSlideButtonClick}
+              onDeleteSlideButtonClick={onDeleteSlideButtonClick}
+              curSlide={curSlide}
+              noOfSlides={noOfSlides}
+              onFinishReorder={onFinishReorder}
             />
           </div>
+          <div className="scroll-container">
+            <div className="slide-container">
+              <Slide
+                onCanvasUpdate={onCanvasUpdate}
+                onItemUpdate={onItemUpdate}
+                onItemDelete={onItemDelete}
+                slideContents={slides[curSlide]}
+                scaleX={scaleX}
+                canvasSize={canvasSize}
+                canvasOptions={canvasOptions}
+              />
+            </div>
+          </div>
         </div>
-      </div>
+      </Spin>
     </>
   );
 };
