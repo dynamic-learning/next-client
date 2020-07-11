@@ -22,7 +22,8 @@
     "precombine:reports": "npm run copy:reports && mkdir .nyc_output || true",
     "combine:reports": "npx nyc merge reports && mv coverage.json .nyc_output/out.json",
     "prereport:combined": "npm run combine:reports",
-    "report:combined": "npx nyc report --reporter lcov --reporter text --report-dir coverage"
+    "report:combined": "npx nyc report --reporter lcov --reporter text --report-dir coverage",
+    "publish:coverage":"./node_modules/coveralls/bin/coveralls.js < ./coverage/lcov.info"
   },
   "keywords": [],
   "author": "",
