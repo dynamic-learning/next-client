@@ -1,5 +1,4 @@
-import { TextboxType } from "../types";
-import { CanvasSimType, SlideType } from "../types";
+import { CanvasSimType, SlideType, TextboxType } from "../types";
 import { updateItemInArrayAtIndex, deleteItemInArrayAtIndex } from "./array";
 
 export const findIfItsPossibleToReduceCanvasSize = (
