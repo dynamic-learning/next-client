@@ -3,9 +3,7 @@ import { useState } from "react";
 import SimDetails from "./SimDetails";
 import SimDetailsEditable from "./SimDetailsEditable";
 
-let defaultSim: any;
-
-defaultSim = null;
+const defaultSim: any = null
 
 interface Props {
   sims: Array<any>;

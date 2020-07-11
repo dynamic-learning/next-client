@@ -1,81 +1,156 @@
-import SortableTree from "../sortable-tree";
-import { useState } from "react";
+/**
+ * Libraries
+ */
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { Menu } from "antd";
+import { AiOutlineFolder, AiOutlineFile } from "react-icons/ai";
+import { FiTrash2 } from "react-icons/fi";
 import { TreeItem } from "react-sortable-tree";
+import { RiEditBoxLine } from "react-icons/ri";
+import { MdTitle } from "react-icons/md";
+
+/**
+ * Imported scripts
+ */
+import SortableTree from "../sortable-tree";
 import {
   getNewFile,
   getNewFolder,
-  findIdsOfItemsToDelete,
+  findItemsToDelete,
 } from "../../../utils/files-and-folders";
-import { AiOutlineFolder, AiOutlineFile } from "react-icons/ai";
-import { FiTrash2, FiEdit3 } from "react-icons/fi";
 import AddFileFolder from "./AddFileFolder";
 import Header from "./Header";
 import { updateItemInArrayAtIndex } from "../../../utils/array";
 import Topbar from "../../top-bar";
-import { Menu } from "antd";
-import { useRouter } from "next/router";
+import TitleModal from "./TitleModal";
+import { deleteWorkbook, deleteWorkbookFolder } from "../../../api/mutations";
 
-let emptyList: Array<TreeItem>;
-
-emptyList = [];
-
+const emptyList: Array<TreeItem> = [];
 const { SubMenu } = Menu;
 
-const Workbooks = () => {
-  const [flatData, updateFlatData] = useState(emptyList);
+interface Props {
+  initialWorkbooks: Array<any>;
+  addWorkbook(workbookDetails: any): Promise<any>;
+  addWorkbookFolder(workbookFolderDetails: any): Promise<any>;
+  deleteWorkbook(_id: string): Promise<any>;
+  deleteWorkbookFolder(_id: string): Promise<any>;
+  updateWorkbook(workbookDetails: any): Promise<any>;
+  updateWorkbookFolder(workbookFolderDetails: any): Promise<any>;
+}
 
-  const [fileCount, setFileCount] = useState(1);
-  const [folderCount, setFolderCount] = useState(1);
+const Workbooks = (props: Props) => {
+  const {
+    initialWorkbooks,
+    addWorkbook,
+    addWorkbookFolder,
+    updateWorkbook,
+    updateWorkbookFolder,
+  } = props;
+
+  const selectedNodeDefault: any = null;
+
+  const [flatData, updateFlatData] = useState(emptyList);
+  const [showTitleModal, setShowTitleModal] = useState(false);
+  const [titleInModal, setTitleInModal] = useState("");
+  const [currentMode, setCurrentMode] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [selectedNode, setSelectedNode] = useState(selectedNodeDefault);
+
   const router = useRouter();
 
-  const handleAddFileClick = () => {
-    // Replace wih Api call
-    const newFile = getNewFile(fileCount);
-    setFileCount(fileCount + 1);
+  useEffect(() => {
+    updateFlatData(initialWorkbooks);
+  }, []);
+
+  ////////////////////////////////////////
+  ////// Functions connected to APIs ////
+  //////////////////////////////////////
+
+  const addFile = async (title: string) => {
+    setLoading(true);
+
+    const res = await addWorkbook({ title });
+    const newFile = getNewFile({ title, _id: res.createWorkbook._id });
     updateFlatData([...flatData, newFile]);
+
+    setLoading(false);
   };
 
-  const handleAddFolderClick = () => {
-    // Replace wih Api call
-    const newFolder = getNewFolder(folderCount);
-    setFolderCount(folderCount + 1);
+  const addFolder = async (title: string) => {
+    setLoading(true);
+
+    const res = await addWorkbookFolder({ title });
+    const newFolder = getNewFolder({
+      title,
+      _id: res.createWorkbookFolder._id,
+    });
     updateFlatData([...flatData, newFolder]);
+
+    setLoading(false);
   };
 
   const handleDeleteClick = (node: TreeItem) => {
-    return () => {
-      const idsOfItemsToDelete: Array<any> = [];
-      findIdsOfItemsToDelete(node, idsOfItemsToDelete);
-      // Replace with Api call
-      deleteItems(idsOfItemsToDelete);
+    return async () => {
+      const itemsToDelete: Array<any> = [];
+      findItemsToDelete(node, itemsToDelete);
+      await setLoading(true);
+      deleteItemsInRemote(itemsToDelete);
+      deleteItemsInLocal(itemsToDelete);
+      await setLoading(false);
     };
   };
 
-  const deleteItems = (idsOfItemsToDelete: Array<string>) => {
-    const newFlatData = flatData.filter(
-      (datum: TreeItem) => !idsOfItemsToDelete.includes(datum.id)
-    );
+  const deleteItemsInRemote = async (itemsToDelete: Array<any>) => {
+    const deletePromises = itemsToDelete.map((item) => {
+      if (item.type === "file") {
+        return deleteWorkbook({ _id: item._id });
+      } else {
+        return deleteWorkbookFolder({ _id: item._id });
+      }
+    });
+    await Promise.all(deletePromises);
+  };
 
+  const deleteItemsInLocal = (itemsToDelete: Array<any>) => {
+    const filterItemsToDelete = (item: TreeItem) =>
+      !itemsToDelete.find((itemToDelete) => itemToDelete._id === item._id);
+    const newFlatData = flatData.filter(filterItemsToDelete);
     newFlatData.forEach((d) => {
       delete d.children;
     });
-
     updateFlatData(newFlatData);
   };
 
   const onMoveNode = ({ node, nextParentNode }: any) => {
-    if (nextParentNode) {
-      // Replace with Api call
-      changeParentOfNode(node.id, nextParentNode.id);
+    if (node.type === "file") {
+      moveFile(node, nextParentNode);
     } else {
-      // Replace with Api call
-      changeParentOfNode(node.id, "0");
+      moveFolder(node, nextParentNode);
     }
+  };
+
+  const moveFile = (node: TreeItem, nextParentNode: TreeItem) => {
+    updateWorkbook({
+      _id: node._id,
+      field: "parentId",
+      value: nextParentNode ? nextParentNode._id : null,
+    });
+    changeParentOfNode(node._id, nextParentNode ? nextParentNode._id : "0");
+  };
+
+  const moveFolder = (node: TreeItem, nextParentNode: TreeItem) => {
+    updateWorkbookFolder({
+      _id: node._id,
+      field: "parentId",
+      value: nextParentNode ? nextParentNode._id : null,
+    });
+    changeParentOfNode(node._id, nextParentNode ? nextParentNode._id : "0");
   };
 
   const changeParentOfNode = (id: string, newParentId: string) => {
     const indexOfNode = flatData.findIndex(
-      (datum: TreeItem) => datum.id === id
+      (datum: TreeItem) => datum._id === id
     );
     const node = flatData[indexOfNode];
     const newFlatData = updateItemInArrayAtIndex(flatData, indexOfNode, {
@@ -84,6 +159,105 @@ const Workbooks = () => {
     });
     updateFlatData(newFlatData);
   };
+
+  const handleOKPressInTitleModal = async () => {
+    if (titleInModal) {
+      handleTitleChange();
+      handleTitleModalClose();
+    }
+  };
+
+  const handleTitleChange = async () => {
+    switch (currentMode) {
+      case "add-file":
+        addFile(titleInModal);
+        break;
+      case "add-folder":
+        addFolder(titleInModal);
+        break;
+      case "edit-title":
+        setLoading(true);
+        if (selectedNode.type === "file") {
+          await updateFileTitle();
+        } else {
+          await updateFolderTitle();
+        }
+        changeTitleOfNode(selectedNode, titleInModal);
+        setLoading(false);
+        break;
+    }
+  };
+
+  const updateFileTitle = async () => {
+    await updateWorkbook({
+      _id: selectedNode._id,
+      field: "title",
+      value: titleInModal,
+    });
+  };
+
+  const updateFolderTitle = async () => {
+    await updateWorkbookFolder({
+      _id: selectedNode._id,
+      field: "title",
+      value: titleInModal,
+    });
+  };
+
+  const changeTitleOfNode = (selectedNode: any, title: string) => {
+    const indexOfItem = flatData.findIndex(
+      (datum) => selectedNode._id === datum._id
+    );
+    const newNode = {
+      ...flatData[indexOfItem],
+      title,
+    };
+    const newFlatData = updateItemInArrayAtIndex(
+      flatData,
+      indexOfItem,
+      newNode
+    );
+    updateFlatData(newFlatData);
+  };
+
+  ///////////////////////////////////////
+  //////// Ends ////////////////////////
+  /////////////////////////////////////
+
+  const handleGoBackClick = () => router.push("/index");
+
+  const handleTitleModalOpen = () => {
+    setShowTitleModal(true);
+  };
+
+  const handleTitleModalClose = () => {
+    setShowTitleModal(false);
+    setTitleInModal("");
+    setSelectedNode(null);
+  };
+
+  const handleAddFileClick = () => {
+    handleTitleModalOpen();
+    setCurrentMode("add-file");
+  };
+
+  const handleAddFolderClick = () => {
+    handleTitleModalOpen();
+    setCurrentMode("add-folder");
+  };
+
+  const handleEditClick = (node: any) => {
+    return () => {
+      handleTitleModalOpen();
+      setCurrentMode("edit-title");
+      setTitleInModal(node.title);
+      setSelectedNode(node);
+    };
+  };
+
+  /////////////////////////////////////
+  ////////// Sub components //////////
+  ///////////////////////////////////
 
   const WorkbookTitle = ({ node }: any) => (
     <div className="workbook-title-container">
@@ -98,11 +272,30 @@ const Workbooks = () => {
     </div>
   );
 
+  const renderGoBack = () => (
+    <SubMenu onTitleClick={handleGoBackClick} title="Go back to workbook" />
+  );
+
+  const handleEditFileClick = (node: TreeItem) => {
+    return () => router.push(`/workbook/${node._id}`);
+  };
+
+  const isEditVisible = (node: any) => (node.type === "folder" ? "folder" : "");
+
   const generateNodeProps = ({ node }: any) => {
     return {
       title: <WorkbookTitle node={node} />,
       buttons: [
-        <FiEdit3 className="right-icon edit-icon" size={16} />,
+        <RiEditBoxLine
+          onClick={handleEditFileClick(node)}
+          size={16}
+          className={`${isEditVisible(node)} edit-icon right-icon`}
+        />,
+        <MdTitle
+          onClick={handleEditClick(node)}
+          className="right-icon edit-icon"
+          size={16}
+        />,
         <FiTrash2
           size={16}
           className="right-icon"
@@ -112,32 +305,41 @@ const Workbooks = () => {
     };
   };
 
-  const handleGoBackClick = () => router.push("/index");
+  /////////////////////////////////////////
+  //////////// Ends //////////////////////
+  ///////////////////////////////////////
 
-  const renderGoBack = () => (
-    <SubMenu onTitleClick={handleGoBackClick} title="Go back to workbook" />
-  );
+  const loadingStyle = loading ? "loading" : "";
 
   return (
     <>
       <style>{style}</style>
+      <TitleModal
+        titleInModal={titleInModal}
+        setTitleInModal={setTitleInModal}
+        handleClose={handleTitleModalClose}
+        visible={showTitleModal}
+        handleOK={handleOKPressInTitleModal}
+      />
       <Topbar>{renderGoBack()}</Topbar>
       <div className="page-container">
-        <div className="main-container">
+        <div className={`main-container`}>
           <Header />
-          <div className="tree-container">
-            <SortableTree
-              flatData={flatData}
-              updateFlatData={updateFlatData}
-              onMoveNode={onMoveNode}
-              getNodeKey={(node: TreeItem) => node.id}
-              generateNodeProps={generateNodeProps}
+          <div className={`tree-and-add-buttons ${loadingStyle}`}>
+            <div className={`tree-container`}>
+              <SortableTree
+                flatData={flatData}
+                updateFlatData={updateFlatData}
+                onMoveNode={onMoveNode}
+                getNodeKey={(node: TreeItem) => node._id}
+                generateNodeProps={generateNodeProps}
+              />
+            </div>
+            <AddFileFolder
+              handleAddFileClick={handleAddFileClick}
+              handleAddFolderClick={handleAddFolderClick}
             />
           </div>
-          <AddFileFolder
-            handleAddFileClick={handleAddFileClick}
-            handleAddFolderClick={handleAddFolderClick}
-          />
         </div>
       </div>
     </>
@@ -178,6 +380,13 @@ const style = `
   .edit-icon {
     margin-right:0.4rem;
   } 
+  .loading {
+    opacity:0.5;
+    pointer-events:none;
+  }
+  .folder {
+    visibility:hidden;
+  }
 `;
 
 export default Workbooks;

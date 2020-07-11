@@ -1,3 +1,9 @@
 node_modules/
 .next/
 .vscode/
+coverage/
+.nyc_output/
+cypress-coverage/
+jest-coverage/
+coverage.json
+reports/

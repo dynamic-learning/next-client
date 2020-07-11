@@ -15,11 +15,10 @@ import { Sim } from "../../types";
  */
 
 const P5SimModal = (props: any) => {
-  let sim: Sim;
 
   const { onCancel, onOk } = props;
 
-  sim = props.sim;
+  const sim:Sim = props.sim;
 
   const [size, setSize] = useState({ width: 640, height: 360 });
 

@@ -11,3 +11,5 @@ export const CLEAR_SLIDE = "CLEAR_SLIDE";
 
 export const CHANGE_CANVAS_OPTION = "CHANGE_CANVAS_OPTION";
 export const REORDER_SLIDES = "REORDER_SLIDES";
+
+export const SET_SLIDES = "SET_SLIDES";

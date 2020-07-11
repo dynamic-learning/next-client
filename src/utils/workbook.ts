@@ -1,5 +1,4 @@
-import { TextboxType } from "../types";
-import { CanvasSimType, SlideType } from "../types";
+import { CanvasSimType, SlideType, TextboxType } from "../types";
 import { updateItemInArrayAtIndex, deleteItemInArrayAtIndex } from "./array";
 
 export const findIfItsPossibleToReduceCanvasSize = (
@@ -12,8 +11,10 @@ export const findIfItsPossibleToReduceCanvasSize = (
     return false;
   }
   const bottomMostPointOfItems = items.reduce((lowestPoint, curItem) => {
-    if (curItem.position.y + parseInt(curItem.size.height) > lowestPoint) {
-      return curItem.position.y + parseInt(curItem.size.height);
+    const bottomPtOfCurItem =
+      curItem.position.y + parseInt(curItem.size.height);
+    if (bottomPtOfCurItem > lowestPoint) {
+      return bottomPtOfCurItem;
     } else {
       return lowestPoint;
     }
@@ -47,6 +48,7 @@ export const getNewSim = (owner: string, id: string): CanvasSimType => {
       width: 640,
       height: 360,
     },
+    savedState: null,
   };
 };
 

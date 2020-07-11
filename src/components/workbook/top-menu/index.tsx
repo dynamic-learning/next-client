@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, Slider } from "antd";
+import { Menu, Slider, Switch } from "antd";
 import {
   UserAddOutlined,
   LoginOutlined,
@@ -7,12 +7,13 @@ import {
   BorderOuterOutlined,
   EditOutlined,
   SelectOutlined,
+  ExclamationCircleOutlined,
+  GithubOutlined,
 } from "@ant-design/icons";
 import { FaPen } from "react-icons/fa";
 import Topbar from "../../top-bar/index";
 import { SwatchesPicker } from "react-color";
 import { BsSquareFill } from "react-icons/bs";
-import { Switch } from "antd";
 const { SubMenu } = Menu;
 
 const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
@@ -25,11 +26,16 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
     onPageCountChange,
     onCanvasOptionChange,
     onClearSlide,
+    saveWorkbook,
   } = actions;
 
   const { undoable, redoable, canCanvasSizeBeReduced } = actionDisablers;
 
   const handleOpenClick = () => goToPage("/workbooks");
+
+  const handleSaveClick = () => {
+    saveWorkbook();
+  };
 
   const renderFileMenu = () => (
     <SubMenu title="File" key="file" icon={<FileOutlined />}>
@@ -38,7 +44,9 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
         <Menu.Item onClick={handleOpenClick} key="open">
           Open
         </Menu.Item>
-        <Menu.Item key="save">Save</Menu.Item>
+        <Menu.Item onClick={handleSaveClick} key="save">
+          Save
+        </Menu.Item>
         <Menu.Item key="examples">Examples</Menu.Item>
       </Menu.ItemGroup>
     </SubMenu>
@@ -77,6 +85,10 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
 
   const handleClearClick = () => {
     onClearSlide();
+  };
+
+  const handleAboutClick = () => {
+    goToPage("/about");
   };
 
   const renderSlideMenu = () => (
@@ -135,20 +147,33 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
   const renderLoginSignUp = () => (
     <div className="navitems-right">
       <Menu selectable={false} theme="dark" mode="horizontal">
-        <Menu.Item
-          onClick={handleLoginClick}
-          key="login"
-          icon={<LoginOutlined />}
-        >
-          Login
-        </Menu.Item>
-        <Menu.Item
-          onClick={handleSignUpClick}
-          key="signup"
-          icon={<UserAddOutlined />}
-        >
-          Sign Up
-        </Menu.Item>
+        <SubMenu title="App">
+          <Menu.Item
+            onClick={handleLoginClick}
+            key="login"
+            icon={<LoginOutlined />}
+          >
+            Login
+          </Menu.Item>
+          <Menu.Item
+            onClick={handleSignUpClick}
+            key="signup"
+            icon={<UserAddOutlined />}
+          >
+            Sign Up
+          </Menu.Item>
+          <Menu.Item
+            icon={<ExclamationCircleOutlined />}
+            onClick={handleAboutClick}
+          >
+            About
+          </Menu.Item>
+          <Menu.Item icon={<GithubOutlined />}>
+            <a target="_blank" href="https://github.com/dynamic-learning">
+              Contribute
+            </a>
+          </Menu.Item>
+        </SubMenu>
       </Menu>
     </div>
   );
@@ -262,9 +287,9 @@ const style = `
      display:block;
   }
   .navitems-right {
-      float:right;
-      display:flex;
-      flex-direction:row;
+    float:right;
+    display:flex;
+    flex-direction:row;
   }
   .selected {
     color:#1890ff;

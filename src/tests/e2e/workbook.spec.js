@@ -46,7 +46,7 @@ describe("Workbook", () => {
           .should("gt", initialHeight);
       });
   });
-  it("checks the decrese in height of canvas", () => {
+  it("checks the decrease in height of canvas", () => {
     cy.get(".canvas-container")
       .invoke("height")
       .then((initialHeight) => {

@@ -10,11 +10,11 @@ import {
   getNewTextbox,
 } from "../../utils/workbook";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { connect } from "react-redux";
-import { useContext } from "react";
 import { useRouter } from "next/router";
 import { ActionCreators } from "redux-undo";
+import { Spin } from "antd";
 
 interface WorkbookMethods {
   onAddSlideButtonClick(): void;
@@ -31,6 +31,8 @@ interface WorkbookMethods {
   onCanvasOptionChange(option: string, value: any): void;
   onClearSlide(): void;
   onFinishReorder(startIndex: number, endIndex: number): void;
+  setSlides(slides: Array<SlideType>): void;
+  updateWorkbook(values: any): Promise<any>;
 }
 
 interface WorkbookProps {
@@ -39,6 +41,8 @@ interface WorkbookProps {
   undoable: boolean;
   redoable: boolean;
   canvasOptions: any;
+  initialSlides: Array<SlideType>;
+  _id: string;
 }
 
 type Props = WorkbookMethods & WorkbookProps;
@@ -65,6 +69,10 @@ const Workbook = (props: Props) => {
     onCanvasOptionChange,
     onClearSlide,
     onFinishReorder,
+    initialSlides,
+    setSlides,
+    updateWorkbook,
+    _id,
   } = props;
 
   const noOfSlides = slides.length;
@@ -72,20 +80,23 @@ const Workbook = (props: Props) => {
   const router = useRouter();
   const [scaleX, setScaleX] = useState(1);
   const [canCanvasSizeBeReduced, setCanCanvasSizeBeReduced] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
+    setInitialState();
     return addKeyDownEventListeners();
   }, []);
 
   useEffect(() => {
     setCanvasScale();
+    setLoading(false);
     return addScaleCanvasOnResizeEventListener();
   }, []);
 
   useEffect(() => {
-    let canCanvasSizeBeReduced = findIfItsPossibleToReduceCanvasSize(
+    const canCanvasSizeBeReduced = findIfItsPossibleToReduceCanvasSize(
       // As we add more items, they need to be included here
       [...slides[curSlide].sims, ...slides[curSlide].textboxes],
       slides[curSlide].pageCount,
@@ -95,6 +106,23 @@ const Workbook = (props: Props) => {
     );
     setCanCanvasSizeBeReduced(canCanvasSizeBeReduced);
   }, [slides[curSlide]]);
+
+  const setInitialState = () => {
+    if (initialSlides) {
+      setSlides(initialSlides);
+    }
+  };
+
+  const saveWorkbook = async () => {
+    setLoading(true);
+    await updateWorkbook({
+      _id,
+      field: "slides",
+      value: JSON.stringify(JSON.stringify(slides)),
+    });
+    alert("Saved successfully");
+    setLoading(false);
+  };
 
   const handleAddSimButtonClick = () => {
     setShowAddSimModal(true);
@@ -122,7 +150,7 @@ const Workbook = (props: Props) => {
     };
   };
 
-  let map: any = {};
+  const map: any = {};
 
   const handleKeyDown = (e: any) => {
     map[e.keyCode] = true;
@@ -156,60 +184,63 @@ const Workbook = (props: Props) => {
 
   return (
     <>
-      <style>{getStyle({ scaleX, ...theme })}</style>
-      <AddSimModal
-        showAddSimModal={showAddSimModal}
-        handleAddSimModalClose={handleAddSimModalClose}
-        onItemAdd={onItemAdd}
-      />
-      <TopBar
-        actions={{
-          handleAddSimButtonClick,
-          goToPage,
-          handleAddTextboxButtonClick,
-          handleUndoButtonClick: onUndoChange,
-          handleRedoButtonClick: onRedoChange,
-          onPageCountChange,
-          onCanvasOptionChange,
-          onClearSlide,
-        }}
-        actionDisablers={{
-          undoable,
-          redoable,
-          canCanvasSizeBeReduced,
-        }}
-        canvasOptions={canvasOptions}
-      />
-      <div className="workbook-container">
-        <div className="left-menu-container">
-          <LeftMenu
-            onAddSlideButtonClick={onAddSlideButtonClick}
-            onSlideButtonClick={onSlideButtonClick}
-            onDeleteSlideButtonClick={onDeleteSlideButtonClick}
-            curSlide={curSlide}
-            noOfSlides={noOfSlides}
-            onFinishReorder={onFinishReorder}
-          />
-        </div>
-        <div className="scroll-container">
-          <div className="slide-container">
-            <Slide
-              onCanvasUpdate={onCanvasUpdate}
-              onItemUpdate={onItemUpdate}
-              onItemDelete={onItemDelete}
-              slideContents={slides[curSlide]}
-              scaleX={scaleX}
-              canvasSize={canvasSize}
-              canvasOptions={canvasOptions}
+      <Spin spinning={loading} size="large">
+        <style>{getStyle({ scaleX, ...theme })}</style>
+        <AddSimModal
+          showAddSimModal={showAddSimModal}
+          handleAddSimModalClose={handleAddSimModalClose}
+          onItemAdd={onItemAdd}
+        />
+        <TopBar
+          actions={{
+            handleAddSimButtonClick,
+            goToPage,
+            handleAddTextboxButtonClick,
+            handleUndoButtonClick: onUndoChange,
+            handleRedoButtonClick: onRedoChange,
+            onPageCountChange,
+            onCanvasOptionChange,
+            onClearSlide,
+            saveWorkbook,
+          }}
+          actionDisablers={{
+            undoable,
+            redoable,
+            canCanvasSizeBeReduced,
+          }}
+          canvasOptions={canvasOptions}
+        />
+        <div className="workbook-container">
+          <div className="left-menu-container">
+            <LeftMenu
+              onAddSlideButtonClick={onAddSlideButtonClick}
+              onSlideButtonClick={onSlideButtonClick}
+              onDeleteSlideButtonClick={onDeleteSlideButtonClick}
+              curSlide={curSlide}
+              noOfSlides={noOfSlides}
+              onFinishReorder={onFinishReorder}
             />
           </div>
+          <div className="scroll-container">
+            <div className="slide-container">
+              <Slide
+                onCanvasUpdate={onCanvasUpdate}
+                onItemUpdate={onItemUpdate}
+                onItemDelete={onItemDelete}
+                slideContents={slides[curSlide]}
+                scaleX={scaleX}
+                canvasSize={canvasSize}
+                canvasOptions={canvasOptions}
+              />
+            </div>
+          </div>
         </div>
-      </div>
+      </Spin>
     </>
   );
 };
 
-const mapDispatchToProps = (dispatch: Function): WorkbookMethods => {
+const mapDispatchToProps = (dispatch: Function): any => {
   return {
     onAddSlideButtonClick: () => {
       dispatch(actions.addSlide());
@@ -250,10 +281,13 @@ const mapDispatchToProps = (dispatch: Function): WorkbookMethods => {
     onFinishReorder: (startIndex: number, endIndex: number) => {
       dispatch(actions.reorderSlides(startIndex, endIndex));
     },
+    setSlides: (slides: Array<SlideType>) => {
+      dispatch(actions.setSlides(slides));
+    },
   };
 };
 
-const mapStateToProps = (state: any): WorkbookProps => {
+const mapStateToProps = (state: any): any => {
   return {
     curSlide: state.present.curSlide,
     slides: state.present.slides,
@@ -279,7 +313,7 @@ const getStyle = (props: any) => `
     flex:2;
   }
   .scroll-container {
-    flex:14;
+    flex:16;
     overflow-y:auto;
   }
 `;
