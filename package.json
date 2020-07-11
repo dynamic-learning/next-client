@@ -28,10 +28,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "antd": "^4.2.4",
+    "antd": "^4.4.2",
     "fabric": "^3.6.3",
     "graphql-request": "^2.0.0",
-    "next": "^9.4.2",
+    "next": "^9.4.4",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-color": "^2.18.1",
@@ -48,12 +48,12 @@
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.8.1",
-    "@types/fabric": "^3.6.3",
+    "@types/fabric": "^3.6.7",
     "@types/jest": "^25.2.3",
-    "@types/node": "^14.0.4",
-    "@types/react": "^16.9.35",
+    "@types/node": "^14.0.22",
+    "@types/react": "^16.9.42",
     "@types/react-beautiful-dnd": "^13.0.0",
-    "@types/react-color": "^3.0.2",
+    "@types/react-color": "^3.0.4",
     "@types/react-redux": "^7.1.9",
     "@types/react-sortable-tree": "^0.3.11",
     "@types/react-tag-autocomplete": "^5.12.0",
@@ -61,12 +61,12 @@
     "@types/showdown": "^1.9.3",
     "babel-plugin-istanbul": "^6.0.0",
     "coveralls": "^3.1.0",
-    "cypress": "^4.6.0",
-    "jest": "^26.0.1",
+    "cypress": "^4.10.0",
+    "jest": "^26.1.0",
     "prettier": "^2.0.5",
-    "ts-jest": "^26.0.0",
-    "typescript": "^3.9.3",
-    "wait-on": "^5.0.1"
+    "ts-jest": "^26.1.1",
+    "typescript": "^3.9.6",
+    "wait-on": "^5.1.0"
   },
   "nyc": {
     "report-dir": "cypress-coverage"
