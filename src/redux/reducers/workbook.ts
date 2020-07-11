@@ -206,7 +206,7 @@ export const workBookReducer = (state = defaultState, action: Action) => {
   }
 };
 
-const getInteractValue = (option: string, value: Boolean, state: any) => {
+const getInteractValue = (option: string, value: boolean, state: any) => {
   if (option === "interact") {
     return value;
   } else if (["isDrawingMode", "brushStroke", "color"].includes(option)) {
@@ -216,7 +216,7 @@ const getInteractValue = (option: string, value: Boolean, state: any) => {
   }
 };
 
-const getIsDrawingMode = (option: string, value: Boolean, state: any) => {
+const getIsDrawingMode = (option: string, value: boolean, state: any) => {
   if (option === "isDrawingMode") {
     return value;
   }

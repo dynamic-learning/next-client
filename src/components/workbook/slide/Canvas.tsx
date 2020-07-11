@@ -1,7 +1,7 @@
 import { fabric } from "fabric";
 import { useEffect } from "react";
 
-let canvasConfig = {
+const canvasConfig = {
   isDrawingMode: true,
   width: 640,
   height: 360,
@@ -65,7 +65,7 @@ const Slide = (props: Props) => {
   };
 
   const getDimensionsOfElement = (selector: string) => {
-    let canvasContainerRef = document.querySelector(selector) as HTMLDivElement;
+    const canvasContainerRef = document.querySelector(selector) as HTMLDivElement;
     return {
       width: canvasContainerRef.offsetWidth,
       height: canvasContainerRef.offsetHeight,

@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, Slider } from "antd";
+import { Menu, Slider, Switch } from "antd";
 import {
   UserAddOutlined,
   LoginOutlined,
@@ -14,7 +14,6 @@ import { FaPen } from "react-icons/fa";
 import Topbar from "../../top-bar/index";
 import { SwatchesPicker } from "react-color";
 import { BsSquareFill } from "react-icons/bs";
-import { Switch } from "antd";
 const { SubMenu } = Menu;
 
 const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {

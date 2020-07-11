@@ -10,9 +10,8 @@ import {
   getNewTextbox,
 } from "../../utils/workbook";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { connect } from "react-redux";
-import { useContext } from "react";
 import { useRouter } from "next/router";
 import { ActionCreators } from "redux-undo";
 import { Spin } from "antd";
@@ -97,7 +96,7 @@ const Workbook = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    let canCanvasSizeBeReduced = findIfItsPossibleToReduceCanvasSize(
+    const canCanvasSizeBeReduced = findIfItsPossibleToReduceCanvasSize(
       // As we add more items, they need to be included here
       [...slides[curSlide].sims, ...slides[curSlide].textboxes],
       slides[curSlide].pageCount,
@@ -151,7 +150,7 @@ const Workbook = (props: Props) => {
     };
   };
 
-  let map: any = {};
+  const map: any = {};
 
   const handleKeyDown = (e: any) => {
     map[e.keyCode] = true;

@@ -22,10 +22,6 @@ const ImageUpload = ({ imgUrl, setImgUrl }: any) => {
         setLoading(false);
         const image = new Image();
         image.src = imageUrl;
-        if (!(image.width == 200 && image.height == 200)) {
-          message.error("Dimension should be 200x200");
-          return;
-        }
         setImgUrl(imageUrl);
       });
     }
