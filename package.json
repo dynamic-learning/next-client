@@ -7,12 +7,14 @@
     "dev": "next",
     "build": "next build",
     "start": "next start -p $PORT",
+    "start-in-3000":"next start",
     "heroku-postbuild": "npm run build",
     "lint": "prettier --write 'src/**/*.{ts,tsx,js,jsx}' 'pages/**/*.{ts,tsx,js,jsx}'",
     "cy:open": "cypress open",
     "test:jest": "jest src/tests/unit --coverage",
     "test:cy": "cypress run",
-    "test": "npm run test:jest && npm run test:cy",
+    "test": "start-server-and-test start-in-3000 http://localhost:3000 run-all-tests",
+    "run-all-tests": "npm run test:jest && npm run test:cy",
     "coveralls": "npm run test && cat ./coverage/lcov.info | coveralls",
     "pretest": "rm -rf .nyc_output || true",
     "posttest": "npm run report:combined",
@@ -22,7 +24,8 @@
     "precombine:reports": "npm run copy:reports && mkdir .nyc_output || true",
     "combine:reports": "npx nyc merge reports && mv coverage.json .nyc_output/out.json",
     "prereport:combined": "npm run combine:reports",
-    "report:combined": "npx nyc report --reporter lcov --reporter text --report-dir coverage"
+    "report:combined": "npx nyc report --reporter lcov --reporter text --report-dir coverage",
+    "publish:coverage": "./node_modules/coveralls/bin/coveralls.js < ./coverage/lcov.info"
   },
   "keywords": [],
   "author": "",
@@ -66,7 +69,8 @@
     "prettier": "^2.0.5",
     "ts-jest": "^26.1.1",
     "typescript": "^3.9.6",
-    "wait-on": "^5.1.0"
+    "wait-on": "^5.1.0",
+    "start-server-and-test": "^1.11.2"
   },
   "nyc": {
     "report-dir": "cypress-coverage"
