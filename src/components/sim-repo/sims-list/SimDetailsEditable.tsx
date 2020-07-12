@@ -9,10 +9,11 @@ interface Props {
   selectedSim: any;
   updateSelectedSim(updatedSim: any, updatedValueType: string): void;
   handleApplyClick(): void;
+  deleteSelectedSim: () => void;
 }
 
 const SimDetails = (props: Props) => {
-  const { selectedSim, updateSelectedSim, handleApplyClick } = props;
+  const { selectedSim, updateSelectedSim, handleApplyClick, deleteSelectedSim } = props;
   const handleDeleteTag = (i: any) => {
     const newTags = selectedSim.tags.slice(0);
     newTags.splice(i, 1);
@@ -81,7 +82,7 @@ const SimDetails = (props: Props) => {
             <Divider />
             <div>
               <Button onClick={handleApplyClick}>Apply changes</Button>
-              <Button className="delete">Delete Sim</Button>
+              <Button onClick={deleteSelectedSim} className="delete">Delete Sim</Button>
             </div>
           </div>
           <div className="img">
@@ -106,6 +107,7 @@ const style = `
   }
   .delete {
     margin-left:1rem;
+    background-color:red;
   }
   .details-and-image {
     display:flex;

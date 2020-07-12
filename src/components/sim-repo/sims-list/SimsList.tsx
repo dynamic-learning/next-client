@@ -8,10 +8,11 @@ const defaultSim: any = null
 interface Props {
   sims: Array<any>;
   updateSim(updatedSim: any): void;
+  deleteSim: (id: any) => void;
 }
 
 const SimsList = (props: Props) => {
-  const { sims, updateSim } = props;
+  const { sims, updateSim, deleteSim } = props;
 
   const [selectedSim, setSelectedSim] = useState(defaultSim);
 
@@ -41,6 +42,11 @@ const SimsList = (props: Props) => {
   const handleCancelClick = () => {
     setSelectedSim(null);
   };
+
+  const deleteSelectedSim= () => {
+    deleteSim(selectedSim.id)
+    setSelectedSim(null);
+  }
 
   const isAdmin = true;
 
@@ -73,6 +79,7 @@ const SimsList = (props: Props) => {
             <SimDetailsEditable
               selectedSim={selectedSim}
               updateSelectedSim={updateSelectedSim}
+              deleteSelectedSim={deleteSelectedSim}
               handleApplyClick={handleApplyClick}
             />
           ) : (
