@@ -7,8 +7,16 @@ import { updateItemInArrayAtIndex } from "../../utils/array";
 
 const defaultSims: Array<any> = [];
 
-const Simulations = () => {
+interface Props {
+  addSim: ({ _id, owner, title, description, tags, imageURL }: any) => Promise<any>;
+  editSim: ({ id, updatedSim }: any) => Promise<any>;
+  deleteSim: (id: any) => Promise<any>;
+}
+
+const Simulations = (props: Props) => {
+  const { addSim, editSim, deleteSim }= props;
   const [sims, updateSims] = useState(defaultSims);
+  const [loading, setLoading]= useState(false);
   const [showAddSim, setShowAddSim] = useState(false);
 
   const handleAddClick = () => {
@@ -21,30 +29,35 @@ const Simulations = () => {
 
   const onSimAdd = (newSim: any) => {
     updateSims([...sims, newSim]);
+    addSim(newSim)
   };
 
-  const updateSim = (updatedSim: any) => {
+  const updateSim = async (updatedSim: any) => {
+    setLoading(true);
     const indexOfUpdatedSim = sims.findIndex(
       (sim: any) => updatedSim.id === sim.id
     );
     updateSims(updateItemInArrayAtIndex(sims, indexOfUpdatedSim, updatedSim));
+    await editSim(updatedSim)
+
+    setLoading(false);
   };
 
   return (
     <>
+      <style>{style}</style>
       <AddSimModal
         onSimAdd={onSimAdd}
         handleAddSimClose={handleAddSimClose}
         visible={showAddSim}
       />
-      <style>{style}</style>
-      <div className="page-container">
+      <div className={`page-container  ${loading? "loading" :null}`}>
         <div className="left-menu">
           <LeftMenu />
         </div>
         <div className="sims-list">
           <SimSearchAdd handleAddClick={handleAddClick} />
-          <SimsList updateSim={updateSim} sims={sims} />
+          <SimsList updateSim={updateSim} deleteSim={deleteSim} sims={sims} />
         </div>
       </div>
     </>
@@ -64,6 +77,11 @@ const style = `
         display:flex;
         flex-direction:row;
         height:100vh;
+    }
+    .loading {
+      opacity: 0.3;
+      background-color: black;
+      pointer-events:none;
     }
 `;
 

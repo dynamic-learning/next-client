@@ -106,3 +106,54 @@ export const updateWorkbookFolder = ({ _id, field, value }: any) => {
     `
   );
 };
+
+export const addSim = ({ id, owner, title, description, tags, imgUrl }: any) => {
+  return request(
+    apiRootUrl,
+    `mutation {
+      createSim(sim: {
+        _id: "${id}",
+        owner: "${owner}",
+        title: "${title}",
+        description: "${description}",
+        tags: "${tags}"
+        imageURL: "${imgUrl}"
+      }) {
+        _id
+        owner
+      }
+    }`
+  );
+};
+
+export const editSim = ({ id,title, description,tags, imgUrl }: any) => {
+  return request(
+    apiRootUrl,
+    `mutation {
+      updateSim(
+        simId: "${id}",    
+        updatedSim: {
+          title: "${title}"
+          description: "${description}"
+          tags: ${JSON.stringify(tags)}
+          imageURL: "${imgUrl}"
+        }
+      ) {
+        title
+        tags
+      }
+    }`
+  )
+
+}
+
+export const deleteSim= (id: any) => {
+  return request(
+    apiRootUrl,
+    `mutation {
+      deleteSim(simId: "${id}") {
+        success
+      }
+    }`
+  )
+}
