@@ -14,7 +14,6 @@ install:
 script:
   # - sonar-scanner
   - npm run build
-  - npm start -p 3000 & wait-on http://localhost:3000
   - npm run test
 
 addons:
