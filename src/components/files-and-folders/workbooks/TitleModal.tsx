@@ -28,7 +28,7 @@ const TitleModal = (props: Props) => {
       visible={visible}
       title="Enter the title"
     >
-      <Input onChange={handleChange} value={titleInModal} />
+      <Input className='title-input' onChange={handleChange} value={titleInModal} />
     </Modal>
   );
 };
