@@ -293,12 +293,12 @@ const Workbooks = (props: Props) => {
         />,
         <MdTitle
           onClick={handleEditClick(node)}
-          className="right-icon edit-icon"
+          className="right-icon edit-icon rename-icon"
           size={16}
         />,
         <FiTrash2
           size={16}
-          className="right-icon"
+          className="right-icon trash-icon"
           onClick={handleDeleteClick(node)}
         />,
       ],
