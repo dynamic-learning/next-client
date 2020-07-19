@@ -13,7 +13,7 @@
     "cy:open": "cypress open",
     "test:jest": "jest src/tests/unit --coverage",
     "test:cy": "cypress run",
-    "start-server-and-run-cypress":"start-server-and-test start-in-3000 http://localhost:3000 test:cy",
+    "start-server-and-run-cypress": "start-server-and-test start-in-3000 http://localhost:3000 test:cy",
     "test": "npm run test:jest && npm run start-server-and-run-cypress",
     "coveralls": "npm run test && cat ./coverage/lcov.info | coveralls",
     "pretest": "rm -rf .nyc_output || true",
