@@ -28,3 +28,22 @@ export const getWorkbook = (id: string) =>
     }
   `
   );
+
+
+export const getSims = (searchKeyword: string) => (
+  request(
+    apiRootUrl,
+    `
+      query {
+        sims (keyword: "${searchKeyword}") {
+          _id
+          title
+          description
+          tags
+          imageURL
+          owner
+        }
+      } 
+    `   
+  )
+);

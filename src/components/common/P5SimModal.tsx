@@ -1,7 +1,8 @@
-import { Modal } from "antd";
+import { Modal, Button } from "antd";
 import { Rnd } from "react-rnd";
 import { useState } from "react";
 import { Sim } from "../../types";
+import { DeleteOutlined, SaveOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 /**
  * This component is exclusively for displaying a p5 sketch iframe
@@ -16,7 +17,7 @@ import { Sim } from "../../types";
 
 const P5SimModal = (props: any) => {
 
-  const { onCancel, onOk } = props;
+  const { onCancel, onOk,  deleteSelectedSim, modalType } = props;
 
   const sim:Sim = props.sim;
 
@@ -37,7 +38,7 @@ const P5SimModal = (props: any) => {
 
   let { width, height } = size;
 
-  if (!(sim && sim.id && sim.owner)) {
+  if (!(sim && sim._id && sim.owner)) {
     height = 0;
   }
 
@@ -62,12 +63,51 @@ const P5SimModal = (props: any) => {
     bottomRight: true,
   };
 
+  const handleAddToWorkbook = () => {
+    
+    console.log('add sim to workbook');
+  }
+
+  const footerArray = (modalType: string) => {
+    if (modalType == "view-sim-admin") {
+      return [        
+        <Button onClick={deleteSelectedSim} icon={<DeleteOutlined />} type="dashed" danger>
+          Delete 
+        </Button>,
+        <Button icon={<SaveOutlined />} onClick={handleOKClick}>
+          Save
+        </Button>,
+        <Button icon={<PlusCircleOutlined />} onClick={handleAddToWorkbook}>
+          Add 
+        </Button>
+      ];
+    }
+    else if (modalType == "view-sim") {
+      return [
+        <Button icon={<PlusCircleOutlined />} onClick={handleAddToWorkbook}>
+          Add to workbook
+        </Button>
+      ];
+    }
+    else if (modalType == "add-sim") {
+      return [
+        <Button icon={<PlusCircleOutlined />} onClick={handleOKClick}>
+          Add sim
+        </Button>
+      ];
+    }
+    else {
+      return [];
+    }
+  }
+
+  if(sim)
+  console.log(`https://editor.p5js.org/${sim.owner}/embed/${sim._id}`);
   return (
     <Modal
       {...props}
-      onOk={handleOKClick}
-      onCancel={handleCancelClick}
       width={width + 50}
+      footer={footerArray(modalType)}
     >
       <div style={{ width: width + "px", height: height + "px" }}>
         <Rnd
@@ -76,12 +116,12 @@ const P5SimModal = (props: any) => {
           onResize={handleResize}
           size={{ width, height }}
         >
-          {sim && sim.id && sim.owner ? (
+          {sim && sim._id && sim.owner ? (
             <iframe
               width={width}
               height={height}
               scrolling="no"
-              src={`https://editor.p5js.org/${sim.owner}/embed/${sim.id}`}
+              src={`https://editor.p5js.org/${sim.owner}/embed/${sim._id}`}
             ></iframe>
           ) : null}
         </Rnd>

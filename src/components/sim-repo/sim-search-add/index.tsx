@@ -4,21 +4,22 @@ const { Search } = Input;
 
 interface Props {
   handleAddClick(sim: any): void;
+  handleSearch(searchKeyword: string): void;
 }
 
 const SimSearchAdd = (props: Props) => {
-  const { handleAddClick } = props;
+  const { handleAddClick, handleSearch } = props;
 
   return (
     <>
       <style>{style}</style>
       <div className="top-bar">
         <div className="search-box">
-          <Search
+          {/* <Search
             placeholder="input search text"
-            enterButton="Search"
-            onSearch={(value) => console.log(value)}
-          />
+            onKeyUp={handleSearch}            
+          /> */}
+          <Input placeholder="Search simulations" allowClear onChange={(e) => handleSearch(e.target.value)} />
         </div>
         <Button onClick={handleAddClick}>Add Sim</Button>
       </div>

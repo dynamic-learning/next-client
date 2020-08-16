@@ -2,17 +2,20 @@ import P5SimModal from "../../common/P5SimModal";
 import { useState } from "react";
 import SimDetails from "./SimDetails";
 import SimDetailsEditable from "./SimDetailsEditable";
+import { Card } from "antd";
+import { Spin } from 'antd';
 
 const defaultSim: any = null
 
 interface Props {
   sims: Array<any>;
-  updateSim(updatedSim: any): void;
-  deleteSim: (id: any) => void;
+  onSimUpdate(updatedSim: any): void;
+  onSimDelete: (deletedSim: any) => void;
+  loading: any;
 }
 
 const SimsList = (props: Props) => {
-  const { sims, updateSim, deleteSim } = props;
+  const { sims, onSimUpdate, onSimDelete, loading } = props;
 
   const [selectedSim, setSelectedSim] = useState(defaultSim);
 
@@ -30,12 +33,12 @@ const SimsList = (props: Props) => {
   };
 
   const handleOKClick = () => {
-    updateSim(selectedSim);
+    onSimUpdate(selectedSim);
     setSelectedSim(null);
   };
 
   const handleApplyClick = () => {
-    updateSim(selectedSim);
+    onSimUpdate(selectedSim);
     setSelectedSim(null);
   };
 
@@ -44,25 +47,38 @@ const SimsList = (props: Props) => {
   };
 
   const deleteSelectedSim= () => {
-    deleteSim(selectedSim.id)
+    onSimDelete(selectedSim);
     setSelectedSim(null);
   }
 
-  const isAdmin = true;
+  const isAdmin = () => {
+    return false;
+  };
 
   const SimsList = () => (
     <>
       {sims.map((sim: any, index: number) => (
-        <img
-          className="sim-block"
-          src={sim.imgUrl}
-          key={sim.id}
-          onClick={handleSimClick(index)}
-        />
+        <Card
+        style={{ width: "200px", margin: " 20px" }}
+        onClick={handleSimClick(index)}
+        hoverable={true}
+        cover={
+          <img
+            alt="example"
+            src={sim.imageURL}
+            style = {{height: "200px", width: "198px", margin: "0px auto"}}            
+            className="sim-block"
+            key={sim._id}
+          />
+        }
+      >
+        <h2>{sim.title}</h2>
+        <div style={{margin: "5px 0px", color: "grey"}}>{sim.description}</div>
+      </Card>
       ))}
     </>
   );
-
+  console.log(selectedSim);
   return (
     <>
       <style>{style}</style>
@@ -73,13 +89,14 @@ const SimsList = (props: Props) => {
           centered
           title="Sim"
           sim={selectedSim}
+          deleteSelectedSim={deleteSelectedSim}
           visible={!!selectedSim}
+          modalType={isAdmin() == true ? "view-sim-admin" : "view-sim"}
         >
-          {isAdmin ? (
+          {isAdmin() ? (
             <SimDetailsEditable
               selectedSim={selectedSim}
-              updateSelectedSim={updateSelectedSim}
-              deleteSelectedSim={deleteSelectedSim}
+              updateSelectedSim={updateSelectedSim}              
               handleApplyClick={handleApplyClick}
             />
           ) : (
@@ -87,15 +104,33 @@ const SimsList = (props: Props) => {
           )}
         </P5SimModal>
       ) : null}
-
-      <ul className="flex-container wrap">
-        <SimsList />
-      </ul>
+      {
+        (loading == true)
+          ? <Spin className="no-simulation-found" size="large" />
+          : (
+              sims.length == 0 ?
+                <div className="no-simulation-found">
+                  No simulations found
+                </div>
+              :
+                <ul className="flex-container wrap">
+                  <SimsList />
+                </ul>
+          )
+      }
     </>
   );
 };
 
 const style = `
+    .no-simulation-found {
+      margin: 0 auto;
+      display: flex;
+      height: 75%;
+      width: fit-content;
+      flex-direction: row;
+      align-items: center;
+    }
     .flex-container {
         list-style: none;
         padding:0;
@@ -113,7 +148,7 @@ const style = `
     .flex-item:hover {
         background-color:#1890ff;
     }
-    .wrap    { 
+    .wrap { 
         flex-wrap: wrap;
     }  
 `;
