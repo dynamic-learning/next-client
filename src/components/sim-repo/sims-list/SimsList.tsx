@@ -2,8 +2,8 @@ import P5SimModal from "../../common/P5SimModal";
 import { useState } from "react";
 import SimDetails from "./SimDetails";
 import SimDetailsEditable from "./SimDetailsEditable";
-import { Card } from "antd";
-import { Spin } from 'antd';
+import { Button, Card, Spin } from "antd";
+import { DeleteOutlined, SaveOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 const defaultSim: any = null
 
@@ -52,8 +52,36 @@ const SimsList = (props: Props) => {
   }
 
   const isAdmin = () => {
-    return false;
+    return true;
   };
+
+  const handleAddToWorkbook = () => {
+    //TODO: Need to implement this later   
+    console.log('add sim to workbook');
+  }
+
+  const footerArray = () => {
+    if (isAdmin()) {
+      return [        
+        <Button onClick={deleteSelectedSim} icon={<DeleteOutlined />} type="dashed" danger>
+          Delete 
+        </Button>,
+        <Button icon={<SaveOutlined />} onClick={handleOKClick}>
+          Save
+        </Button>,
+        <Button icon={<PlusCircleOutlined />} onClick={handleAddToWorkbook}>
+          Add 
+        </Button>
+      ]
+    }
+    else {
+      return [
+        <Button icon={<PlusCircleOutlined />} onClick={handleAddToWorkbook}>
+          Add to workbook
+        </Button>
+      ];
+    }
+  }
 
   const SimsList = () => (
     <>
@@ -91,7 +119,7 @@ const SimsList = (props: Props) => {
           sim={selectedSim}
           deleteSelectedSim={deleteSelectedSim}
           visible={!!selectedSim}
-          modalType={isAdmin() == true ? "view-sim-admin" : "view-sim"}
+          footer={footerArray()}
         >
           {isAdmin() ? (
             <SimDetailsEditable

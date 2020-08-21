@@ -17,7 +17,7 @@ import { DeleteOutlined, SaveOutlined, PlusCircleOutlined } from '@ant-design/ic
 
 const P5SimModal = (props: any) => {
 
-  const { onCancel, onOk,  deleteSelectedSim, modalType } = props;
+  const { onCancel, onOk,  deleteSelectedSim, footer } = props;
 
   const sim:Sim = props.sim;
 
@@ -63,51 +63,11 @@ const P5SimModal = (props: any) => {
     bottomRight: true,
   };
 
-  const handleAddToWorkbook = () => {
-    
-    console.log('add sim to workbook');
-  }
-
-  const footerArray = (modalType: string) => {
-    if (modalType == "view-sim-admin") {
-      return [        
-        <Button onClick={deleteSelectedSim} icon={<DeleteOutlined />} type="dashed" danger>
-          Delete 
-        </Button>,
-        <Button icon={<SaveOutlined />} onClick={handleOKClick}>
-          Save
-        </Button>,
-        <Button icon={<PlusCircleOutlined />} onClick={handleAddToWorkbook}>
-          Add 
-        </Button>
-      ];
-    }
-    else if (modalType == "view-sim") {
-      return [
-        <Button icon={<PlusCircleOutlined />} onClick={handleAddToWorkbook}>
-          Add to workbook
-        </Button>
-      ];
-    }
-    else if (modalType == "add-sim") {
-      return [
-        <Button icon={<PlusCircleOutlined />} onClick={handleOKClick}>
-          Add sim
-        </Button>
-      ];
-    }
-    else {
-      return [];
-    }
-  }
-
-  if(sim)
-  console.log(`https://editor.p5js.org/${sim.owner}/embed/${sim._id}`);
   return (
     <Modal
       {...props}
       width={width + 50}
-      footer={footerArray(modalType)}
+      footer={footer}
     >
       <div style={{ width: width + "px", height: height + "px" }}>
         <Rnd

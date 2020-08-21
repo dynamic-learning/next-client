@@ -4,6 +4,8 @@ import { Input } from "antd";
 import ReactTags from "react-tag-autocomplete";
 import P5SimModal from "../../common/P5SimModal";
 import ImageUpload from "../../common/ImageUpload";
+import { Button } from "antd";
+import { PlusCircleOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
 
@@ -74,6 +76,12 @@ const AddSimModal = (props: Props) => {
     tags.length > 0
   );
 
+  const footerArray = [
+    <Button icon={<PlusCircleOutlined />} onClick={onSubmitPress}>
+      Add sim
+    </Button>
+  ];
+
   return (
     <>
       <style>{style}</style>
@@ -86,7 +94,7 @@ const AddSimModal = (props: Props) => {
         visible={visible}
         title="Add simulation"
         okButtonProps={{ disabled: areAllDetailsFilled }}
-        modalType={"add-sim"}
+        footer={footerArray}
       >
         <P5SketchUrlInput setSim={setSim} />
         {sim ? (

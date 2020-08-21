@@ -112,11 +112,11 @@ export const addSim = ({ _id, owner, title, description, tags, imageURL }: any) 
     apiRootUrl,
     `mutation {
       createSim(sim: {
-        _id: "${_id}",
-        owner: "${owner}",
-        title: "${title}",
-        description: "${description}",
-        tags: "${tags}"
+        _id: "${_id}"
+        owner: "${owner}"
+        title: "${title}"
+        description: "${description}"
+        tags: ${JSON.stringify(tags)}
         imageURL: "${imageURL}"
       }) {
         _id
