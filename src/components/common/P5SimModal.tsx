@@ -15,7 +15,7 @@ import { Sim } from "../../types";
 
 const P5SimModal = (props: any) => {
 
-  const { onCancel, onOk, footer } = props;
+  const { footer } = props;
 
   const sim:Sim = props.sim;
 
