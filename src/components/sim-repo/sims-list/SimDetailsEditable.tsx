@@ -1,5 +1,4 @@
-import { Divider, Input, Button } from "antd";
-import EditableElement from "../../common/EditableElement";
+import { Input } from "antd";
 import ReactTags from "react-tag-autocomplete";
 import ImageUpload from "../../common/ImageUpload";
 
@@ -9,11 +8,10 @@ interface Props {
   selectedSim: any;
   updateSelectedSim(updatedSim: any, updatedValueType: string): void;
   handleApplyClick(): void;
-  deleteSelectedSim: () => void;
 }
 
 const SimDetails = (props: Props) => {
-  const { selectedSim, updateSelectedSim, handleApplyClick, deleteSelectedSim } = props;
+  const { selectedSim, updateSelectedSim } = props;
   const handleDeleteTag = (i: any) => {
     const newTags = selectedSim.tags.slice(0);
     newTags.splice(i, 1);
@@ -26,69 +24,49 @@ const SimDetails = (props: Props) => {
     }
   };
 
-  const onTitleEdit = (value: any) => {
-    updateSelectedSim(value, "title");
+  const onTitleChange = (e: any) => {
+    updateSelectedSim(e.target.value, "title");
   };
 
-  const onDescriptionEdit = (value: any) => {
-    updateSelectedSim(value, "description");
+  const onDescriptionChange = (e: any) => {
+    updateSelectedSim(e.target.value, "description");
   };
 
-  const setImgUrl = (imgUrl: string) => {
-    updateSelectedSim(imgUrl, "imgUrl");
+  const setImageURL = (imageURL: string) => {
+    updateSelectedSim(imageURL, "imageURL");
   };
-
-  const Title = () => (
-    <EditableElement
-      style={{ fontWeight: "bold" }}
-      isEditable={true}
-      onEdit={onTitleEdit}
-      value={selectedSim.title}
-      Element={Input}
-    />
-  );
-
-  const Description = () => (
-    <EditableElement
-      isEditable={true}
-      onEdit={onDescriptionEdit}
-      value={selectedSim.description}
-      Element={TextArea}
-    />
-  );
-
-  const Tags = () => (
-    <div className="tags">
-      <ReactTags
-        tags={selectedSim.tags.map((tag: any) => ({ name: tag, id: tag }))}
-        handleDelete={handleDeleteTag}
-        handleAddition={handleAddTag}
-        allowNew={true}
-      />
-    </div>
-  );
 
   return (
     <>
       <style>{style}</style>
       <div className="sim-detail">
-        <Title />
-        <Divider />
+      <Input
+          onChange={onTitleChange}
+          value={selectedSim.title}
+          className="detail"
+          placeholder="Enter title"
+        />
         <div className="details-and-image">
           <div className="details">
-            <Description />
-            <Divider />
-            <Tags />
-            <Divider />
-            <div>
-              <Button onClick={handleApplyClick}>Apply changes</Button>
-              <Button onClick={deleteSelectedSim} className="delete">Delete Sim</Button>
+            <TextArea
+              value={selectedSim.description}
+              onChange={onDescriptionChange}
+              className="detail"
+              placeholder="Enter description"
+            />
+            <div className="react-tag">
+              <ReactTags
+                tags={selectedSim.tags.map((tag: string) => ({ id: name, name: tag }))}
+                handleDelete={handleDeleteTag}
+                handleAddition={handleAddTag}
+                allowNew={true}
+              />
             </div>
           </div>
-          <div className="img">
-            <ImageUpload setImgUrl={setImgUrl} imgUrl={selectedSim.imgUrl} />
+          <div className="img-upld">
+            <ImageUpload setImageURL={setImageURL} imageURL={selectedSim.imageURL} />
           </div>
-        </div>
+        </div>        
       </div>
     </>
   );

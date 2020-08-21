@@ -1,6 +1,7 @@
 describe("Workbook file folder tests", () => {
   before(() => {
     cy.visit("http://localhost:3000/workbooks");
+    addItem({ type:"file" })
   });
 
   it("tests addition and deletion of workbook", () => {
@@ -15,6 +16,13 @@ describe("Workbook file folder tests", () => {
   })
   it('tests rename of workbook', () => {
     itemRenameTest({ type:'folder' })
+  })
+  it("deletes all the workbooks", () => {
+    cy.get('.trash-icon').its('length').then((initialNoOfItems)=>{
+      for(let i=0;i<initialNoOfItems;i++) {
+        cy.get('.trash-icon').eq(i).click();
+      }
+    })
   })
 });
 

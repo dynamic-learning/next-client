@@ -2,7 +2,6 @@ import { Modal } from "antd";
 import { Rnd } from "react-rnd";
 import { useState } from "react";
 import { Sim } from "../../types";
-
 /**
  * This component is exclusively for displaying a p5 sketch iframe
  * Since the size of the iframe is uncertain, the size of the modal box
@@ -16,7 +15,7 @@ import { Sim } from "../../types";
 
 const P5SimModal = (props: any) => {
 
-  const { onCancel, onOk } = props;
+  const { footer } = props;
 
   const sim:Sim = props.sim;
 
@@ -37,19 +36,9 @@ const P5SimModal = (props: any) => {
 
   let { width, height } = size;
 
-  if (!(sim && sim.id && sim.owner)) {
+  if (!(sim && sim._id && sim.owner)) {
     height = 0;
   }
-
-  const handleCancelClick = () => {
-    onCancel();
-    setSize({ width: 640, height: 360 });
-  };
-
-  const handleOKClick = () => {
-    onOk();
-    setSize({ width: 640, height: 360 });
-  };
 
   const resizeConfig = {
     top: false,
@@ -65,9 +54,8 @@ const P5SimModal = (props: any) => {
   return (
     <Modal
       {...props}
-      onOk={handleOKClick}
-      onCancel={handleCancelClick}
       width={width + 50}
+      footer={footer}
     >
       <div style={{ width: width + "px", height: height + "px" }}>
         <Rnd
@@ -76,12 +64,12 @@ const P5SimModal = (props: any) => {
           onResize={handleResize}
           size={{ width, height }}
         >
-          {sim && sim.id && sim.owner ? (
+          {sim && sim._id && sim.owner ? (
             <iframe
               width={width}
               height={height}
               scrolling="no"
-              src={`https://editor.p5js.org/${sim.owner}/embed/${sim.id}`}
+              src={`https://editor.p5js.org/${sim.owner}/embed/${sim._id}`}
             ></iframe>
           ) : null}
         </Rnd>

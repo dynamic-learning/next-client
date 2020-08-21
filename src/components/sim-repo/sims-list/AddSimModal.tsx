@@ -1,9 +1,10 @@
 import P5SketchUrlInput from "../../common/P5SketchUrlInput";
 import { useState } from "react";
-import { Input } from "antd";
+import { Input, Button } from "antd";
 import ReactTags from "react-tag-autocomplete";
 import P5SimModal from "../../common/P5SimModal";
 import ImageUpload from "../../common/ImageUpload";
+import { PlusCircleOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
 
@@ -24,7 +25,7 @@ const AddSimModal = (props: Props) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState(defaultTags);
-  const [imgUrl, setImgUrl] = useState("");
+  const [imageURL, setImageURL] = useState("");
 
   const onTitleChange = (e: any) => {
     setTitle(e.target.value);
@@ -52,7 +53,7 @@ const AddSimModal = (props: Props) => {
     setTitle("");
     setDescription("");
     setTags([]);
-    setImgUrl("");
+    setImageURL("");
   };
 
   const onSubmitPress = () => {
@@ -61,7 +62,7 @@ const AddSimModal = (props: Props) => {
       title,
       description,
       tags,
-      imgUrl,
+      imageURL,
     };
     onSimAdd(simObject);
     clearFieldsAndCloseModal();
@@ -70,9 +71,15 @@ const AddSimModal = (props: Props) => {
   const areAllDetailsFilled = !(
     title &&
     description &&
-    imgUrl &&
+    imageURL &&
     tags.length > 0
   );
+
+  const footerArray = [
+    <Button icon={<PlusCircleOutlined />} onClick={onSubmitPress}>
+      Add sim
+    </Button>
+  ];
 
   return (
     <>
@@ -86,6 +93,7 @@ const AddSimModal = (props: Props) => {
         visible={visible}
         title="Add simulation"
         okButtonProps={{ disabled: areAllDetailsFilled }}
+        footer={footerArray}
       >
         <P5SketchUrlInput setSim={setSim} />
         {sim ? (
@@ -114,7 +122,7 @@ const AddSimModal = (props: Props) => {
                 </div>
               </div>
               <div className="img-upld">
-                <ImageUpload imgUrl={imgUrl} setImgUrl={setImgUrl} />
+                <ImageUpload imageURL={imageURL} setImageURL={setImageURL} />
               </div>
             </div>
           </>

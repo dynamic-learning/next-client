@@ -21,7 +21,7 @@ export type CanvasSimType = {
 
 export type Sim = {
   owner: string;
-  id: string;
+  _id: string;
 };
 
 export type TextboxType = {

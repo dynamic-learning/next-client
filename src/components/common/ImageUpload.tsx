@@ -2,13 +2,13 @@ import { Upload, message } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 
-const ImageUpload = ({ imgUrl, setImgUrl }: any) => {
+const ImageUpload = ({ imageURL, setImageURL }: any) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log(imgUrl);
-    if (imgUrl) {
-      setImgUrl(imgUrl);
+    console.log(imageURL);
+    if (imageURL) {
+      setImageURL(imageURL);
     }
   }, []);
 
@@ -22,7 +22,7 @@ const ImageUpload = ({ imgUrl, setImgUrl }: any) => {
         setLoading(false);
         const image = new Image();
         image.src = imageUrl;
-        setImgUrl(imageUrl);
+        setImageURL(imageUrl);
       });
     }
   };
@@ -41,8 +41,8 @@ const ImageUpload = ({ imgUrl, setImgUrl }: any) => {
       beforeUpload={beforeUpload}
       onChange={handleChange}
     >
-      {imgUrl ? (
-        <img src={imgUrl} style={{ maxWidth: "80px", maxHeight: "80px" }} />
+      {imageURL ? (
+        <img src={imageURL} style={{ maxWidth: "80px", maxHeight: "80px" }} />
       ) : (
         uploadButton
       )}

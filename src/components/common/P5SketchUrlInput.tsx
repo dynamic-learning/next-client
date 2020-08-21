@@ -45,7 +45,7 @@ const P5SketchUrlInput = (props: Props) => {
     }
     setSim({
       owner: getOwnerFromSketchUrl(inputUrl),
-      id: getIdFromSketchUrl(inputUrl),
+      _id: getIdFromSketchUrl(inputUrl),
     });
   };
 

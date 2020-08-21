@@ -31,6 +31,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ant-design/icons": "^4.2.2",
     "antd": "^4.4.2",
     "fabric": "^3.6.3",
     "graphql-request": "^2.0.0",

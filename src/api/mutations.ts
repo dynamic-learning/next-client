@@ -107,17 +107,17 @@ export const updateWorkbookFolder = ({ _id, field, value }: any) => {
   );
 };
 
-export const addSim = ({ id, owner, title, description, tags, imgUrl }: any) => {
+export const addSim = ({ _id, owner, title, description, tags, imageURL }: any) => {
   return request(
     apiRootUrl,
     `mutation {
       createSim(sim: {
-        _id: "${id}",
-        owner: "${owner}",
-        title: "${title}",
-        description: "${description}",
-        tags: "${tags}"
-        imageURL: "${imgUrl}"
+        _id: "${_id}"
+        owner: "${owner}"
+        title: "${title}"
+        description: "${description}"
+        tags: ${JSON.stringify(tags)}
+        imageURL: "${imageURL}"
       }) {
         _id
         owner
@@ -126,17 +126,17 @@ export const addSim = ({ id, owner, title, description, tags, imgUrl }: any) => 
   );
 };
 
-export const editSim = ({ id,title, description,tags, imgUrl }: any) => {
+export const editSim = ({ _id,title, description,tags, imageURL }: any) => {
   return request(
     apiRootUrl,
     `mutation {
       updateSim(
-        simId: "${id}",    
+        simId: "${_id}",    
         updatedSim: {
           title: "${title}"
           description: "${description}"
           tags: ${JSON.stringify(tags)}
-          imageURL: "${imgUrl}"
+          imageURL: "${imageURL}"
         }
       ) {
         title
@@ -147,11 +147,11 @@ export const editSim = ({ id,title, description,tags, imgUrl }: any) => {
 
 }
 
-export const deleteSim= (id: any) => {
+export const deleteSim= (_id: any) => {
   return request(
     apiRootUrl,
     `mutation {
-      deleteSim(simId: "${id}") {
+      deleteSim(simId: "${_id}") {
         success
       }
     }`

@@ -7,3 +7,4 @@ cypress-coverage/
 jest-coverage/
 coverage.json
 reports/
+cypress/screenshots/
