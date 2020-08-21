@@ -1,4 +1,4 @@
-import { Divider, Input, Button, Form } from "antd";
+import { Input } from "antd";
 import ReactTags from "react-tag-autocomplete";
 import ImageUpload from "../../common/ImageUpload";
 
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const SimDetails = (props: Props) => {
-  const { selectedSim, updateSelectedSim, handleApplyClick } = props;
+  const { selectedSim, updateSelectedSim } = props;
   const handleDeleteTag = (i: any) => {
     const newTags = selectedSim.tags.slice(0);
     newTags.splice(i, 1);

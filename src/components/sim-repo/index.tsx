@@ -50,17 +50,19 @@ const Simulations = (props: Props) => {
   const onSimUpdate = (updatedSim: any) => {
     console.log(updatedSim);
     updateSims(sims.map((sim) => {
-      if (sim._id == updatedSim._id)
+      if (sim._id === updatedSim._id) {
         return updatedSim;
-      else
+      }        
+      else {
         return sim;
+      }        
     }));
     editSim(updatedSim);
   }
   
   const onSimDelete = (deletedSim: any) => {
     console.log(deletedSim);
-    updateSims(sims.filter((sim) => sim._id != deletedSim._id));
+    updateSims(sims.filter((sim) => sim._id !== deletedSim._id));
     deleteSim(deletedSim._id);
   }
 

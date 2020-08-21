@@ -133,10 +133,10 @@ const SimsList = (props: Props) => {
         </P5SimModal>
       ) : null}
       {
-        (loading == true)
+        (loading)
           ? <Spin className="no-simulation-found" size="large" />
           : (
-              sims.length == 0 ?
+              sims.length === 0 ?
                 <div className="no-simulation-found">
                   No simulations found
                 </div>

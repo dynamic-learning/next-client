@@ -1,9 +1,7 @@
-import { Modal, Button } from "antd";
+import { Modal } from "antd";
 import { Rnd } from "react-rnd";
 import { useState } from "react";
 import { Sim } from "../../types";
-import { DeleteOutlined, SaveOutlined, PlusCircleOutlined } from '@ant-design/icons';
-
 /**
  * This component is exclusively for displaying a p5 sketch iframe
  * Since the size of the iframe is uncertain, the size of the modal box
@@ -17,7 +15,7 @@ import { DeleteOutlined, SaveOutlined, PlusCircleOutlined } from '@ant-design/ic
 
 const P5SimModal = (props: any) => {
 
-  const { onCancel, onOk,  deleteSelectedSim, footer } = props;
+  const { onCancel, onOk, footer } = props;
 
   const sim:Sim = props.sim;
 
@@ -41,16 +39,6 @@ const P5SimModal = (props: any) => {
   if (!(sim && sim._id && sim.owner)) {
     height = 0;
   }
-
-  const handleCancelClick = () => {
-    onCancel();
-    setSize({ width: 640, height: 360 });
-  };
-
-  const handleOKClick = () => {
-    onOk();
-    setSize({ width: 640, height: 360 });
-  };
 
   const resizeConfig = {
     top: false,
