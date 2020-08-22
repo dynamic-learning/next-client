@@ -112,8 +112,6 @@ const SimsList = (props: Props) => {
       <style>{style}</style>
       {selectedSim ? (
         <P5SimModal
-          onCancel={handleCancelClick}
-          onOk={handleOKClick}
           centered
           title="Sim"
           sim={selectedSim}
