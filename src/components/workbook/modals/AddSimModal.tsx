@@ -25,6 +25,11 @@ const AddSimModal = (props: Props) => {
     }
   };
 
+  const handleCancel = () => {
+    setSim(null)
+    handleAddSimModalClose()
+  }
+
   return (
     <>
       <style>{style}</style>
@@ -33,7 +38,7 @@ const AddSimModal = (props: Props) => {
         onOk={handleOk}
         okText="Add"
         wrapClassName="vertical-center-modal"
-        onCancel={handleAddSimModalClose}
+        onCancel={handleCancel}
         title="Add simulation"
         visible={showAddSimModal}
         sim={sim}

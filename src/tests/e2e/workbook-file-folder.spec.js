@@ -17,10 +17,11 @@ describe("Workbook file folder tests", () => {
   it('tests rename of workbook', () => {
     itemRenameTest({ type:'folder' })
   })
-  it("deletes all the workbooks", () => {
+  after(()=>{
     cy.get('.trash-icon').its('length').then((initialNoOfItems)=>{
       for(let i=0;i<initialNoOfItems;i++) {
-        cy.get('.trash-icon').eq(i).click();
+        cy.get('.trash-icon').eq(0).click();
+        cy.wait(500)
       }
     })
   })
