@@ -17,12 +17,10 @@ interface Props {
 const SimsList = (props: Props) => {
   const { sims, onSimUpdate, onSimDelete, loading } = props;
 
-  const [selectedSim, setSelectedSim] = useState(defaultSim);
   const [simModal, updateSimModal] = useState({sim: {}, showSimModal: false});
 
   const handleSimClick = (index: number) => {
     return () => {
-      // setSelectedSim(sims[index]);
       updateSimModal({
         sim: sims[index],
         showSimModal: true
@@ -31,10 +29,6 @@ const SimsList = (props: Props) => {
   };
 
   const updateSelectedSim = (editedValue: string, valueType: string) => {
-    // setSelectedSim({
-    //   ...selectedSim,
-    //   [valueType]: editedValue,
-    // });
     updateSimModal({
       sim: {
         ...(simModal.sim),
@@ -46,12 +40,10 @@ const SimsList = (props: Props) => {
 
   const handleSave = () => {
     onSimUpdate(simModal.sim);
-    // setSelectedSim(null);
     handleModalClose();
   };
 
   const handleModalClose = () => {
-    // setSelectedSim(null);
     updateSimModal({
       ...simModal,
       showSimModal: false
@@ -119,7 +111,6 @@ const SimsList = (props: Props) => {
       ))}
     </>
   );
-  console.log(selectedSim);
   return (
     <>
       <style>{style}</style>
@@ -137,7 +128,7 @@ const SimsList = (props: Props) => {
               updateSelectedSim={updateSelectedSim}
             />
           ) : (
-            <SimDetails selectedSim={selectedSim} />
+            <SimDetails selectedSim={simModal.sim} />
           )}
         </P5SimModal>
       {
