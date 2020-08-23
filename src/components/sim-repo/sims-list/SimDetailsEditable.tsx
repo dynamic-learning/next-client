@@ -6,8 +6,7 @@ const { TextArea } = Input;
 
 interface Props {
   selectedSim: any;
-  updateSelectedSim(updatedSim: any, updatedValueType: string): void;
-  handleApplyClick(): void;
+  updateSelectedSim(updatedSim: any, updatedValueType: string): void;  
 }
 
 const SimDetails = (props: Props) => {

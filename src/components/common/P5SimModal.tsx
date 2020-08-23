@@ -15,7 +15,7 @@ import { Sim } from "../../types";
 
 const P5SimModal = (props: any) => {
 
-  const { footer } = props;
+  const { footer, handleModalClose } = props;
 
   const sim:Sim = props.sim;
 
@@ -54,8 +54,11 @@ const P5SimModal = (props: any) => {
   return (
     <Modal
       {...props}
-      width={width + 50}
-      footer={footer}
+      width = {width + 50}
+      afterClose = {() => setSize({ width: 640, height: 360 })}
+      onCancel = {handleModalClose}
+      footer = {footer}
+      maskClosable = {false}
     >
       <div style={{ width: width + "px", height: height + "px" }}>
         <Rnd

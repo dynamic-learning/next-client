@@ -21,7 +21,6 @@ const Simulations = (props: Props) => {
   const [showAddSim, setShowAddSim] = useState(false);
 
   useEffect(() => {
-    console.log("useEffect called!");
     getSims("")    
     .then((data) => {
       console.log(data.sims);

@@ -88,9 +88,8 @@ const AddSimModal = (props: Props) => {
         sim={sim}
         centered
         destroyOnClose
-        onCancel={clearFieldsAndCloseModal}
-        onOk={onSubmitPress}
         visible={visible}
+        handleModalClose={handleAddSimClose}
         title="Add simulation"
         okButtonProps={{ disabled: areAllDetailsFilled }}
         footer={footerArray}
