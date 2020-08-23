@@ -2,6 +2,8 @@ import P5SketchUrlInput from "../../common/P5SketchUrlInput";
 import { useState } from "react";
 import { getNewSim } from "../../../utils/workbook";
 import P5SimModal from "../../common/P5SimModal";
+import { Button } from "antd";
+import { PlusCircleOutlined } from '@ant-design/icons';
 
 interface Props {
   showAddSimModal: boolean;
@@ -30,19 +32,24 @@ const AddSimModal = (props: Props) => {
     handleAddSimModalClose()
   }
 
+  const footerArray = [
+    <Button icon={<PlusCircleOutlined />} onClick={handleOk}>
+      Add to workbook
+    </Button>
+  ];
+
   return (
     <>
       <style>{style}</style>
       <P5SimModal
         destroyOnClose
-        onOk={handleOk}
-        okText="Add"
         wrapClassName="vertical-center-modal"
-        onCancel={handleCancel}
+        handleModalClose={handleCancel}
         title="Add simulation"
         visible={showAddSimModal}
         sim={sim}
         maskClosable={false}
+        footer = {footerArray}
       >
         <P5SketchUrlInput setSim={setSim} />
       </P5SimModal>

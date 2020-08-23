@@ -18,65 +18,78 @@ const SimsList = (props: Props) => {
   const { sims, onSimUpdate, onSimDelete, loading } = props;
 
   const [selectedSim, setSelectedSim] = useState(defaultSim);
+  const [simModal, updateSimModal] = useState({sim: {}, showSimModal: false});
 
   const handleSimClick = (index: number) => {
     return () => {
-      setSelectedSim(sims[index]);
+      // setSelectedSim(sims[index]);
+      updateSimModal({
+        sim: sims[index],
+        showSimModal: true
+      });
     };
   };
 
   const updateSelectedSim = (editedValue: string, valueType: string) => {
-    setSelectedSim({
-      ...selectedSim,
-      [valueType]: editedValue,
+    // setSelectedSim({
+    //   ...selectedSim,
+    //   [valueType]: editedValue,
+    // });
+    updateSimModal({
+      sim: {
+        ...(simModal.sim),
+        [valueType]: editedValue
+      },
+      showSimModal: simModal.showSimModal
+    })
+  };
+
+  const handleSave = () => {
+    onSimUpdate(simModal.sim);
+    // setSelectedSim(null);
+    handleModalClose();
+  };
+
+  const handleModalClose = () => {
+    // setSelectedSim(null);
+    updateSimModal({
+      ...simModal,
+      showSimModal: false
     });
   };
 
-  const handleOKClick = () => {
-    onSimUpdate(selectedSim);
-    setSelectedSim(null);
-  };
-
-  const handleApplyClick = () => {
-    onSimUpdate(selectedSim);
-    setSelectedSim(null);
-  };
-
-  const handleCancelClick = () => {
-    setSelectedSim(null);
-  };
-
-  const deleteSelectedSim= () => {
-    onSimDelete(selectedSim);
-    setSelectedSim(null);
+  const handleDelete= () => {
+    onSimDelete(simModal.sim);
+    handleModalClose(); 
   }
 
   const isAdmin = () => {
     return true;
   };
 
-  const handleAddToWorkbook = () => {
+  const handleAddSimToWorkbook = () => {
     //TODO: Need to implement this later   
     console.log('add sim to workbook');
+    handleModalClose();
   }
 
   const footerArray = () => {
     if (isAdmin()) {
       return [        
-        <Button onClick={deleteSelectedSim} icon={<DeleteOutlined />} type="dashed" danger>
+        <Button onClick={handleDelete} icon={<DeleteOutlined />} type="dashed" danger>
           Delete 
         </Button>,
-        <Button icon={<SaveOutlined />} onClick={handleOKClick}>
+        <Button icon={<SaveOutlined />} onClick={handleSave}>
           Save
         </Button>,
-        <Button icon={<PlusCircleOutlined />} onClick={handleAddToWorkbook}>
-          Add 
+        <Button icon={<PlusCircleOutlined />} onClick={handleAddSimToWorkbook}>
+          Add to workbook
         </Button>
       ]
     }
     else {
       return [
-        <Button icon={<PlusCircleOutlined />} onClick={handleAddToWorkbook}>
+        <Button icon={<PlusCircleOutlined />} onClick={handleAddSimToWorkbook}>
           Add to workbook
         </Button>
       ];
@@ -110,26 +123,23 @@ const SimsList = (props: Props) => {
   return (
     <>
       <style>{style}</style>
-      {selectedSim ? (
         <P5SimModal
           centered
-          title="Sim"
-          sim={selectedSim}
-          deleteSelectedSim={deleteSelectedSim}
-          visible={!!selectedSim}
-          footer={footerArray()}
+          title = "Simulation"
+          sim = {simModal.sim}
+          visible = {simModal.showSimModal}
+          footer = {footerArray()}
+          handleModalClose = {handleModalClose}
         >
           {isAdmin() ? (
             <SimDetailsEditable
-              selectedSim={selectedSim}
-              updateSelectedSim={updateSelectedSim}              
-              handleApplyClick={handleApplyClick}
+              selectedSim={simModal.sim}
+              updateSelectedSim={updateSelectedSim}
             />
           ) : (
             <SimDetails selectedSim={selectedSim} />
           )}
         </P5SimModal>
-      ) : null}
       {
         (loading)
           ? <Spin className="no-simulation-found" size="large" />

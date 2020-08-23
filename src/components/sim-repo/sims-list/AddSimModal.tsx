@@ -89,6 +89,7 @@ const AddSimModal = (props: Props) => {
         centered
         destroyOnClose
         visible={visible}
+        handleModalClose={handleAddSimClose}
         title="Add simulation"
         okButtonProps={{ disabled: areAllDetailsFilled }}
         footer={footerArray}
