@@ -20,9 +20,12 @@ const AddSimModal = (props: Props) => {
   const handleOk = () => {
     handleAddSimModalClose();
     //@ts-ignore
-    const { owner, id } = sim;
-    if (owner && id) {
-      const newSim = getNewSim(owner, id);
+    console.log("Adding item: handleOk");
+    const { owner, _id } = sim;
+    console.log(owner, _id);
+    if (owner && _id) {
+      const newSim = getNewSim(owner, _id);
+      console.log("Adding item");
       onItemAdd(newSim, "sims");
     }
   };
