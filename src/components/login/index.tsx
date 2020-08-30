@@ -1,13 +1,13 @@
 import ThemeContext from "../../contexts";
 import { useContext } from "react";
-import { Input } from "antd";
 import { useRouter } from "next/router";
-
-
+import { login } from "../../api/queries";
+import Cookies from "universal-cookie";
 
 const Login = () => {
   const { theme } = useContext(ThemeContext);
-  const router= useRouter();
+  const router = useRouter();
+  const cookies = new Cookies();
 
   const goToSignUp= ()=>router.push('/signup')
 
@@ -27,12 +27,35 @@ const Login = () => {
     </>
   );
 
-  const EmailAndPassword = () => (
-    <div className="email-password-inputs">
+  const handleLogin = (e: any) => {
+    e.preventDefault();
+
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    if (email.length === 0 || password.length === 0) {
+      alert("Email or password cannot be empty");
+      return;
+    }
+
+    login(email, password)
+    .then((data) => {
+      alert("Login successful");
+      cookies.set('auth-token', data.login.token, { path: '/' , maxAge: data.login.tokenExpiration * 60 * 60 });
+      // Use cookies.get('auth-token') to get access to token
+    })
+    .catch((err) => {
+      alert(err.response.errors[0].message);
+    })
+  }
+
+  const LoginForm = () => (
+    <form className="email-password-inputs" onSubmit = {handleLogin}>
       <label className="login-label">Log In</label>
-      <Input placeholder="Email" className="input" />
-      <Input placeholder="Password" type="password" className="input" />
-    </div>
+      <input placeholder="Email" className="input" name="email"/>
+      <input placeholder="Password" type="password" className="input" name="password"/>
+      <button className="login-button" type="submit">Login</button>
+    </form>
   );
 
   const CreateNewAccount = () => (
@@ -41,8 +64,6 @@ const Login = () => {
       <span className="create-new" onClick={goToSignUp}> Create new</span>
     </div>
   );
-
-  const LoginButton = () => <div className="login-button">Log In</div>;
 
   /**
    * Final JSX return
@@ -53,8 +74,7 @@ const Login = () => {
       <div className="page-container">
         <div className="box">
           <Logo />
-          <EmailAndPassword />
-          <LoginButton />
+          <LoginForm />
           <GithubAndGoogleIcons />
           <CreateNewAccount />
         </div>
@@ -100,10 +120,9 @@ const getStyle = ({ color1, color7, color5 }: any) => `
     .login-button {
       text-align:center;
       color:white;
-      margin:auto;
+      margin:10px auto;
       width:70px;
       background-color:${color1};
-      border-radius:1rem;
       cursor:pointer;
     }
     .login-button:hover {

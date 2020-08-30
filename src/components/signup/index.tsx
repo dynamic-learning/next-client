@@ -1,7 +1,7 @@
 import ThemeContext from "../../contexts";
 import { useContext } from "react";
-import { Input } from "antd";
 import { useRouter } from "next/router";
+import { signup } from "../../api/mutations";
 
 const SignUp = () => {
   const { theme } = useContext(ThemeContext);
@@ -15,13 +15,38 @@ const SignUp = () => {
     </div>
   );
 
-  const EmailAndPassword = () => (
-    <div className="email-password-inputs">
+  const handleSignUp = (e: any) => {
+    e.preventDefault();
+
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    if (email.length === 0 || password.length === 0) {
+      alert("Email or password cannot be empty");
+      return;
+    }
+
+    //TODO: Modify mutation to add username also
+    signup(email, password)
+    .then((data) => {
+      if (data.createUser._id){
+        console.log("User ID", data.createUser._id);
+        alert("User creation successful. Please login to continue!");
+      }
+    })
+    .catch((err) => {
+      alert(err.response.errors[0].message);
+    });
+  }
+
+  const SignUpForm = () => (
+    <form className="email-password-inputs" onSubmit={handleSignUp}>
       <label className="login-label">Sign Up</label>
-      <Input placeholder="Username" className="input" />
-      <Input placeholder="Email" className="input" />
-      <Input placeholder="Password" type="password" className="input" />
-    </div>
+      <input placeholder="Username" className="input" name="username"/>
+      <input placeholder="Email" className="input" name="email"/>
+      <input placeholder="Password" type="password" className="input" name="password"/>
+      <button className="login-button" type="submit">Sign up</button>
+    </form>
   );
 
   const AlreadyHaveAnAccount = () => (
@@ -30,8 +55,6 @@ const SignUp = () => {
       <span className="login-message" onClick={goToLogin}> Log In</span>
     </div>
   );
-
-  const SignupButton = () => <div className="login-button">Sign up</div>;
 
   /**
    * Final JSX return
@@ -42,8 +65,7 @@ const SignUp = () => {
       <div className="page-container">
         <div className="box">
           <Logo />
-          <EmailAndPassword />
-          <SignupButton />
+          <SignUpForm />
           <AlreadyHaveAnAccount />
         </div>
       </div>
@@ -88,7 +110,7 @@ const getStyle = ({ color1, color7, color5 }: any) => `
     .login-button {
       text-align:center;
       color:white;
-      margin:auto;
+      margin:10px auto;
       width:70px;
       background-color:${color1};
       border-radius:1rem;
