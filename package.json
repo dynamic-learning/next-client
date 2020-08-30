@@ -48,7 +48,8 @@
     "react-tag-autocomplete": "^5.13.1",
     "redux": "^4.0.5",
     "redux-undo": "^1.0.1",
-    "showdown": "^1.9.1"
+    "showdown": "^1.9.1",
+    "universal-cookie": "^4.0.3"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.8.1",

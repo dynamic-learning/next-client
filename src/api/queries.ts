@@ -47,3 +47,19 @@ export const getSims = (searchKeyword: string) => (
     `   
   )
 );
+
+export const login = (email: string, password: string) => (
+  request (
+    apiRootUrl,
+    `
+      query {
+        login (email: "${email}", password: "${password}") {
+          userId
+          token
+          tokenExpiration
+          type
+        }
+      }
+    `
+  )
+)

@@ -157,3 +157,22 @@ export const deleteSim= (_id: any) => {
     }`
   )
 }
+
+export const signup = (email: string, password: string) => {
+  return request (
+    apiRootUrl,
+    `
+      mutation {
+        createUser(userInput: {
+          email: "${email}",
+          password: "${password}"
+        }) {
+          _id
+          email
+          password
+          type
+        }
+      }
+    `
+  );
+}
