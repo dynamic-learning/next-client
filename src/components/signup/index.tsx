@@ -26,6 +26,7 @@ const SignUp = () => {
       return;
     }
 
+    //TODO: Modify mutation to add username also
     signup(email, password)
     .then((data) => {
       if (data.createUser._id){
