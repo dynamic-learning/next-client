@@ -33,7 +33,7 @@ const Login = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    if (email.length == 0 || password.length == 0) {
+    if (email.length === 0 || password.length === 0) {
       alert("Email or password cannot be empty");
       return;
     }
