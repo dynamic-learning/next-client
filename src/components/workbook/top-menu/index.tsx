@@ -155,7 +155,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
     <div className="navitems-right">
       <Menu selectable={false} theme="dark" mode="horizontal">
         <SubMenu title="App">
-          {isAuthenticated ? (
+          {!isAuthenticated ? (
             <Menu.Item
               onClick={handleLoginClick}
               key="login"
@@ -164,7 +164,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
               Login
             </Menu.Item>
           ) : null}
-          {isAuthenticated ? (
+          {!isAuthenticated ? (
             <Menu.Item
               onClick={handleSignUpClick}
               key="signup"
