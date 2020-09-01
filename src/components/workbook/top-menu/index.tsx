@@ -14,6 +14,7 @@ import { FaPen } from "react-icons/fa";
 import Topbar from "../../top-bar/index";
 import { SwatchesPicker } from "react-color";
 import { BsSquareFill } from "react-icons/bs";
+import useAuth from "../../../hooks/useAuth";
 const { SubMenu } = Menu;
 
 const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
@@ -33,18 +34,24 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
 
   const handleOpenClick = () => goToPage("/workbooks");
 
-  const handleSaveClick = () => {
-    saveWorkbook();
+  const handleSaveClick = (isAuthenticated: boolean) => {
+    isAuthenticated
+      ? saveWorkbook()
+      : alert("Please sign in to save your work");
   };
+
+  const { isAuthenticated } = useAuth();
 
   const renderFileMenu = () => (
     <SubMenu title="File" key="file" icon={<FileOutlined />}>
       <Menu.ItemGroup>
         <Menu.Item key="new">New</Menu.Item>
-        <Menu.Item onClick={handleOpenClick} key="open">
-          Open
-        </Menu.Item>
-        <Menu.Item onClick={handleSaveClick} key="save">
+        {isAuthenticated ? (
+          <Menu.Item onClick={handleOpenClick} key="open">
+            Open
+          </Menu.Item>
+        ) : null}
+        <Menu.Item onClick={() => handleSaveClick(isAuthenticated)} key="save">
           Save
         </Menu.Item>
         <Menu.Item key="examples">Examples</Menu.Item>
@@ -148,20 +155,24 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
     <div className="navitems-right">
       <Menu selectable={false} theme="dark" mode="horizontal">
         <SubMenu title="App">
-          <Menu.Item
-            onClick={handleLoginClick}
-            key="login"
-            icon={<LoginOutlined />}
-          >
-            Login
-          </Menu.Item>
-          <Menu.Item
-            onClick={handleSignUpClick}
-            key="signup"
-            icon={<UserAddOutlined />}
-          >
-            Sign Up
-          </Menu.Item>
+          {isAuthenticated ? (
+            <Menu.Item
+              onClick={handleLoginClick}
+              key="login"
+              icon={<LoginOutlined />}
+            >
+              Login
+            </Menu.Item>
+          ) : null}
+          {isAuthenticated ? (
+            <Menu.Item
+              onClick={handleSignUpClick}
+              key="signup"
+              icon={<UserAddOutlined />}
+            >
+              Sign Up
+            </Menu.Item>
+          ) : null}
           <Menu.Item
             icon={<ExclamationCircleOutlined />}
             onClick={handleAboutClick}
