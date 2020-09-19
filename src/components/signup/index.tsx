@@ -5,9 +5,9 @@ import { signup } from "../../api/mutations";
 
 const SignUp = () => {
   const { theme } = useContext(ThemeContext);
-  const router= useRouter();
+  const router = useRouter();
 
-  const goToLogin= () => router.push('/login') 
+  const goToLogin = () => router.push("/login");
 
   const Logo = () => (
     <div className="logo-container">
@@ -28,31 +28,42 @@ const SignUp = () => {
 
     //TODO: Modify mutation to add username also
     signup(email, password)
-    .then((data) => {
-      if (data.createUser._id){
-        console.log("User ID", data.createUser._id);
-        alert("User creation successful. Please login to continue!");
-      }
-    })
-    .catch((err) => {
-      alert(err.response.errors[0].message);
-    });
-  }
+      .then((data) => {
+        if (data.createUser._id) {
+          console.log("User ID", data.createUser._id);
+          alert("User creation successful. Please login to continue!");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.response.errors[0].message);
+      });
+  };
 
   const SignUpForm = () => (
     <form className="email-password-inputs" onSubmit={handleSignUp}>
       <label className="login-label">Sign Up</label>
-      <input placeholder="Username" className="input" name="username"/>
-      <input placeholder="Email" className="input" name="email"/>
-      <input placeholder="Password" type="password" className="input" name="password"/>
-      <button className="login-button" type="submit">Sign up</button>
+      <input placeholder="Username" className="input" name="username" />
+      <input placeholder="Email" className="input" name="email" />
+      <input
+        placeholder="Password"
+        type="password"
+        className="input"
+        name="password"
+      />
+      <button className="login-button" type="submit">
+        Sign up
+      </button>
     </form>
   );
 
   const AlreadyHaveAnAccount = () => (
     <div className="already-have-message">
       <span>Already have an account?</span>
-      <span className="login-message" onClick={goToLogin}> Log In</span>
+      <span className="login-message" onClick={goToLogin}>
+        {" "}
+        Log In
+      </span>
     </div>
   );
 
