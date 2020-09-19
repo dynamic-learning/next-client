@@ -25,6 +25,7 @@ export const getCommonStyle = ({ color1, color7, color5 }: any) => `
       border-radius:5px;
       border: 1px solid lightgrey;
       padding: 0.3rem;
+      outline:none;
     }
     .email-password-inputs {
       width:80%;

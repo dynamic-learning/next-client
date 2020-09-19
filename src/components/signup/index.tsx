@@ -3,10 +3,12 @@ import { useContext } from "react";
 import { useRouter } from "next/router";
 import { signup } from "../../api/mutations";
 import { getCommonStyle } from "../login/getCommonStyle";
+import useAuth from "../../hooks/useAuth";
 
 const SignUp = () => {
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
+  const { setAuthData } = useAuth();
 
   const goToLogin = () => router.push("/login");
 
@@ -21,23 +23,22 @@ const SignUp = () => {
 
     const email = e.target.email.value;
     const password = e.target.password.value;
+    const username = e.target.username.value;
 
     if (email.length === 0 || password.length === 0) {
       alert("Email or password cannot be empty");
       return;
     }
 
-    //TODO: Modify mutation to add username also
-    signup(email, password)
+    signup(username, email, password)
       .then((data) => {
-        if (data.createUser._id) {
-          console.log("User ID", data.createUser._id);
-          alert("User creation successful. Please login to continue!");
+        if (data.createUser.userId) {
+          setAuthData(data.createUser);
+          router.push("/");
         }
       })
       .catch((err) => {
         console.log(err);
-        alert(err.response.errors[0].message);
       });
   };
 

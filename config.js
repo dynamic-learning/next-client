@@ -1,3 +1,3 @@
 export default {
-  apiRootUrl: "http://localhost:4000",
+  apiRootUrl: "https://dl-graphql.herokuapp.com/graphql",
 };

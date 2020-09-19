@@ -2,13 +2,13 @@ import ThemeContext from "../../contexts";
 import { useContext } from "react";
 import { useRouter } from "next/router";
 import { login } from "../../api/queries";
-import Cookies from "universal-cookie";
 import { getCommonStyle } from "./getCommonStyle";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
-  const cookies = new Cookies();
+  const { setAuthData } = useAuth();
 
   const goToSignUp = () => router.push("/signup");
 
@@ -41,12 +41,8 @@ const Login = () => {
 
     login(email, password)
       .then((data) => {
-        alert("Login successful");
-        cookies.set("auth-token", data.login.token, {
-          path: "/",
-          maxAge: data.login.tokenExpiration * 60 * 60,
-        });
-        // Use cookies.get('auth-token') to get access to token
+        setAuthData(data.login);
+        router.push("/");
       })
       .catch((err) => {
         alert(err.response.errors[0].message);

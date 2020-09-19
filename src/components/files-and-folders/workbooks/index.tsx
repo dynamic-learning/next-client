@@ -61,7 +61,7 @@ const Workbooks = (props: Props) => {
 
   useEffect(() => {
     updateFlatData(initialWorkbooks);
-  }, []);
+  }, [initialWorkbooks]);
 
   ////////////////////////////////////////
   ////// Functions connected to APIs ////
