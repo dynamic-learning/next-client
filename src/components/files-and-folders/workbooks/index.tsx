@@ -224,7 +224,7 @@ const Workbooks = (props: Props) => {
   //////// Ends ////////////////////////
   /////////////////////////////////////
 
-  const handleGoBackClick = () => router.push("/index");
+  const handleGoBackClick = () => router.back();
 
   const handleTitleModalOpen = () => {
     setShowTitleModal(true);

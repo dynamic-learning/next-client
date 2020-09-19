@@ -6,7 +6,7 @@ const cookies = new Cookies();
 
 const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userType, setUserType] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const authData: AuthData = cookies.get("auth_data");
@@ -15,7 +15,7 @@ const useAuth = () => {
     const userType = isAuthenticated ? authData.type : "unauthenticated";
 
     setIsAuthenticated(isAuthenticated);
-    setUserType(userType);
+    setIsAdmin(userType == "admin");
   }, []);
 
   const setAuthData = (authData: AuthData) => {
@@ -27,7 +27,7 @@ const useAuth = () => {
     setIsAuthenticated(false);
   };
 
-  return { isAuthenticated, userType, setAuthData, clearAuthData };
+  return { isAuthenticated, isAdmin, setAuthData, clearAuthData };
 };
 
 export default useAuth;

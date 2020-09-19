@@ -8,26 +8,33 @@ import { debounce } from "../../utils/common";
 const defaultSims: Array<any> = [];
 
 interface Props {
-  addSim: ({ _id, owner, title, description, tags, imageURL }: any) => Promise<any>;
+  addSim: ({
+    _id,
+    owner,
+    title,
+    description,
+    tags,
+    imageURL,
+  }: any) => Promise<any>;
   editSim: ({ id, updatedSim }: any) => Promise<any>;
   deleteSim: (id: any) => Promise<any>;
   getSims: (searchKeyword: string) => Promise<any>;
 }
 
 const Simulations = (props: Props) => {
-  const { addSim, editSim, deleteSim, getSims }= props;
+  const { addSim, editSim, deleteSim, getSims } = props;
   const [sims, updateSims] = useState(defaultSims);
-  const [loading, setLoading]= useState(true);
+  const [loading, setLoading] = useState(true);
   const [showAddSim, setShowAddSim] = useState(false);
 
   useEffect(() => {
-    getSims("")    
-    .then((data) => {
-      console.log(data.sims);
-      updateSims(data.sims)
-      setLoading(false);
-    })
-    .catch((err) => console.log(err));
+    getSims("")
+      .then((data) => {
+        console.log(data.sims);
+        updateSims(data.sims);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   const handleAddClick = () => {
@@ -42,42 +49,43 @@ const Simulations = (props: Props) => {
     console.log(newSim);
     updateSims([...sims, newSim]);
     addSim(newSim)
-    .then((data) => console.log(data))
-    .catch((err) => console.log(err));
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
   };
 
   const onSimUpdate = (updatedSim: any) => {
     console.log(updatedSim);
-    updateSims(sims.map((sim) => {
-      if (sim._id === updatedSim._id) {
-        return updatedSim;
-      }        
-      else {
-        return sim;
-      }        
-    }));
+    updateSims(
+      sims.map((sim) => {
+        if (sim._id === updatedSim._id) {
+          return updatedSim;
+        } else {
+          return sim;
+        }
+      })
+    );
     editSim(updatedSim);
-  }
-  
+  };
+
   const onSimDelete = (deletedSim: any) => {
     console.log(deletedSim);
     updateSims(sims.filter((sim) => sim._id !== deletedSim._id));
     deleteSim(deletedSim._id);
-  }
+  };
 
   const handleSearchDebounced = debounce((searchKeyword: any) => {
     console.log(searchKeyword);
     setLoading(true);
     getSims(searchKeyword)
-    .then((data) =>{      
-      updateSims(data.sims);
-      setLoading(false);
-    })
-    .catch((err) => {
-      console.log(err)
-      alert('Something went wrong!');
-      setLoading(false);
-    })
+      .then((data) => {
+        updateSims(data.sims);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Something went wrong!");
+        setLoading(false);
+      });
   }, 650);
 
   return (
@@ -93,8 +101,16 @@ const Simulations = (props: Props) => {
           <LeftMenu />
         </div>
         <div className="sims-list">
-          <SimSearchAdd handleAddClick={handleAddClick} handleSearch={handleSearchDebounced} />
-          <SimsList onSimUpdate={onSimUpdate} onSimDelete={onSimDelete} sims={sims} loading={loading}/>
+          <SimSearchAdd
+            handleAddClick={handleAddClick}
+            handleSearch={handleSearchDebounced}
+          />
+          <SimsList
+            onSimUpdate={onSimUpdate}
+            onSimDelete={onSimDelete}
+            sims={sims}
+            loading={loading}
+          />
         </div>
       </div>
     </>

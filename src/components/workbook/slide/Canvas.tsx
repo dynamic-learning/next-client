@@ -65,7 +65,9 @@ const Slide = (props: Props) => {
   };
 
   const getDimensionsOfElement = (selector: string) => {
-    const canvasContainerRef = document.querySelector(selector) as HTMLDivElement;
+    const canvasContainerRef = document.querySelector(
+      selector
+    ) as HTMLDivElement;
     return {
       width: canvasContainerRef.offsetWidth,
       height: canvasContainerRef.offsetHeight,

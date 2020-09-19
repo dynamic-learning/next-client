@@ -1,6 +1,10 @@
+import config from "../../../config";
+
+const { apiRootUrl } = config;
+
 describe("Workbook file folder tests", () => {
   before(() => {
-    cy.visit("http://localhost:3000/login");
+    loginAndSetCookie();
   });
 
   beforeEach(() => {
@@ -8,12 +12,7 @@ describe("Workbook file folder tests", () => {
   });
 
   it("logs in with a user", () => {
-    cy.get(".input").eq(0).type(`test@test.com`);
-    cy.get(".input").eq(1).type(`test`);
-    cy.get(".login-button").click();
-    cy.wait(2000);
     cy.visit("http://localhost:3000/workbooks");
-    cy.wait(2000);
   });
 
   it("tests addition and deletion of workbook folder ", () => {
@@ -62,4 +61,21 @@ const addItem = ({ type }) => {
   cy.get(".title-input").type(`sample-${type}`);
   cy.get(".ant-btn.ant-btn-primary").click();
   cy.wait(2000);
+};
+
+const loginAndSetCookie = () => {
+  cy.request("POST", `${apiRootUrl}/login`, {
+    query: `
+      query {
+        login (email: "test@test.com", password: "test") {
+           userId
+           token
+           tokenExpiration
+           type      
+        }
+      }
+    `,
+  }).then((res) => {
+    cy.setCookie("auth_data", JSON.stringify(res.body.data.login));
+  });
 };

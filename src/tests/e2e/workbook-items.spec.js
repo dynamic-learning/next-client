@@ -41,8 +41,10 @@ describe("Working related to items", () => {
     cy.get(".slide-menu").trigger("mouseover");
     cy.get(".add-simulation", { timeout }).trigger("mouseover");
     cy.get(".add-p5-url", { timeout }).click();
-    cy.get(".p5-sketch-url-input").type("https://editor.p5js.org/jithunni.ks");
-    cy.get(".p5-sketch-url-input").type("/sketches/r1rer94WX");
+
+    cy.get(".p5-sketch-url-input").type(
+      '<iframe src="https://editor.p5js.org/jithunni.ks/embed/WSbZvLqts"></iframe>'
+    );
     cy.get(".ant-btn", { timeout }).eq(0).click();
     cy.get("iframe").should("have.length", 1);
   });

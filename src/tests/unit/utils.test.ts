@@ -1,33 +1,33 @@
 import {
-  isValidSketchUrl,
-  getIdFromSketchUrl,
-  getOwnerFromSketchUrl,
+  isValidIframeTag,
+  getIdFromIframeTag,
+  getOwnerFromIframeTag,
 } from "../../utils/sketch";
 
 import { findIfItsPossibleToReduceCanvasSize } from "../../utils/workbook";
 
 describe("Sketch utils", () => {
   const validSketchUrl =
-    "https://www.editor.p5js.org/jithunni.ks/sketches/r1rer94WX";
+    '<iframe src="https://editor.p5js.org/jithunni.ks/embed/WSbZvLqts"></iframe>';
   it("tests if valid sketch is accepted", () => {
-    expect(isValidSketchUrl(validSketchUrl)).toBe(true);
+    expect(isValidIframeTag(validSketchUrl)).toBe(true);
   });
   it("tests if invalid sketch is rejected", () => {
     const invalidSketchUrl =
-      "https://www.eitor.p5js.org/jithunni.ks/sketches/r1rer94WX";
-    expect(isValidSketchUrl(invalidSketchUrl)).toBe(false);
+      '<iframe src="https://edtor.p5js.org/jithunni.ks/embed/WSbZvLqts"></iframe>';
+    expect(isValidIframeTag(invalidSketchUrl)).toBe(false);
   });
   it("tests if sketch Id is extracted correctly from url", () => {
-    expect(getIdFromSketchUrl(validSketchUrl)).toBe("r1rer94WX");
+    expect(getIdFromIframeTag(validSketchUrl)).toBe("WSbZvLqts");
   });
   it("tests if owner Id is extracted correctly from url", () => {
-    expect(getOwnerFromSketchUrl(validSketchUrl)).toBe("jithunni.ks");
+    expect(getOwnerFromIframeTag(validSketchUrl)).toBe("jithunni.ks");
   });
   it("tests if empty String is returned from wrong url", () => {
-    expect(getOwnerFromSketchUrl('random_string')).toBe("");
+    expect(getOwnerFromIframeTag("random_string")).toBe("");
   });
   it("tests if empty String is returned from wrong url", () => {
-    expect(getIdFromSketchUrl('random_string')).toBe("");
+    expect(getIdFromIframeTag("random_string")).toBe("");
   });
 });
 

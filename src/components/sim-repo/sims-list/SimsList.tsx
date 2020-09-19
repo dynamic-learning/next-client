@@ -3,9 +3,14 @@ import { useState } from "react";
 import SimDetails from "./SimDetails";
 import SimDetailsEditable from "./SimDetailsEditable";
 import { Button, Card, Spin } from "antd";
-import { DeleteOutlined, SaveOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import {
+  DeleteOutlined,
+  SaveOutlined,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
+import useAuth from "../../../hooks/useAuth";
 
-const defaultSim: any = null
+const defaultSim: any = null;
 
 interface Props {
   sims: Array<any>;
@@ -17,13 +22,15 @@ interface Props {
 const SimsList = (props: Props) => {
   const { sims, onSimUpdate, onSimDelete, loading } = props;
 
-  const [simModal, updateSimModal] = useState({sim: {}, showSimModal: false});
+  const [simModal, updateSimModal] = useState({ sim: {}, showSimModal: false });
+
+  const { isAdmin } = useAuth();
 
   const handleSimClick = (index: number) => {
     return () => {
       updateSimModal({
         sim: sims[index],
-        showSimModal: true
+        showSimModal: true,
       });
     };
   };
@@ -31,11 +38,11 @@ const SimsList = (props: Props) => {
   const updateSelectedSim = (editedValue: string, valueType: string) => {
     updateSimModal({
       sim: {
-        ...(simModal.sim),
-        [valueType]: editedValue
+        ...simModal.sim,
+        [valueType]: editedValue,
       },
-      showSimModal: simModal.showSimModal
-    })
+      showSimModal: simModal.showSimModal,
+    });
   };
 
   const handleSave = () => {
@@ -46,105 +53,102 @@ const SimsList = (props: Props) => {
   const handleModalClose = () => {
     updateSimModal({
       ...simModal,
-      showSimModal: false
+      showSimModal: false,
     });
   };
 
-  const handleDelete= () => {
+  const handleDelete = () => {
     onSimDelete(simModal.sim);
-    handleModalClose(); 
-  }
-
-  const isAdmin = () => {
-    return true;
+    handleModalClose();
   };
 
   const handleAddSimToWorkbook = () => {
-    //TODO: Need to implement this later   
-    console.log('add sim to workbook');
+    //TODO: Need to implement this later
+    console.log("add sim to workbook");
     handleModalClose();
-  }
+  };
 
   const footerArray = () => {
-    if (isAdmin()) {
-      return [        
-        <Button onClick={handleDelete} icon={<DeleteOutlined />} type="dashed" danger>
-          Delete 
+    if (isAdmin) {
+      return [
+        <Button
+          onClick={handleDelete}
+          icon={<DeleteOutlined />}
+          type="dashed"
+          danger
+        >
+          Delete
         </Button>,
         <Button icon={<SaveOutlined />} onClick={handleSave}>
           Save
         </Button>,
         <Button icon={<PlusCircleOutlined />} onClick={handleAddSimToWorkbook}>
           Add to workbook
-        </Button>
-      ]
-    }
-    else {
+        </Button>,
+      ];
+    } else {
       return [
         <Button icon={<PlusCircleOutlined />} onClick={handleAddSimToWorkbook}>
           Add to workbook
-        </Button>
+        </Button>,
       ];
     }
-  }
+  };
 
   const SimsList = () => (
     <>
       {sims.map((sim: any, index: number) => (
         <Card
-        style={{ width: "200px", margin: " 20px" }}
-        onClick={handleSimClick(index)}
-        hoverable={true}
-        cover={
-          <img
-            alt="example"
-            src={sim.imageURL}
-            style = {{height: "200px", width: "198px", margin: "0px auto"}}            
-            className="sim-block"
-            key={sim._id}
-          />
-        }
-      >
-        <h2>{sim.title}</h2>
-        <div style={{margin: "5px 0px", color: "grey"}}>{sim.description}</div>
-      </Card>
+          style={{ width: "200px", margin: " 20px" }}
+          onClick={handleSimClick(index)}
+          hoverable={true}
+          cover={
+            <img
+              alt="example"
+              src={sim.imageURL}
+              style={{ height: "200px", width: "198px", margin: "0px auto" }}
+              className="sim-block"
+              key={sim._id}
+            />
+          }
+        >
+          <h2>{sim.title}</h2>
+          <div style={{ margin: "5px 0px", color: "grey" }}>
+            {sim.description}
+          </div>
+        </Card>
       ))}
     </>
   );
   return (
     <>
       <style>{style}</style>
-        <P5SimModal
-          centered
-          title = "Simulation"
-          sim = {simModal.sim}
-          visible = {simModal.showSimModal}
-          footer = {footerArray()}
-          handleModalClose = {handleModalClose}
-        >
-          {isAdmin() ? (
-            <SimDetailsEditable
-              selectedSim={simModal.sim}
-              updateSelectedSim={updateSelectedSim}
-            />
-          ) : (
-            <SimDetails selectedSim={simModal.sim} />
-          )}
-        </P5SimModal>
-      {
-        (loading)
-          ? <Spin className="no-simulation-found" size="large" />
-          : (
-              sims.length === 0 ?
-                <div className="no-simulation-found">
-                  No simulations found
-                </div>
-              :
-                <ul className="flex-container wrap">
-                  <SimsList />
-                </ul>
-          )
-      }
+      <P5SimModal
+        centered
+        title="Simulation"
+        sim={simModal.sim}
+        visible={simModal.showSimModal}
+        footer={footerArray()}
+        handleModalClose={handleModalClose}
+      >
+        {isAdmin ? (
+          <SimDetailsEditable
+            selectedSim={simModal.sim}
+            updateSelectedSim={updateSelectedSim}
+          />
+        ) : (
+          <SimDetails selectedSim={simModal.sim} />
+        )}
+      </P5SimModal>
+      {loading ? (
+        <Spin className="no-simulation-found" size="large" />
+      ) : sims.length === 0 ? (
+        <div className="no-simulation-found">No simulations found</div>
+      ) : (
+        <ul className="flex-container wrap">
+          <SimsList />
+        </ul>
+      )}
     </>
   );
 };

@@ -1,8 +1,5 @@
 import { Input, Button } from "antd";
 import useAuth from "../../../hooks/useAuth";
-import { isAdmin } from "../../../utils/auth";
-
-const { Search } = Input;
 
 interface Props {
   handleAddClick(sim: any): void;
@@ -11,7 +8,7 @@ interface Props {
 
 const SimSearchAdd = (props: Props) => {
   const { handleAddClick, handleSearch } = props;
-  const { userType } = useAuth();
+  const { isAdmin } = useAuth();
 
   return (
     <>
@@ -28,9 +25,7 @@ const SimSearchAdd = (props: Props) => {
             onChange={(e) => handleSearch(e.target.value)}
           />
         </div>
-        {isAdmin(userType) ? (
-          <Button onClick={handleAddClick}>Add Sim</Button>
-        ) : null}
+        {isAdmin ? <Button onClick={handleAddClick}>Add Sim</Button> : null}
       </div>
     </>
   );

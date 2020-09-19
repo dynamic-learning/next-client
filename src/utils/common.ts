@@ -5,7 +5,6 @@ export const getRandomNo = () => {
   );
 };
 
-
 //Copied from https://levelup.gitconnected.com/debounce-in-javascript-improve-your-applications-performance-5b01855e086
 export const debounce = (func: any, wait: any) => {
   let timeout: any;

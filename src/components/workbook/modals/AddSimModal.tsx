@@ -3,7 +3,7 @@ import { useState } from "react";
 import { getNewSim } from "../../../utils/workbook";
 import P5SimModal from "../../common/P5SimModal";
 import { Button } from "antd";
-import { PlusCircleOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined } from "@ant-design/icons";
 
 interface Props {
   showAddSimModal: boolean;
@@ -31,14 +31,14 @@ const AddSimModal = (props: Props) => {
   };
 
   const handleCancel = () => {
-    setSim(null)
-    handleAddSimModalClose()
-  }
+    setSim(null);
+    handleAddSimModalClose();
+  };
 
   const footerArray = [
     <Button icon={<PlusCircleOutlined />} onClick={handleOk}>
       Add to workbook
-    </Button>
+    </Button>,
   ];
 
   return (
@@ -52,7 +52,7 @@ const AddSimModal = (props: Props) => {
         visible={showAddSimModal}
         sim={sim}
         maskClosable={false}
-        footer = {footerArray}
+        footer={footerArray}
       >
         <P5SketchUrlInput setSim={setSim} />
       </P5SimModal>

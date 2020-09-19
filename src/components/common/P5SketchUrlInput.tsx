@@ -1,9 +1,9 @@
 import { Input } from "antd";
 import { useState, useEffect } from "react";
 import {
-  isValidSketchUrl,
-  getOwnerFromSketchUrl,
-  getIdFromSketchUrl,
+  isValidIframeTag,
+  getOwnerFromIframeTag,
+  getIdFromIframeTag,
 } from "../../utils/sketch";
 import { Sim } from "../../types";
 
@@ -18,7 +18,7 @@ const P5SketchUrlInput = (props: Props) => {
 
   useEffect(() => {
     navigator.clipboard.readText().then((valueInClipboard) => {
-      if (isValidSketchUrl(valueInClipboard)) {
+      if (isValidIframeTag(valueInClipboard)) {
         setInputUrl(valueInClipboard);
         setSketchOwnerAndId(valueInClipboard);
       }
@@ -31,7 +31,7 @@ const P5SketchUrlInput = (props: Props) => {
   const handleInputChange = (e: any) => {
     const inputUrl = e.target.value;
     setInputUrl(inputUrl);
-    if (isValidSketchUrl(inputUrl)) {
+    if (isValidIframeTag(inputUrl)) {
       setSketchOwnerAndId(inputUrl);
     } else {
       setSketchOwnerAndId("");
@@ -44,8 +44,8 @@ const P5SketchUrlInput = (props: Props) => {
       return;
     }
     setSim({
-      owner: getOwnerFromSketchUrl(inputUrl),
-      _id: getIdFromSketchUrl(inputUrl),
+      owner: getOwnerFromIframeTag(inputUrl),
+      _id: getIdFromIframeTag(inputUrl),
     });
   };
 

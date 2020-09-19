@@ -6,7 +6,7 @@ const { TextArea } = Input;
 
 interface Props {
   selectedSim: any;
-  updateSelectedSim(updatedSim: any, updatedValueType: string): void;  
+  updateSelectedSim(updatedSim: any, updatedValueType: string): void;
 }
 
 const SimDetails = (props: Props) => {
@@ -39,7 +39,7 @@ const SimDetails = (props: Props) => {
     <>
       <style>{style}</style>
       <div className="sim-detail">
-      <Input
+        <Input
           onChange={onTitleChange}
           value={selectedSim.title}
           className="detail"
@@ -55,7 +55,10 @@ const SimDetails = (props: Props) => {
             />
             <div className="react-tag">
               <ReactTags
-                tags={selectedSim.tags.map((tag: string) => ({ id: name, name: tag }))}
+                tags={selectedSim.tags.map((tag: string) => ({
+                  id: name,
+                  name: tag,
+                }))}
                 handleDelete={handleDeleteTag}
                 handleAddition={handleAddTag}
                 allowNew={true}
@@ -63,9 +66,12 @@ const SimDetails = (props: Props) => {
             </div>
           </div>
           <div className="img-upld">
-            <ImageUpload setImageURL={setImageURL} imageURL={selectedSim.imageURL} />
+            <ImageUpload
+              setImageURL={setImageURL}
+              imageURL={selectedSim.imageURL}
+            />
           </div>
-        </div>        
+        </div>
       </div>
     </>
   );
