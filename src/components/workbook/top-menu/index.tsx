@@ -129,7 +129,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
           key="add-p5-url"
           onClick={handleAddSimButtonClick}
         >
-          Via p5 web editor sketch url
+          Add p5 web editor iframe link
         </Menu.Item>
         <Menu.Item
           onClick={handlSimulationCollectionClick}
