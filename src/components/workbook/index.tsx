@@ -33,6 +33,7 @@ interface WorkbookMethods {
   onFinishReorder(startIndex: number, endIndex: number): void;
   setSlides(slides: Array<SlideType>): void;
   updateWorkbook(values: any): Promise<any>;
+  resetSlides(): void;
 }
 
 interface WorkbookProps {
@@ -72,6 +73,7 @@ const Workbook = (props: Props) => {
     initialSlides,
     setSlides,
     updateWorkbook,
+    resetSlides,
     _id,
   } = props;
 
@@ -202,6 +204,7 @@ const Workbook = (props: Props) => {
             onCanvasOptionChange,
             onClearSlide,
             saveWorkbook,
+            resetSlides,
           }}
           actionDisablers={{
             undoable,
@@ -283,6 +286,9 @@ const mapDispatchToProps = (dispatch: Function): any => {
     },
     setSlides: (slides: Array<SlideType>) => {
       dispatch(actions.setSlides(slides));
+    },
+    resetSlides: () => {
+      dispatch(actions.resetSlides());
     },
   };
 };

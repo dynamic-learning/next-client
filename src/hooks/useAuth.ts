@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
+import { AuthData } from "../types";
 
 const cookies = new Cookies();
 
@@ -8,14 +9,25 @@ const useAuth = () => {
   const [userType, setUserType] = useState("");
 
   useEffect(() => {
-    // const isAuthenticated = !!cookies.get("token"); If the token is present in cookies user is authenticated
-    //const userType = cookies.get("user_type")
+    const authData: AuthData = cookies.get("auth_data");
 
-    setIsAuthenticated(false);
-    setUserType("admin");
+    const isAuthenticated = !!authData;
+    const userType = isAuthenticated ? authData.type : "unauthenticated";
+
+    setIsAuthenticated(isAuthenticated);
+    setUserType(userType);
   }, []);
 
-  return { isAuthenticated, userType };
+  const setAuthData = (authData: AuthData) => {
+    cookies.set("auth_data", authData);
+  };
+
+  const clearAuthData = () => {
+    cookies.remove("auth_data");
+    setIsAuthenticated(false);
+  };
+
+  return { isAuthenticated, userType, setAuthData, clearAuthData };
 };
 
 export default useAuth;

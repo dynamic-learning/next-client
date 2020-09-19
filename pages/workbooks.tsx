@@ -1,6 +1,8 @@
 import dynamic from "next/dynamic";
 import * as mutations from "../src/api/mutations";
 import * as queries from "../src/api/queries";
+import { useEffect, useState } from "react";
+import { Spin } from "antd";
 
 // To get rid of window error
 const WorkbooksWithNoSSR = dynamic(
@@ -8,32 +10,35 @@ const WorkbooksWithNoSSR = dynamic(
   { ssr: false }
 );
 
-const WorkbooksPage = ({ workbooks }: any) => {
+const WorkbooksPage = () => {
+  const [workbooks, setWorkbooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    queries.getWorkbooks().then((res) => {
+      setWorkbooks(res.workbookViewer);
+      setLoading(false);
+    });
+  }, []);
+
   return (
     <>
       <style>{style}</style>
       <div className="page-container">
-        <WorkbooksWithNoSSR
-          initialWorkbooks={workbooks}
-          addWorkbook={mutations.createWorkbook}
-          addWorkbookFolder={mutations.createWorkbookFolder}
-          deleteWorkbook={mutations.deleteWorkbook}
-          deleteWorkbookFolder={mutations.deleteWorkbookFolder}
-          updateWorkbook={mutations.updateWorkbook}
-          updateWorkbookFolder={mutations.updateWorkbookFolder}
-        />
+        <Spin spinning={loading} size="large">
+          <WorkbooksWithNoSSR
+            initialWorkbooks={workbooks}
+            addWorkbook={mutations.createWorkbook}
+            addWorkbookFolder={mutations.createWorkbookFolder}
+            deleteWorkbook={mutations.deleteWorkbook}
+            deleteWorkbookFolder={mutations.deleteWorkbookFolder}
+            updateWorkbook={mutations.updateWorkbook}
+            updateWorkbookFolder={mutations.updateWorkbookFolder}
+          />
+        </Spin>
       </div>
     </>
   );
-};
-
-export const getServerSideProps = async () => {
-  const res = await queries.getWorkbooks();
-  return {
-    props: {
-      workbooks: res.workbookViewer,
-    },
-  };
 };
 
 //////////////////////////////////////////

@@ -1,13 +1,9 @@
-import { request } from "graphql-request";
-import config from "../../config";
-
-const { apiRootUrl } = config;
+import request from "./withAuthRequest";
 
 export const getWorkbooks = () =>
   request(
-    apiRootUrl,
     `query {
-      workbookViewer (owner: "13jnafso34") {
+      workbookViewer {
         _id
         title
         parentId
@@ -18,7 +14,6 @@ export const getWorkbooks = () =>
 
 export const getWorkbook = (id: string) =>
   request(
-    apiRootUrl,
     `query {
       workbook(workbookId: "${id}") {
         _id
@@ -29,10 +24,8 @@ export const getWorkbook = (id: string) =>
   `
   );
 
-
-export const getSims = (searchKeyword: string) => (
+export const getSims = (searchKeyword: string) =>
   request(
-    apiRootUrl,
     `
       query {
         sims (keyword: "${searchKeyword}") {
@@ -41,16 +34,13 @@ export const getSims = (searchKeyword: string) => (
           description
           tags
           imageURL
-          owner
         }
       } 
-    `   
-  )
-);
+    `
+  );
 
-export const login = (email: string, password: string) => (
-  request (
-    apiRootUrl,
+export const login = (email: string, password: string) =>
+  request(
     `
       query {
         login (email: "${email}", password: "${password}") {
@@ -61,5 +51,4 @@ export const login = (email: string, password: string) => (
         }
       }
     `
-  )
-)
+  );

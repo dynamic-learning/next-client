@@ -17,6 +17,12 @@ export const deleteSlide = (index: number) => {
   };
 };
 
+export const resetSlides = () => {
+  return {
+    type: actions.RESET_SLIDES,
+  };
+};
+
 export const changeCurSlide = (newCurSlide: number) => {
   return {
     type: actions.CHANGE_CURRENT_SLIDE,

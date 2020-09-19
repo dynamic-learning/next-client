@@ -35,3 +35,10 @@ export type TextboxType = {
     y: number;
   };
 };
+
+export type AuthData = {
+  token: string;
+  type: string;
+  username: string;
+  userId: string;
+};

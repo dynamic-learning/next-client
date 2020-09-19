@@ -1,18 +1,13 @@
-import { request } from "graphql-request";
-import config from "../../config";
+import request from "./withAuthRequest";
 import { getNewSlide } from "../utils/workbook";
-
-const { apiRootUrl } = config;
 
 export const createWorkbook = ({ title }: any) => {
   const stringifiedSlides = JSON.stringify(JSON.stringify([getNewSlide()]));
 
   return request(
-    apiRootUrl,
     `mutation {
       createWorkbook (workbook: {
-        title: "${title}",
-        owner: "13jnafso34",
+        title: "${title}"
         slides: ${stringifiedSlides}
       }) {
           _id
@@ -20,14 +15,13 @@ export const createWorkbook = ({ title }: any) => {
     }`
   );
 };
+
 export const createWorkbookFolder = ({ title }: any) =>
   request(
-    apiRootUrl,
     `
       mutation {
         createWorkbookFolder(workbookFolder: {
-          title: "${title}",
-          owner: "13jnafso34"
+          title: "${title}"
         }) {
           _id
         }
@@ -37,7 +31,6 @@ export const createWorkbookFolder = ({ title }: any) =>
 
 export const deleteWorkbook = ({ _id }: any) =>
   request(
-    apiRootUrl,
     `
     mutation {
       deleteWorkbook(
@@ -51,7 +44,6 @@ export const deleteWorkbook = ({ _id }: any) =>
 
 export const deleteWorkbookFolder = ({ _id }: any) =>
   request(
-    apiRootUrl,
     `
     mutation {
       deleteWorkbookFolder(
@@ -69,7 +61,6 @@ export const updateWorkbook = ({ _id, field, value }: any) => {
   }
 
   return request(
-    apiRootUrl,
     `
     mutation {
       updateWorkbook(
@@ -90,7 +81,6 @@ export const updateWorkbookFolder = ({ _id, field, value }: any) => {
   value = value ? `"${value}"` : null;
 
   return request(
-    apiRootUrl,
     `
     mutation {
       updateWorkbookFolder(
@@ -107,28 +97,24 @@ export const updateWorkbookFolder = ({ _id, field, value }: any) => {
   );
 };
 
-export const addSim = ({ _id, owner, title, description, tags, imageURL }: any) => {
+export const addSim = ({ _id, title, description, tags, imageURL }: any) => {
   return request(
-    apiRootUrl,
     `mutation {
       createSim(sim: {
         _id: "${_id}"
-        owner: "${owner}"
         title: "${title}"
         description: "${description}"
         tags: ${JSON.stringify(tags)}
         imageURL: "${imageURL}"
       }) {
         _id
-        owner
       }
     }`
   );
 };
 
-export const editSim = ({ _id,title, description,tags, imageURL }: any) => {
+export const editSim = ({ _id, title, description, tags, imageURL }: any) => {
   return request(
-    apiRootUrl,
     `mutation {
       updateSim(
         simId: "${_id}",    
@@ -143,36 +129,35 @@ export const editSim = ({ _id,title, description,tags, imageURL }: any) => {
         tags
       }
     }`
-  )
+  );
+};
 
-}
-
-export const deleteSim= (_id: any) => {
+export const deleteSim = (_id: any) => {
   return request(
-    apiRootUrl,
     `mutation {
       deleteSim(simId: "${_id}") {
         success
       }
     }`
-  )
-}
+  );
+};
 
-export const signup = (email: string, password: string) => {
-  return request (
-    apiRootUrl,
+export const signup = (username: string, email: string, password: string) => {
+  return request(
     `
       mutation {
         createUser(userInput: {
           email: "${email}",
-          password: "${password}"
+          password: "${password}",
+          username: "${username}"
         }) {
-          _id
-          email
-          password
+          userId
+          token
+          tokenExpiration
           type
+          username
         }
       }
     `
   );
-}
+};

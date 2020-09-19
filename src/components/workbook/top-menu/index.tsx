@@ -9,6 +9,7 @@ import {
   SelectOutlined,
   ExclamationCircleOutlined,
   GithubOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import { FaPen } from "react-icons/fa";
 import Topbar from "../../top-bar/index";
@@ -28,6 +29,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
     onCanvasOptionChange,
     onClearSlide,
     saveWorkbook,
+    resetSlides,
   } = actions;
 
   const { undoable, redoable, canCanvasSizeBeReduced } = actionDisablers;
@@ -40,12 +42,28 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
       : alert("Please sign in to save your work");
   };
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, clearAuthData } = useAuth();
+
+  const handleLogoutClick = () => {
+    clearAuthData();
+  };
+
+  const handleNewClick = () => {
+    if (
+      confirm(
+        "Are you sure you want create a new workbook? Unsaved changes will be lost."
+      )
+    ) {
+      resetSlides();
+    }
+  };
 
   const renderFileMenu = () => (
     <SubMenu title="File" key="file" icon={<FileOutlined />}>
       <Menu.ItemGroup>
-        <Menu.Item key="new">New</Menu.Item>
+        <Menu.Item onClick={handleNewClick} key="new">
+          New
+        </Menu.Item>
         {isAuthenticated ? (
           <Menu.Item onClick={handleOpenClick} key="open">
             Open
@@ -54,7 +72,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
         <Menu.Item onClick={() => handleSaveClick(isAuthenticated)} key="save">
           Save
         </Menu.Item>
-        <Menu.Item key="examples">Examples</Menu.Item>
+        {/* <Menu.Item key="examples">Examples</Menu.Item> */}
       </Menu.ItemGroup>
     </SubMenu>
   );
@@ -184,6 +202,11 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
               Contribute
             </a>
           </Menu.Item>
+          {isAuthenticated ? (
+            <Menu.Item onClick={handleLogoutClick} icon={<LogoutOutlined />}>
+              Logout
+            </Menu.Item>
+          ) : null}
         </SubMenu>
       </Menu>
     </div>

@@ -46,6 +46,14 @@ export const workBookReducer = (state = defaultState, action: Action) => {
         slides: action.payload.slides,
       };
 
+    case actions.RESET_SLIDES: {
+      return {
+        ...state,
+        curSlide: 0,
+        slides: [getNewSlide()],
+      };
+    }
+
     case actions.DELETE_SLIDE:
       const deleteIndex = action.payload.index;
       if (state.slides.length === 1) {
