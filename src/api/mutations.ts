@@ -107,7 +107,14 @@ export const updateWorkbookFolder = ({ _id, field, value }: any) => {
   );
 };
 
-export const addSim = ({ _id, owner, title, description, tags, imageURL }: any) => {
+export const addSim = ({
+  _id,
+  owner,
+  title,
+  description,
+  tags,
+  imageURL,
+}: any) => {
   return request(
     apiRootUrl,
     `mutation {
@@ -126,7 +133,7 @@ export const addSim = ({ _id, owner, title, description, tags, imageURL }: any) 
   );
 };
 
-export const editSim = ({ _id,title, description,tags, imageURL }: any) => {
+export const editSim = ({ _id, title, description, tags, imageURL }: any) => {
   return request(
     apiRootUrl,
     `mutation {
@@ -143,11 +150,10 @@ export const editSim = ({ _id,title, description,tags, imageURL }: any) => {
         tags
       }
     }`
-  )
+  );
+};
 
-}
-
-export const deleteSim= (_id: any) => {
+export const deleteSim = (_id: any) => {
   return request(
     apiRootUrl,
     `mutation {
@@ -155,11 +161,11 @@ export const deleteSim= (_id: any) => {
         success
       }
     }`
-  )
-}
+  );
+};
 
 export const signup = (email: string, password: string) => {
-  return request (
+  return request(
     apiRootUrl,
     `
       mutation {
@@ -167,12 +173,12 @@ export const signup = (email: string, password: string) => {
           email: "${email}",
           password: "${password}"
         }) {
-          _id
-          email
-          password
+          userId
+          token
+          tokenExpiration
           type
         }
       }
     `
   );
-}
+};

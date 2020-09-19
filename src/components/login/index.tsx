@@ -3,13 +3,14 @@ import { useContext } from "react";
 import { useRouter } from "next/router";
 import { login } from "../../api/queries";
 import Cookies from "universal-cookie";
+import { getCommonStyle } from "./getCommonStyle";
 
 const Login = () => {
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
   const cookies = new Cookies();
 
-  const goToSignUp= ()=>router.push('/signup')
+  const goToSignUp = () => router.push("/signup");
 
   const Logo = () => (
     <div className="logo-container">
@@ -39,29 +40,42 @@ const Login = () => {
     }
 
     login(email, password)
-    .then((data) => {
-      alert("Login successful");
-      cookies.set('auth-token', data.login.token, { path: '/' , maxAge: data.login.tokenExpiration * 60 * 60 });
-      // Use cookies.get('auth-token') to get access to token
-    })
-    .catch((err) => {
-      alert(err.response.errors[0].message);
-    })
-  }
+      .then((data) => {
+        alert("Login successful");
+        cookies.set("auth-token", data.login.token, {
+          path: "/",
+          maxAge: data.login.tokenExpiration * 60 * 60,
+        });
+        // Use cookies.get('auth-token') to get access to token
+      })
+      .catch((err) => {
+        alert(err.response.errors[0].message);
+      });
+  };
 
   const LoginForm = () => (
-    <form className="email-password-inputs" onSubmit = {handleLogin}>
+    <form className="email-password-inputs" onSubmit={handleLogin}>
       <label className="login-label">Log In</label>
-      <input placeholder="Email" className="input" name="email"/>
-      <input placeholder="Password" type="password" className="input" name="password"/>
-      <button className="login-button" type="submit">Login</button>
+      <input placeholder="Email" className="input" name="email" />
+      <input
+        placeholder="Password"
+        type="password"
+        className="input"
+        name="password"
+      />
+      <button className="login-button" type="submit">
+        Login
+      </button>
     </form>
   );
 
   const CreateNewAccount = () => (
     <div className="new-account-message">
       <span>Don't have an account ?</span>
-      <span className="create-new" onClick={goToSignUp}> Create new</span>
+      <span className="create-new" onClick={goToSignUp}>
+        {" "}
+        Create new
+      </span>
     </div>
   );
 
@@ -83,67 +97,10 @@ const Login = () => {
   );
 };
 
-const getStyle = ({ color1, color7, color5 }: any) => `
-    .page-container {
-      width:100vw;
-      height:100vh;
-      background-color:${color1};
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-    }
-    .box {
-      width:25%;
-      background-color:white;
-      min-width:300px;
-      min-height:470px;
-      height:70%;
-      margin:auto;
-      border-radius:2rem;
-      box-shadow:0px 0px 20px rgba(0,0,0,0.4);
-      display:flex;
-      flex-direction:column;
-      justify-content:space-around;
-    }
-    .input {
-      margin-top:0.8rem;
-      border-radius:5px;
-    }
-    .email-password-inputs {
-      width:80%;
-      margin:auto;
-      height:25%;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-around;
-    }
-    .login-button {
-      text-align:center;
-      color:white;
-      margin:10px auto;
-      width:70px;
-      background-color:${color1};
-      cursor:pointer;
-    }
-    .login-button:hover {
-      background-color:${color7};
-    }
-    .logo {
-      width:100px;
-      height:100px;
-      margin:auto;
-      margin-top:2rem;
-    }
-    .logo-container {
-      display:flex;
-      flex-direction:row;
-      justify-content:center;
-    }
-    .login-label {
-      margin-left:0.5rem;
-      color: ${color5};
-      font-weight:bold;
-    }
+const getStyle = (colors: any) => {
+  const { color1, color5 } = colors;
+  return `
+    ${getCommonStyle(colors)}
     .github.bright-on-hover {
       width:67px;
       height:67px;
@@ -183,5 +140,6 @@ const getStyle = ({ color1, color7, color5 }: any) => `
       cursor:pointer;
     }
 `;
+};
 
 export default Login;
