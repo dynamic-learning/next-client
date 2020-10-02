@@ -4,30 +4,15 @@ import store from "../../src/redux/stores";
 import { getWorkbook } from "../../src/api/queries";
 import { SlideType } from "../../src/types";
 import { updateWorkbook } from "../../src/api/mutations";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-const WorkbookPage = () => {
-  const [workbook, setWorkbook] = useState(null);
+const WorkbookPage = (props: any) => {
   const router = useRouter();
   const { _id } = router.query;
 
-  useEffect(() => {
-    if (_id) {
-      //@ts-ignore
-      getWorkbook(_id).then((res) => {
-        if (res.workbook) {
-          setWorkbook(res.workbook);
-        } else {
-          router.push("/");
-        }
-      });
-    }
-  }, [_id]);
-
-  const slides: Array<SlideType> = workbook
+  const slides: Array<SlideType> = props.workbook
     ? //@ts-ignore
-      JSON.parse(workbook.slides)
+      JSON.parse(props.workbook.slides)
     : null;
 
   const saveWorkbook = async (slides: Array<SlideType>, _id: string) => {
@@ -38,13 +23,27 @@ const WorkbookPage = () => {
     });
   };
 
-  const props = { initialSlides: slides, _id, updateWorkbook: saveWorkbook };
+  const inputProps = {
+    initialSlides: slides,
+    _id,
+    updateWorkbook: saveWorkbook,
+  };
+
   return (
     <Provider store={store}>
       {/* @ts-ignore */}
-      <Workbook {...props} />
+      <Workbook {...inputProps} />
     </Provider>
   );
 };
+
+export async function getServerSideProps(context: any) {
+  const res = await getWorkbook(context.query._id);
+  return {
+    props: {
+      ...res,
+    },
+  };
+}
 
 export default WorkbookPage;

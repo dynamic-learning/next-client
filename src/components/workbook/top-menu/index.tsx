@@ -48,6 +48,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
 
   const handleLogoutClick = () => {
     clearAuthData();
+    alert("You have been logged out");
   };
 
   const handleNewClick = () => {

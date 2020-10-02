@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 const CloseButton = () => {
   const router = useRouter();
   const handleClick = () => {
-    router.push("/");
+    router.back();
   };
 
   return (

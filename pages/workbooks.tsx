@@ -27,6 +27,7 @@ const WorkbooksPage = () => {
       <div className="page-container">
         <Spin spinning={loading} size="large">
           <WorkbooksWithNoSSR
+            setSpinner={setLoading}
             initialWorkbooks={workbooks}
             addWorkbook={mutations.createWorkbook}
             addWorkbookFolder={mutations.createWorkbookFolder}

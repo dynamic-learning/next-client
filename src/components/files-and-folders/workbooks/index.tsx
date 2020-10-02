@@ -37,6 +37,7 @@ interface Props {
   deleteWorkbookFolder(_id: string): Promise<any>;
   updateWorkbook(workbookDetails: any): Promise<any>;
   updateWorkbookFolder(workbookFolderDetails: any): Promise<any>;
+  setSpinner(loading: true): void;
 }
 
 const Workbooks = (props: Props) => {
@@ -46,6 +47,7 @@ const Workbooks = (props: Props) => {
     addWorkbookFolder,
     updateWorkbook,
     updateWorkbookFolder,
+    setSpinner,
   } = props;
 
   const selectedNodeDefault: any = null;
@@ -277,7 +279,11 @@ const Workbooks = (props: Props) => {
   );
 
   const handleEditFileClick = (node: TreeItem) => {
-    return () => router.push(`/workbook/${node._id}`);
+    return () => {
+      setLoading(true);
+      setSpinner(true);
+      router.push(`/workbook/${node._id}`);
+    };
   };
 
   const isEditVisible = (node: any) => (node.type === "folder" ? "folder" : "");
