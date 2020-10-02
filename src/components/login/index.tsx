@@ -41,6 +41,7 @@ const Login = () => {
 
     login(email, password)
       .then((data) => {
+        console.log(data.login);
         setAuthData(data.login);
         router.push("/");
       })

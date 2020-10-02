@@ -16,6 +16,8 @@ import Topbar from "../../top-bar/index";
 import { SwatchesPicker } from "react-color";
 import { BsSquareFill } from "react-icons/bs";
 import useAuth from "../../../hooks/useAuth";
+import ThemeContext from "../../../contexts";
+import { useContext } from "react";
 const { SubMenu } = Menu;
 
 const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
@@ -40,7 +42,9 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
     isAuthenticated ? onSaveClick() : alert("Please sign in to save your work");
   };
 
-  const { isAuthenticated, clearAuthData } = useAuth();
+  const { isAuthenticated, clearAuthData, username } = useAuth();
+
+  const { theme } = useContext(ThemeContext);
 
   const handleLogoutClick = () => {
     clearAuthData();
@@ -287,9 +291,16 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
     </div>
   );
 
+  const User = () =>
+    username ? (
+      <div className="username">
+        <span>Hey, {username}</span>
+      </div>
+    ) : null;
+
   return (
     <>
-      <style>{style}</style>
+      <style>{getStyle(theme)}</style>
       <div className="topbar-container">
         <Topbar>
           {renderFileMenu()}
@@ -299,6 +310,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
           {renderBrushStroke()}
           {renderColorPicker()}
           <div className="navitems-right">
+            {<User />}
             {renderSwitch()}
             {renderLoginSignUp()}
           </div>
@@ -308,7 +320,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
   );
 };
 
-const style = `
+const getStyle = ({ color1 }: any) => `
   .switch {
      display:block;
   }
@@ -319,6 +331,13 @@ const style = `
   }
   .selected {
     color:#1890ff;
+  }
+  .username {
+    margin-right:1rem;
+    color:${color1};
+    cursor: default;
+    position:relative;
+    top:2px;
   }
 `;
 

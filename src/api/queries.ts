@@ -48,6 +48,7 @@ export const login = (email: string, password: string) =>
           token
           tokenExpiration
           type
+          username
         }
       }
     `
