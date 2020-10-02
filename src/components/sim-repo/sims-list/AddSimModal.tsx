@@ -56,6 +56,10 @@ const AddSimModal = (props: Props) => {
     setImageURL("");
   };
 
+  const handleSimModalClose = () => {
+    clearFieldsAndCloseModal();
+  };
+
   const onSubmitPress = () => {
     const simObject = {
       ...sim,
@@ -89,7 +93,7 @@ const AddSimModal = (props: Props) => {
         centered
         destroyOnClose
         visible={visible}
-        handleModalClose={handleAddSimClose}
+        handleModalClose={handleSimModalClose}
         title="Add simulation"
         okButtonProps={{ disabled: areAllDetailsFilled }}
         footer={footerArray}
