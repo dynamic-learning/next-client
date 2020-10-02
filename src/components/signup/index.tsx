@@ -4,11 +4,14 @@ import { useRouter } from "next/router";
 import { signup } from "../../api/mutations";
 import { getCommonStyle } from "../login/getCommonStyle";
 import useAuth from "../../hooks/useAuth";
+import { Spin } from "antd";
+import { useState } from "react";
 
 const SignUp = () => {
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
   const { setAuthData } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const goToLogin = () => router.push("/login");
 
@@ -30,15 +33,18 @@ const SignUp = () => {
       return;
     }
 
+    setLoading(true);
     signup(username, email, password)
       .then((data) => {
+        setLoading(false);
         if (data.createUser.userId) {
           setAuthData(data.createUser);
           router.push("/");
         }
       })
       .catch((err) => {
-        console.log(err);
+        setLoading(false);
+        alert(err.response.errors[0].message);
       });
   };
 
@@ -75,13 +81,15 @@ const SignUp = () => {
   return (
     <>
       <style>{getStyle(theme)}</style>
-      <div className="page-container">
-        <div className="box">
-          <Logo />
-          <SignUpForm />
-          <AlreadyHaveAnAccount />
+      <Spin spinning={loading} size="large">
+        <div className="page-container">
+          <div className="box">
+            <Logo />
+            <SignUpForm />
+            <AlreadyHaveAnAccount />
+          </div>
         </div>
-      </div>
+      </Spin>
     </>
   );
 };
