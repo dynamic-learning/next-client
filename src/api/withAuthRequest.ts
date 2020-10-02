@@ -12,8 +12,6 @@ const request = (query: string) => {
   const endpoint = apiRootUrl;
   let graphQLClient;
 
-  console.log(authData);
-
   if (isAuthorized) {
     const token = authData.token;
     graphQLClient = new GraphQLClient(endpoint, {

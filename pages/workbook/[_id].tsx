@@ -16,7 +16,11 @@ const WorkbookPage = () => {
     if (_id) {
       //@ts-ignore
       getWorkbook(_id).then((res) => {
-        setWorkbook(res.workbook);
+        if (res.workbook) {
+          setWorkbook(res.workbook);
+        } else {
+          router.push("/");
+        }
       });
     }
   }, [_id]);
@@ -26,7 +30,15 @@ const WorkbookPage = () => {
       JSON.parse(workbook.slides)
     : null;
 
-  const props = { initialSlides: slides, _id, updateWorkbook };
+  const saveWorkbook = async (slides: Array<SlideType>, _id: string) => {
+    await updateWorkbook({
+      _id,
+      field: "slides",
+      value: JSON.stringify(JSON.stringify(slides)),
+    });
+  };
+
+  const props = { initialSlides: slides, _id, updateWorkbook: saveWorkbook };
   return (
     <Provider store={store}>
       {/* @ts-ignore */}

@@ -28,8 +28,8 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
     onPageCountChange,
     onCanvasOptionChange,
     onClearSlide,
-    saveWorkbook,
-    resetSlides,
+    onSaveClick,
+    onNewClick,
   } = actions;
 
   const { undoable, redoable, canCanvasSizeBeReduced } = actionDisablers;
@@ -37,9 +37,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
   const handleOpenClick = () => goToPage("/workbooks");
 
   const handleSaveClick = (isAuthenticated: boolean) => {
-    isAuthenticated
-      ? saveWorkbook()
-      : alert("Please sign in to save your work");
+    isAuthenticated ? onSaveClick() : alert("Please sign in to save your work");
   };
 
   const { isAuthenticated, clearAuthData } = useAuth();
@@ -49,13 +47,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
   };
 
   const handleNewClick = () => {
-    if (
-      confirm(
-        "Are you sure you want create a new workbook? Unsaved changes will be lost."
-      )
-    ) {
-      resetSlides();
-    }
+    onNewClick();
   };
 
   const renderFileMenu = () => (

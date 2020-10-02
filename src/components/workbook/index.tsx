@@ -32,7 +32,7 @@ interface WorkbookMethods {
   onClearSlide(): void;
   onFinishReorder(startIndex: number, endIndex: number): void;
   setSlides(slides: Array<SlideType>): void;
-  updateWorkbook(values: any): Promise<any>;
+  updateWorkbook(slides: Array<SlideType>, _id: string): Promise<any>;
   resetSlides(): void;
 }
 
@@ -89,7 +89,7 @@ const Workbook = (props: Props) => {
   useEffect(() => {
     setInitialState();
     return addKeyDownEventListeners();
-  }, []);
+  }, [initialSlides]);
 
   useEffect(() => {
     setCanvasScale();
@@ -112,18 +112,23 @@ const Workbook = (props: Props) => {
   const setInitialState = () => {
     if (initialSlides) {
       setSlides(initialSlides);
+    } else {
+      resetSlides();
     }
   };
 
-  const saveWorkbook = async () => {
+  const handleSaveClick = async () => {
     setLoading(true);
-    await updateWorkbook({
-      _id,
-      field: "slides",
-      value: JSON.stringify(JSON.stringify(slides)),
-    });
-    alert("Saved successfully");
+    await updateWorkbook(slides, _id);
     setLoading(false);
+  };
+
+  const handleNewClick = () => {
+    confirm(
+      "Are you sure you want create a new workbook? Unsaved changes will be lost."
+    );
+    resetSlides();
+    router.push("/");
   };
 
   const handleAddSimButtonClick = () => {
@@ -203,8 +208,8 @@ const Workbook = (props: Props) => {
             onPageCountChange,
             onCanvasOptionChange,
             onClearSlide,
-            saveWorkbook,
-            resetSlides,
+            onSaveClick: handleSaveClick,
+            onNewClick: handleNewClick,
           }}
           actionDisablers={{
             undoable,
