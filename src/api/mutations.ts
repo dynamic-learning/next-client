@@ -161,3 +161,33 @@ export const signup = (username: string, email: string, password: string) => {
     `
   );
 };
+
+export const loginWithGoogle = (idToken: string) =>
+  request(
+    `
+    mutation {
+        loginWithGoogle (idToken: "${idToken}") {
+          userId
+          token
+          tokenExpiration
+          type
+          username
+        }
+      }
+    `
+  );
+
+export const loginWithGithub = (code: string) =>
+  request(
+    `
+      mutation {
+        loginWithGithub (code: "${code}") {
+          userId
+          token
+          tokenExpiration
+          type
+          username
+        }
+      }
+    `
+  );
