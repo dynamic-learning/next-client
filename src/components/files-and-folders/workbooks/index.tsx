@@ -4,11 +4,11 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Menu } from "antd";
-import { AiOutlineFolder, AiOutlineFile } from "react-icons/ai";
 import { FiTrash2 } from "react-icons/fi";
 import { TreeItem } from "react-sortable-tree";
 import { RiEditBoxLine } from "react-icons/ri";
 import { MdTitle } from "react-icons/md";
+import WorkbookTitle from "./WorkbookTitle";
 
 /**
  * Imported scripts
@@ -261,19 +261,6 @@ const Workbooks = (props: Props) => {
   ////////// Sub components //////////
   ///////////////////////////////////
 
-  const WorkbookTitle = ({ node }: any) => (
-    <div className="workbook-title-container">
-      <div className="left-icon">
-        {node.type === "file" ? (
-          <AiOutlineFile size={16} />
-        ) : (
-          <AiOutlineFolder size={17} />
-        )}
-      </div>
-      <div className="workbook-title">{node.title}</div>
-    </div>
-  );
-
   const renderGoBack = () => (
     <SubMenu onTitleClick={handleGoBackClick} title="Go back to workbook" />
   );
@@ -360,19 +347,6 @@ const style = `
   }
   .tree-container {
     border: 1px solid lightgrey;
-  }
-  .workbook-title {
-    margin-left:0.4rem;
-    margin-top:0.15rem;
-  }
-  .workbook-title-container {
-    display:flex;
-    flex-direction:row;
-    position:relative;
-    top:0.4rem;
-  }
-  .left-icon {
-    margin-top:0.3rem;
   }
   .right-icon {
     position:relative;
