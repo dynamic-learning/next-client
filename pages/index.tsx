@@ -4,6 +4,7 @@ import store from "../src/redux/stores";
 import { getTitleAndCreateNewWorkbook } from "../src/components/workbook/helpers";
 import { SlideType } from "../src/types";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const WorkbookPage = () => {
   const router = useRouter();
