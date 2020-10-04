@@ -34,7 +34,7 @@ const Textbox = (props: Props) => {
 const getStyle = ({ width, height }: any): any => ({
   color: "white",
   backgroundColor: "black",
-  border: "1px solid #444",
+  border: "3px solid #303030",
   width,
   height,
   resize: "none",

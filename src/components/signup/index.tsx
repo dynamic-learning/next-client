@@ -67,11 +67,13 @@ const SignUp = () => {
 
   const AlreadyHaveAnAccount = () => (
     <div className="already-have-message">
-      <span>Already have an account?</span>
-      <span className="login-message" onClick={goToLogin}>
-        {" "}
+      <div>Already have an account?</div>
+      <div>
+        Or login using <b>Google/Github</b> account?
+      </div>
+      <div className="login-message" onClick={goToLogin}>
         Log In
-      </span>
+      </div>
     </div>
   );
 
@@ -99,9 +101,10 @@ const getStyle = (colors: any) => {
   return ` 
     ${getCommonStyle(colors)}
     .already-have-message {
-      width:200px;
+      width:250px;
       margin:auto;
       font-size:12px;
+      text-align:center;
     }
     .login-message {
       color:${color1};

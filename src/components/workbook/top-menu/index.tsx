@@ -32,6 +32,8 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
     onClearSlide,
     onSaveClick,
     onNewClick,
+    onLoginClick,
+    onSignUpClick,
   } = actions;
 
   const { undoable, redoable, canCanvasSizeBeReduced } = actionDisablers;
@@ -163,16 +165,13 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
     </SubMenu>
   );
 
-  const handleLoginClick = () => goToPage("/login");
-  const handleSignUpClick = () => goToPage("/signup");
-
   const renderLoginSignUp = () => (
     <div className="navitems-right">
       <Menu selectable={false} theme="dark" mode="horizontal">
         <SubMenu title="App">
           {!isAuthenticated ? (
             <Menu.Item
-              onClick={handleLoginClick}
+              onClick={onLoginClick}
               key="login"
               icon={<LoginOutlined />}
             >
@@ -181,7 +180,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
           ) : null}
           {!isAuthenticated ? (
             <Menu.Item
-              onClick={handleSignUpClick}
+              onClick={onSignUpClick}
               key="signup"
               icon={<UserAddOutlined />}
             >

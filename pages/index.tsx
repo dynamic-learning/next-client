@@ -10,7 +10,7 @@ const WorkbookPage = () => {
 
   const saveWorkbook = async (slides: Array<SlideType>) => {
     const _id = await getTitleAndCreateNewWorkbook(slides);
-    router.push(`workbook/${_id}`);
+    await router.push(`workbook/${_id}`);
   };
 
   const props = {

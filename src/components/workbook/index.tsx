@@ -117,10 +117,35 @@ const Workbook = (props: Props) => {
     }
   };
 
+  useEffect(() => {
+    const savedSlides = localStorage.getItem("savedSlides");
+    if (savedSlides) {
+      setSlides(JSON.parse(savedSlides));
+      localStorage.removeItem("savedSlides");
+    }
+  }, []);
+
   const handleSaveClick = async () => {
     setLoading(true);
     await updateWorkbook(slides, _id);
     setLoading(false);
+  };
+
+  const handleLoginClick = () => {
+    setSlidesInLocalStorage();
+    router.push("/login");
+  };
+
+  const handleSignupClick = () => {
+    setSlidesInLocalStorage();
+    router.push("/signup");
+  };
+
+  const setSlidesInLocalStorage = () => {
+    if ((router.asPath = "/")) {
+      localStorage.removeItem("savedSlides");
+      localStorage.setItem("savedSlides", JSON.stringify(slides));
+    }
   };
 
   const handleNewClick = () => {
@@ -210,6 +235,8 @@ const Workbook = (props: Props) => {
             onClearSlide,
             onSaveClick: handleSaveClick,
             onNewClick: handleNewClick,
+            onLoginClick: handleLoginClick,
+            onSignUpClick: handleSignupClick,
           }}
           actionDisablers={{
             undoable,

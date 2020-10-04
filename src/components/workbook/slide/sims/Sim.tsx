@@ -96,7 +96,7 @@ const Sim = (props: Props) => {
 
 const getStyle = (isTransforming: boolean) => `
     .iframe {
-        border:1px solid grey;
+        border:3px solid #303030;
         pointer-events:${isTransforming ? "none" : ""};
     }
 `;
