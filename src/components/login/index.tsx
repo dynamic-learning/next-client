@@ -1,36 +1,23 @@
 import ThemeContext from "../../contexts";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { loginWithGithub, loginWithGoogle } from "../../api/mutations";
 import { login } from "../../api/queries";
 import { getCommonStyle } from "./getCommonStyle";
 import useAuth from "../../hooks/useAuth";
 import { Spin } from "antd";
-import { useState } from "react";
+import SocialButton from "./SocialButton";
+import config from "../../../config";
+
+const { githubAppId, googleAppId, appRootUrl } = config;
 
 const Login = () => {
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
-  const { setAuthData } = useAuth();
   const [loading, setLoading] = useState(false);
+  const { setAuthData } = useAuth();
 
-  const goToSignUp = () => router.push("/signup");
-
-  const Logo = () => (
-    <div className="logo-container">
-      <img className="logo" src="/logo.png" />
-    </div>
-  );
-
-  const GithubAndGoogleIcons = () => (
-    <>
-      <div className="OR">OR</div>
-      <div className="oauth-icons-container">
-        <img className="github bright-on-hover" src="github.png" />
-        <img className="google bright-on-hover" src="google.png" />
-      </div>
-    </>
-  );
-
+  // Normal login
   const handleLogin = (e: any) => {
     e.preventDefault();
 
@@ -43,17 +30,82 @@ const Login = () => {
     }
 
     setLoading(true);
+
     login(email, password)
       .then((data) => {
-        setLoading(false);
-        setAuthData(data.login);
-        router.push("/");
+        postLogin(data.login);
       })
       .catch((err) => {
-        setLoading(false);
-        alert(err.response.errors[0].message);
+        handleAPIError(err);
       });
   };
+
+  // On github redirect login
+  useEffect(() => {
+    const code = router.asPath.match("code=(.*)&state=");
+    if (code) {
+      setLoading(true);
+      loginWithGithub(code[1])
+        .then((data) => {
+          postLogin(data.loginWithGithub);
+        })
+        .catch((err) => {
+          handleAPIError(err);
+        });
+    }
+  }, []);
+
+  // On google login
+  const handleGoogleLoginSuccess = async (res: any) => {
+    setLoading(true);
+    loginWithGoogle(res._token.idToken)
+      .then((data) => {
+        postLogin(data.loginWithGoogle);
+      })
+      .catch((err) => {
+        handleAPIError(err);
+      });
+  };
+
+  // Handle login auth token response
+  const postLogin = async (authData: any) => {
+    setAuthData(authData);
+    await router.push("/");
+    setLoading(false);
+  };
+
+  const handleAPIError = (err: any) => {
+    setLoading(false);
+    alert(err.response.errors[0].message);
+  };
+
+  const handleLoginFailure = (err: any) => {
+    console.log(err);
+  };
+
+  const GithubAndGoogleIcons = () => (
+    <>
+      <div className="OR">OR</div>
+      <div className="oauth-icons-container">
+        <SocialButton
+          provider="google"
+          appId={googleAppId}
+          onLoginSuccess={handleGoogleLoginSuccess}
+          onLoginFailure={handleLoginFailure}
+        >
+          <img className="google bright-on-hover" src="google.png" />
+        </SocialButton>
+        <SocialButton
+          provider="github"
+          appId={githubAppId}
+          gatekeeper={appRootUrl}
+          redirect={`${appRootUrl}/login`}
+        >
+          <img className="github bright-on-hover" src="github.png" />
+        </SocialButton>
+      </div>
+    </>
+  );
 
   const LoginForm = () => (
     <form className="email-password-inputs" onSubmit={handleLogin}>
@@ -81,9 +133,14 @@ const Login = () => {
     </div>
   );
 
-  /**
-   * Final JSX return
-   */
+  const goToSignUp = () => router.push("/signup");
+
+  const Logo = () => (
+    <div className="logo-container">
+      <img className="logo" src="/logo.png" />
+    </div>
+  );
+
   return (
     <>
       <style>{getStyle(theme)}</style>
@@ -108,14 +165,14 @@ const getStyle = (colors: any) => {
     .github.bright-on-hover {
       width:67px;
       height:67px;
-      margin:right:2rem;
+      margin-left:1rem;
       cursor:pointer;
     }
     .google.bright-on-hover {
       width:65px;
       height:67px;
-      margin-left:2rem;
       cursor:pointer;
+      margin-right:1rem;
     }
     .bright-on-hover:hover {
       filter:brightness(1.3);

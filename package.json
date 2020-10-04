@@ -43,6 +43,7 @@
     "react-icons": "^3.11.0",
     "react-redux": "^7.2.1",
     "react-rnd": "^10.2.2",
+    "react-social-login": "^3.4.10",
     "react-sortable-tree": "^2.8.0",
     "react-sortable-tree-theme-minimal": "0.0.14",
     "react-tag-autocomplete": "^5.13.1",

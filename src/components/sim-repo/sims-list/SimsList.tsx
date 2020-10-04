@@ -58,8 +58,10 @@ const SimsList = (props: Props) => {
   };
 
   const handleDelete = () => {
-    onSimDelete(simModal.sim);
-    handleModalClose();
+    if (confirm("Are you sure you want to delete the sim?")) {
+      onSimDelete(simModal.sim);
+      handleModalClose();
+    }
   };
 
   const handleAddSimToWorkbook = () => {
