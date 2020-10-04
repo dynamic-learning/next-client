@@ -15,10 +15,6 @@ const SimSearchAdd = (props: Props) => {
       <style>{style}</style>
       <div className="top-bar">
         <div className="search-box">
-          {/* <Search
-            placeholder="input search text"
-            onKeyUp={handleSearch}            
-          /> */}
           <Input
             placeholder="Search simulations"
             allowClear

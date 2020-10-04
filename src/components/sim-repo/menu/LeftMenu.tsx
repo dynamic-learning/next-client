@@ -4,15 +4,25 @@ import { useContext } from "react";
 
 const subjects = ["Physics", "Maths", "Computer Science", "Biology"];
 
-const LeftMenu = () => {
+interface Props {
+  onCategoryClick(category: String): void;
+}
+
+const LeftMenu = (props: Props) => {
   const { theme } = useContext(ThemeContext);
+  const { onCategoryClick } = props;
+  const handleClick = (e: any) => {
+    onCategoryClick(e.key);
+  };
   return (
     <>
       <style>{getStyle(theme)}</style>
       <Menu className="menu" theme="dark">
         <div className="select-subject">Select subject</div>
         {subjects.map((subject) => (
-          <Menu.Item key={subject}>{subject}</Menu.Item>
+          <Menu.Item onClick={handleClick} key={subject}>
+            {subject}
+          </Menu.Item>
         ))}
       </Menu>
     </>

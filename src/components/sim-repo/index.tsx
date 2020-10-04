@@ -73,8 +73,7 @@ const Simulations = (props: Props) => {
     deleteSim(deletedSim._id);
   };
 
-  const handleSearchDebounced = debounce((searchKeyword: any) => {
-    console.log(searchKeyword);
+  const handleSearch = (searchKeyword: any) => {
     setLoading(true);
     getSims(searchKeyword)
       .then((data) => {
@@ -86,7 +85,9 @@ const Simulations = (props: Props) => {
         alert("Something went wrong!");
         setLoading(false);
       });
-  }, 650);
+  };
+
+  const handleSearchDebounced = debounce(handleSearch, 650);
 
   return (
     <>
@@ -98,7 +99,7 @@ const Simulations = (props: Props) => {
       />
       <div className={"page-container"}>
         <div className="left-menu">
-          <LeftMenu />
+          <LeftMenu onCategoryClick={handleSearch} />
         </div>
         <div className="sims-list">
           <SimSearchAdd
