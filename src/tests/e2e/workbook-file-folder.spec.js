@@ -5,6 +5,7 @@ const { apiRootUrl } = config;
 describe("Workbook file folder tests", () => {
   before(() => {
     loginAndSetCookie();
+    cy.on('window:confirm', () => true);
   });
 
   beforeEach(() => {

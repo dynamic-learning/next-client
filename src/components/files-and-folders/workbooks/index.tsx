@@ -94,6 +94,9 @@ const Workbooks = (props: Props) => {
 
   const handleDeleteClick = (node: TreeItem) => {
     return async () => {
+      if(!confirm("Are you sure you want to delete the item?")) {
+        return;
+      }
       const itemsToDelete: Array<any> = [];
       findItemsToDelete(node, itemsToDelete);
       await setLoading(true);
