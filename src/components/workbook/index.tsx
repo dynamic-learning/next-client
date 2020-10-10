@@ -43,6 +43,7 @@ interface WorkbookProps {
   redoable: boolean;
   canvasOptions: any;
   initialSlides: Array<SlideType>;
+  title:String;
   _id: string;
 }
 
@@ -74,6 +75,7 @@ const Workbook = (props: Props) => {
     setSlides,
     updateWorkbook,
     resetSlides,
+    title,
     _id,
   } = props;
 
@@ -243,6 +245,7 @@ const Workbook = (props: Props) => {
             redoable,
             canCanvasSizeBeReduced,
           }}
+          title={title}
           canvasOptions={canvasOptions}
         />
         <div className="workbook-container">

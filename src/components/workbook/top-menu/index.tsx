@@ -20,7 +20,7 @@ import ThemeContext from "../../../contexts";
 import { useContext } from "react";
 const { SubMenu } = Menu;
 
-const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
+const TopBar = ({ actions, actionDisablers, canvasOptions, title }: any) => {
   const {
     handleAddSimButtonClick,
     goToPage,
@@ -298,6 +298,10 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
       </div>
     ) : null;
 
+  const Title = () => (
+    <div className="title">[ {title} ]</div>
+  )
+
   return (
     <>
       <style>{getStyle(theme)}</style>
@@ -310,6 +314,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
           {renderBrushStroke()}
           {renderColorPicker()}
           <div className="navitems-right">
+            {<Title/>}
             {<User />}
             {renderSwitch()}
             {renderLoginSignUp()}
@@ -320,7 +325,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions }: any) => {
   );
 };
 
-const getStyle = ({ color1 }: any) => `
+const getStyle = ({ color1, color9 }: any) => `
   .switch {
      display:block;
   }
@@ -338,6 +343,14 @@ const getStyle = ({ color1 }: any) => `
     cursor: default;
     position:relative;
     top:2px;
+  }
+  .title {
+    margin-right:1rem;
+    color: white;
+    cursor: default;
+    position:relative;
+    top:2px;
+    font-weight:bold;
   }
 `;
 

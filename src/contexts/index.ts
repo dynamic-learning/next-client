@@ -10,6 +10,7 @@ const themes = {
     color6: "lightgrey", // lighter grey
     color7: "#4FE383", // light green
     color8: "#060d12", // darkest blue
+    color9: "#1890ff"
   },
 };
 

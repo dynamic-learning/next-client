@@ -27,6 +27,7 @@ const WorkbookPage = (props: any) => {
     initialSlides: slides,
     _id,
     updateWorkbook: saveWorkbook,
+    title: props.workbook.title
   };
 
   return (
