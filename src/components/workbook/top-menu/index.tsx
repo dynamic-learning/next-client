@@ -298,9 +298,16 @@ const TopBar = ({ actions, actionDisablers, canvasOptions, title }: any) => {
       </div>
     ) : null;
 
-  const Title = () => (
-    <div className="title">[ {title} ]</div>
-  )
+  const Title = ({ title }:any) => {
+    if(!title) {
+      return null;
+    }
+    if(title.length>50) {
+      return <div className="title">[ {title.split("").slice(0,50).join("") + "..."} ]</div>
+    } else {
+      return <div className="title">[ {title} ]</div>
+    }
+  }
 
   return (
     <>
@@ -314,7 +321,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions, title }: any) => {
           {renderBrushStroke()}
           {renderColorPicker()}
           <div className="navitems-right">
-            {<Title/>}
+            {<Title title={title}/>}
             {<User />}
             {renderSwitch()}
             {renderLoginSignUp()}
@@ -325,7 +332,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions, title }: any) => {
   );
 };
 
-const getStyle = ({ color1, color9 }: any) => `
+const getStyle = ({ color1 }: any) => `
   .switch {
      display:block;
   }
