@@ -13,13 +13,12 @@ type Props = {
   fabricObjects: string | null;
   pageCount: number;
   canvasOptions: any;
-  curSlide:number;
 };
 
 let canvas: fabric.Canvas;
 
 const Slide = (props: Props) => {
-  const { fabricObjects, onChange, pageCount, canvasOptions, curSlide } = props;
+  const { fabricObjects, onChange, pageCount, canvasOptions } = props;
 
   useEffect(() => {
     canvas = new fabric.Canvas("canvas", canvasConfig);
@@ -35,27 +34,24 @@ const Slide = (props: Props) => {
 
   useEffect(() => {
     resizeCanvasToFillItsContainer();
+    canvas.getActiveObject();
     canvas.clear();
     //@ts-ignore
     canvas.loadFromJSON(fabricObjects);
-  }, [pageCount]);
+  }, [fabricObjects]);
 
   useEffect(() => {
     if (!fabricObjects) {
       canvas.clear();
     } else {
-      canvas.clear();
+      const selectedObjects = canvas.getActiveObjects()
       // @ts-ignore
       canvas.loadFromJSON(fabricObjects);
+      selectedObjects.forEach((selectedObject)=>{
+        canvas.setActiveObject(selectedObject);
+      })
     }
-
-    /**
-     * Given curSlide because the loading from canvas object
-     * should take place only when curSlide changes
-     * 
-     * On all the other occassions, we do not need this to happen
-     */
-  }, [curSlide]);
+  }, [fabricObjects]);
 
   useEffect(() => {
     canvas.isDrawingMode = canvasOptions.isDrawingMode;

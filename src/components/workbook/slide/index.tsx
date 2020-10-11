@@ -12,7 +12,6 @@ type Props = {
   scaleX: number;
   canvasSize: any;
   canvasOptions: any;
-  curSlide:number;
 };
 
 const Slide = (props: Props) => {
@@ -24,7 +23,6 @@ const Slide = (props: Props) => {
     scaleX,
     canvasSize,
     canvasOptions,
-    curSlide
   } = props;
 
   const { fabricObjects, sims, textboxes, pageCount } = slideContents;
@@ -57,7 +55,6 @@ const Slide = (props: Props) => {
           onChange={onCanvasUpdate}
           fabricObjects={fabricObjects}
           canvasOptions={canvasOptions}
-          curSlide={curSlide}
         />
       </div>
     </>

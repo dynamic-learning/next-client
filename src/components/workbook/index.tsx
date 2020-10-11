@@ -269,7 +269,6 @@ const Workbook = (props: Props) => {
                 scaleX={scaleX}
                 canvasSize={canvasSize}
                 canvasOptions={canvasOptions}
-                curSlide={curSlide}
               />
             </div>
           </div>
