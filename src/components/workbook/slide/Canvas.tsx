@@ -1,6 +1,26 @@
 import { fabric } from "fabric";
 import { useEffect } from "react";
 
+/**
+ * Modified the add function prototype to add
+ * an id during the addition of an object
+ */
+fabric.Canvas.prototype.add = (function(originalFn) {
+  //@ts-ignore
+  return function(...args) {
+    args[0].id = getUniqueId();
+     //@ts-ignore
+    originalFn.call(this, ...args)
+     //@ts-ignore
+    return this;
+  };
+})(fabric.Canvas.prototype.add);
+
+// Generates unique ID
+const getUniqueId = function () {
+  return '_' + Math.random().toString(36).substr(2, 9);
+};
+
 const canvasConfig = {
   isDrawingMode: true,
   width: 640,
@@ -44,11 +64,36 @@ const Slide = (props: Props) => {
     if (!fabricObjects) {
       canvas.clear();
     } else {
-      canvas.clear();
-      // @ts-ignore
-      canvas.loadFromJSON(fabricObjects);
+      restoreObjectsAndSelection();
     }
   }, [fabricObjects]);
+
+  const restoreObjectsAndSelection = () => {
+    const activeObjects = canvas.getActiveObjects();
+    // @ts-ignore
+    const selectedObjectIds = activeObjects.map(activeObject=>activeObject.id);
+    // @ts-ignore
+    canvas.loadFromJSON(fabricObjects,);
+    const selectedObjects: fabric.Object[] = getSelectedObjects(selectedObjectIds);
+    activateSelectedObjects(selectedObjects)
+  }
+  
+  const getSelectedObjects = (ids:string[]) => {
+    return canvas.getObjects().filter(object=>{
+      //@ts-ignore
+      return ids.includes(object.id)
+    })
+  }
+
+  const activateSelectedObjects = (selectedObjects:any) => {
+    if(selectedObjects.length>0) {
+      var sel = new fabric.ActiveSelection(selectedObjects, {
+        canvas: canvas,
+      });
+      canvas.setActiveObject(sel);
+      canvas.requestRenderAll();
+    }
+  }
 
   useEffect(() => {
     canvas.isDrawingMode = canvasOptions.isDrawingMode;
@@ -74,7 +119,7 @@ const Slide = (props: Props) => {
   };
 
   const setCanvasState = () => {
-    onChange(JSON.stringify(canvas));
+    onChange(JSON.stringify(canvas.toJSON(["id"])));
   };
 
   const resizeCanvasToFillItsContainer = () => {
