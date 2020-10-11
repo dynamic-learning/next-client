@@ -53,3 +53,15 @@ export const login = (email: string, password: string) =>
       }
     `
   );
+
+export const getCurrentUser = () =>
+  request(
+    `
+      query {
+        currentUser {
+          _id
+          username
+        }
+      }
+    `
+  );

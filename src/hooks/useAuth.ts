@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import { AuthData } from "../types";
+import { getCurrentUser } from "../api/queries";
 
 const cookies = new Cookies();
 
@@ -10,6 +11,13 @@ const useAuth = () => {
   const [username, setUsername] = useState("");
 
   useEffect(() => {
+    currentUser().then((user) => {
+      if (!user) {
+        console.log("User logged out");
+        clearAuthData();
+      }
+    });
+
     const authData: AuthData = cookies.get("auth_data");
 
     const isAuthenticated = !!authData;
@@ -20,6 +28,17 @@ const useAuth = () => {
     setIsAdmin(userType == "admin");
     setUsername(username);
   }, []);
+
+  const currentUser = () => {
+    return new Promise(async (resolve) => {
+      try {
+        const user = await getCurrentUser();
+        resolve(user);
+      } catch (err) {
+        resolve(null);
+      }
+    });
+  };
 
   const setAuthData = (authData: AuthData) => {
     cookies.set("auth_data", authData);
