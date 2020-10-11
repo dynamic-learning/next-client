@@ -13,12 +13,13 @@ type Props = {
   fabricObjects: string | null;
   pageCount: number;
   canvasOptions: any;
+  curSlide:number;
 };
 
 let canvas: fabric.Canvas;
 
 const Slide = (props: Props) => {
-  const { fabricObjects, onChange, pageCount, canvasOptions } = props;
+  const { fabricObjects, onChange, pageCount, canvasOptions, curSlide } = props;
 
   useEffect(() => {
     canvas = new fabric.Canvas("canvas", canvasConfig);
@@ -38,6 +39,31 @@ const Slide = (props: Props) => {
     //@ts-ignore
     canvas.loadFromJSON(fabricObjects);
   }, [pageCount]);
+
+  useEffect(() => {
+    if (!fabricObjects) {
+      canvas.clear();
+    } else {
+      canvas.clear();
+      // @ts-ignore
+      canvas.loadFromJSON(fabricObjects);
+    }
+
+    /**
+     * Given curSlide because the loading from canvas object
+     * should take place only when curSlide changes
+     * 
+     * On all the other occassions, we do not need this to happen
+     */
+  }, [curSlide]);
+
+  useEffect(() => {
+    canvas.isDrawingMode = canvasOptions.isDrawingMode;
+  }, [canvasOptions.isDrawingMode]);
+
+  useEffect(() => {
+    changeColorOfSelectedItems();
+  }, [canvasOptions.color]);
 
   const registerEvents = () => {
     canvas.on("mouse:up", setCanvasState);
@@ -96,24 +122,6 @@ const Slide = (props: Props) => {
   interface MappingWithStringKey {
     [key: string]: any;
   }
-
-  useEffect(() => {
-    if (!fabricObjects) {
-      canvas.clear();
-    } else {
-      canvas.clear();
-      // @ts-ignore
-      canvas.loadFromJSON(fabricObjects);
-    }
-  }, [fabricObjects]);
-
-  useEffect(() => {
-    canvas.isDrawingMode = canvasOptions.isDrawingMode;
-  }, [canvasOptions.isDrawingMode]);
-
-  useEffect(() => {
-    changeColorOfSelectedItems();
-  }, [canvasOptions.color]);
 
   const changeColorOfSelectedItems = () => {
     if (canvas.getActiveObjects().length > 0) {
