@@ -120,3 +120,9 @@ export const setSlides = (slides: Array<SlideType>) => {
     },
   };
 };
+
+export const clearUndoHistory = () => {
+  return {
+    type: actions.CLEAR_UNDO_HISTORY,
+  };
+};

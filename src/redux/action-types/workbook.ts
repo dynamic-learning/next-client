@@ -14,3 +14,5 @@ export const REORDER_SLIDES = "REORDER_SLIDES";
 
 export const SET_SLIDES = "SET_SLIDES";
 export const RESET_SLIDES = "RESET_SLIDES";
+
+export const CLEAR_UNDO_HISTORY = "CLEAR_UNDO_HISTORY";

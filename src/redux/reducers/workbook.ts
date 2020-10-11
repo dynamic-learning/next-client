@@ -11,7 +11,7 @@ import {
   addItemInCurSlide,
   deleteItemInCurSlide,
 } from "../../utils/workbook";
-import undoable from "redux-undo";
+import undoable, { excludeAction } from "redux-undo";
 
 const defaultState = {
   slides: [getNewSlide()],
@@ -235,6 +235,9 @@ const getIsDrawingMode = (option: string, value: boolean, state: any) => {
   }
 };
 
-const undoableWorkBook = undoable(workBookReducer);
+const undoableWorkBook = undoable(workBookReducer, { 
+  filter: excludeAction([actions.CHANGE_CANVAS_OPTION, actions.SET_SLIDES]),
+  clearHistoryType: actions.CLEAR_UNDO_HISTORY
+});
 
 export default undoableWorkBook;

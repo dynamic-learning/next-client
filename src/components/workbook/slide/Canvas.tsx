@@ -33,13 +33,12 @@ type Props = {
   fabricObjects: string | null;
   pageCount: number;
   canvasOptions: any;
-  curSlide:number;
 };
 
 let canvas: fabric.Canvas;
 
 const Slide = (props: Props) => {
-  const { fabricObjects, onChange, pageCount, canvasOptions, curSlide } = props;
+  const { fabricObjects, onChange, pageCount, canvasOptions } = props;
 
   useEffect(() => {
     canvas = new fabric.Canvas("canvas", canvasConfig);

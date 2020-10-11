@@ -34,6 +34,7 @@ interface WorkbookMethods {
   setSlides(slides: Array<SlideType>): void;
   updateWorkbook(slides: Array<SlideType>, _id: string): Promise<any>;
   resetSlides(): void;
+  clearUndoHistory():void;
 }
 
 interface WorkbookProps {
@@ -77,6 +78,7 @@ const Workbook = (props: Props) => {
     resetSlides,
     title,
     _id,
+    clearUndoHistory
   } = props;
 
   const noOfSlides = slides.length;
@@ -96,6 +98,8 @@ const Workbook = (props: Props) => {
   useEffect(() => {
     setCanvasScale();
     setLoading(false);
+    // Clearing undo history
+    clearUndoHistory();
     return addScaleCanvasOnResizeEventListener();
   }, []);
 
@@ -269,7 +273,6 @@ const Workbook = (props: Props) => {
                 scaleX={scaleX}
                 canvasSize={canvasSize}
                 canvasOptions={canvasOptions}
-                curSlide={curSlide}
               />
             </div>
           </div>
@@ -325,6 +328,9 @@ const mapDispatchToProps = (dispatch: Function): any => {
     },
     resetSlides: () => {
       dispatch(actions.resetSlides());
+    },
+    clearUndoHistory: () => {
+      dispatch(actions.clearUndoHistory());
     },
   };
 };
