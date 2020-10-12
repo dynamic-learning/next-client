@@ -23,6 +23,9 @@ const SlideButton = (props: Props) => {
   const { theme } = useContext(ThemeContext);
 
   const handleDeleteClick = () => {
+    if(!confirm("Are you sure you want to delete the slide?")) {
+      return;
+    }
     onDeleteButtonClick(slideNo);
   };
   const handleSlideClick = () => {

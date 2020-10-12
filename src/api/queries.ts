@@ -33,6 +33,7 @@ export const getSims = (searchKeyword: string) =>
           title
           description
           tags
+          owner
           imageURL
         }
       } 

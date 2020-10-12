@@ -4,6 +4,8 @@ Cypress.on("uncaught:exception", (_err, _runnable) => {
   return false;
 });
 
+Cypress.on('window:confirm', () => true);
+
 describe("Workbook", () => {
   it("adds a slide", () => {
     cy.visit("localhost:3000");
