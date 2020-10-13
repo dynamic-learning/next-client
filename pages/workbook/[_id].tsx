@@ -6,55 +6,85 @@ import { SlideType } from "../../src/types";
 import { updateWorkbook } from "../../src/api/mutations";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import useAuth from "../../src/hooks/useAuth";
+import { getTitleAndCreateNewWorkbook } from "../../src/components/workbook/helpers";
 
 const WorkbookPage = (props: any) => {
   const router = useRouter();
   const { _id } = router.query;
-  const [ initialSlides, setInitialSlides ] = useState(null);
-  const [ initialCurSlide, setIntialCurSlide ] = useState(0);
+  const [initialSlides, setInitialSlides] = useState(null);
+  const [initialCurSlide, setIntialCurSlide] = useState(0);
 
   const slides: Array<SlideType> = props.workbook
     ? //@ts-ignore
       JSON.parse(props.workbook.slides)
     : null;
+  const { userId } = useAuth();
+  let isOwner = false;
+  let title = "";
 
-  const saveWorkbook = async (slides: Array<SlideType>, _id: string) => {
-    await updateWorkbook({
-      _id,
-      field: "slides",
-      value: JSON.stringify(JSON.stringify(slides)),
-    });
+  if (props.workbook) {
+    isOwner = userId === props.workbook.owner;
+    title = props.workbook.title;
+  }
+
+  const saveWorkbook = async (slides: Array<SlideType>) => {
+    if (isOwner) {
+      await updateWorkbook({
+        _id,
+        field: "slides",
+        value: JSON.stringify(JSON.stringify(slides)),
+      });
+    } else {
+      const _id = await getTitleAndCreateNewWorkbook(
+        slides,
+        "The workbook will be duplicated and saved. Enter the title you want to give for the duplicated workbook."
+      );
+      if (_id) {
+        await router.push(`${_id}`);
+      }
+    }
   };
 
-
-  useEffect(()=>{
+  useEffect(() => {
     const savedState = localStorage.getItem("savedState");
-    if (savedState && router.query.mode !== "open") {
-      const parsedState = JSON.parse(savedState)
+    const isWorkbookIDInvalid = props.workbook === null;
+    if (isWorkbookIDInvalid) {
+      router.push("/");
+      return;
+    }
+    const isOpenMode = router.query.mode !== "open";
+    /**
+     * Workbook with ID exists
+     * But it is modified
+     */
+    if (savedState && isOpenMode) {
+      const parsedState = JSON.parse(savedState);
       setInitialSlides(parsedState.slides);
       setIntialCurSlide(parsedState.curSlide);
       localStorage.removeItem("savedState");
     } else {
       //@ts-ignore
-      setInitialSlides(slides)
+      setInitialSlides(slides);
       clearOpenModeInUrl();
     }
-  },[])
+  }, []);
 
-  const clearOpenModeInUrl = () => router.push(
-    {
-      pathname: `/workbook/${_id}`
-    },
-    undefined,
-    { shallow: true }
-  );
+  const clearOpenModeInUrl = () =>
+    router.push(
+      {
+        pathname: `/workbook/${_id}`,
+      },
+      undefined,
+      { shallow: true }
+    );
 
   const inputProps = {
     initialSlides,
     initialCurSlide,
-    _id,
-    updateWorkbook: saveWorkbook,
-    title: props.workbook.title
+    saveWorkbook,
+    title,
+    isOwner,
   };
 
   return (

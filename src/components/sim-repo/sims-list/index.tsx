@@ -109,14 +109,14 @@ const SimsList = (props: Props) => {
     <>
       {sims.map((sim: any, index: number) => (
         <Card
-          style={{ width: "200px", margin: " 20px" }}
+          style={{ width: "180px", margin: " 20px" }}
           onClick={handleSimClick(index)}
           hoverable={true}
           cover={
             <img
               alt="example"
               src={sim.imageURL}
-              style={{ height: "200px", width: "198px", margin: "0px auto" }}
+              style={{ height: "180px", width: "180px", margin: "0px auto" }}
               className="sim-block"
               key={sim._id}
             />
@@ -192,6 +192,14 @@ const style = `
     .wrap { 
         flex-wrap: wrap;
     }  
+    .ant-card-body {
+      padding:10px;
+    }
+     h2 {
+      margin-bottom:0;
+      line-height:30px;
+      font-size:18px;
+    }
 `;
 
 export default SimsList;

@@ -9,7 +9,8 @@ const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [username, setUsername] = useState("");
-
+  const [userId, setUserId] = useState("");
+ 
   useEffect(() => {
     currentUser().then((user) => {
       if (!user) {
@@ -23,10 +24,12 @@ const useAuth = () => {
     const isAuthenticated = !!authData;
     const userType = isAuthenticated ? authData.type : "unauthenticated";
     const username = isAuthenticated ? authData.username : "";
+    const userId = isAuthenticated ? authData.userId : ""
 
     setIsAuthenticated(isAuthenticated);
     setIsAdmin(userType == "admin");
     setUsername(username);
+    setUserId(userId);
   }, []);
 
   const currentUser = () => {
@@ -48,9 +51,10 @@ const useAuth = () => {
     cookies.remove("auth_data");
     setIsAuthenticated(false);
     setUsername("");
+    setUserId("")
   };
 
-  return { isAuthenticated, isAdmin, setAuthData, clearAuthData, username };
+  return { isAuthenticated, isAdmin, setAuthData, clearAuthData, username, userId };
 };
 
 export default useAuth;

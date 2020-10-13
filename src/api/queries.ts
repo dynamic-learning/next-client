@@ -19,6 +19,7 @@ export const getWorkbook = (id: string) =>
         _id
         title
         slides
+        owner
       }
     }
   `
