@@ -47,11 +47,17 @@ const WorkbookPage = (props: any) => {
 
   useEffect(()=>{
     const savedState = localStorage.getItem("savedState");
-    if(props.workbook === null) {
+    const isWorkbookIDInvalid = props.workbook === null;
+    if(isWorkbookIDInvalid) {
       router.push("/")
       return;
     }
-    if (savedState && router.query.mode !== "open") {
+    const isOpenMode = router.query.mode !== "open"
+    /**
+     * Workbook with ID exists
+     * But it is modified
+     */
+    if (savedState && isOpenMode) {
       const parsedState = JSON.parse(savedState)
       setInitialSlides(parsedState.slides);
       setIntialCurSlide(parsedState.curSlide);

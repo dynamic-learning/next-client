@@ -92,10 +92,26 @@ const Workbook = (props: Props) => {
 
   const { theme } = useContext(ThemeContext);
 
+  ////////////////////////////////////////
+  ////////// Initialization /////////////
+  //////////////////////////////////////
+
   useEffect(() => {
     setInitialState();
     return addKeyDownEventListeners();
   }, [initialSlides]);
+
+
+  const setInitialState = () => {
+    if (initialSlides) {
+      setSlides(initialSlides);
+      // Changing slideNo
+      onSlideButtonClick(initialCurSlide);
+      addSimFromLocalStorage();
+    } else {
+      resetSlides();
+    }
+  };
 
   useEffect(() => {
     setCanvasScale();
@@ -104,6 +120,17 @@ const Workbook = (props: Props) => {
     clearUndoHistory();
     return addScaleCanvasOnResizeEventListener();
   }, []);
+
+  const addScaleCanvasOnResizeEventListener = () => {
+    window.onresize = setCanvasScale;
+    return () => {
+      window.onresize = null;
+    };
+  };
+
+  ///////////////////////////////////
+  ///// One every slide change /////
+  /////////////////////////////////
 
   useEffect(() => {
     const canCanvasSizeBeReduced = findIfItsPossibleToReduceCanvasSize(
@@ -117,81 +144,10 @@ const Workbook = (props: Props) => {
     setCanCanvasSizeBeReduced(canCanvasSizeBeReduced);
   }, [slides[curSlide]]);
 
-  const setInitialState = () => {
-    if (initialSlides) {
-      setSlides(initialSlides);
-      onSlideButtonClick(initialCurSlide);
-      addSimFromLocalStorage();
-    } else {
-      resetSlides();
-    }
-  };
 
-  const addSimFromLocalStorage = () => {
-    const simToAdd = localStorage.getItem("sim-to-add");
-    if (simToAdd) {
-      const parsedSimToAdd = JSON.parse(simToAdd);
-      onItemAdd(parsedSimToAdd, "sims");
-      localStorage.removeItem("sim-to-add");
-    }
-  };
-
-  const handleSaveClick = async () => {
-    setLoading(true);
-    await updateWorkbook(slides, _id);
-    setLoading(false);
-  };
-
-  const handleLoginClick = () => {
-    setLoading(true);
-    setStateInLocalStorage();
-    router.push("/login");
-  };
-
-  const handleSignupClick = () => {
-    setLoading(true);
-    setStateInLocalStorage();
-    router.push("/signup");
-  };
-
-  const setStateInLocalStorage = () => {
-    const savedState = {
-      slides,
-      curSlide,
-    };
-    localStorage.removeItem("savedState");
-    localStorage.setItem("savedState", JSON.stringify(savedState));
-  };
-
-  const handleNewClick = () => {
-    if (
-      !confirm(
-        "Are you sure you want create a new workbook? Unsaved changes will be lost."
-      )
-    ) {
-      return;
-    }
-    resetSlides();
-    router.push("/");
-  };
-
-  const handleAddSimButtonClick = () => {
-    setShowAddSimModal(true);
-  };
-
-  const handleAddSimModalClose = () => {
-    setShowAddSimModal(false);
-  };
-
-  const goToPage = (path: string) => {
-    setLoading(true);
-    router.push(path);
-  };
-
-  const handleAddTextboxButtonClick = () => {
-    const newTextbox = getNewTextbox();
-    onItemAdd(newTextbox, "textboxes");
-  };
+  /////////////////////////////////
+  ////// Event handling //////////
+  ///////////////////////////////
 
   const addKeyDownEventListeners = () => {
     document.onkeydown = handleKeyDown;
@@ -220,13 +176,6 @@ const Workbook = (props: Props) => {
     map[e.keyCode] = false;
   };
 
-  const addScaleCanvasOnResizeEventListener = () => {
-    window.onresize = setCanvasScale;
-    return () => {
-      window.onresize = null;
-    };
-  };
-
   const setCanvasScale = () => {
     const scaleX =
       document.getElementsByClassName("slide-container")[0].clientWidth /
@@ -234,16 +183,90 @@ const Workbook = (props: Props) => {
     setScaleX(scaleX);
   };
 
+  /////////////////////////////////////
+  /////// Menu / Option Clicks ///////
+  ///////////////////////////////////
+
+  const handleLoginClick = () => {
+    setLoading(true);
+    saveStateLocally();
+    router.push("/login");
+  };
+
+  const handleSignupClick = () => {
+    setLoading(true);
+    saveStateLocally();
+    router.push("/signup");
+  };
+
   const handlSimulationCollectionClick = () => {
     setLoading(true);
-    setStateInLocalStorage();
+    saveStateLocally();
     goToPage("/simulations");
   };
 
   const handleOpenClick = () => {
     setLoading(true);
-    setStateInLocalStorage();
+    saveStateLocally();
     goToPage("/workbooks");
+  };
+
+  const handleSaveClick = async () => {
+    setLoading(true);
+    await updateWorkbook(slides, _id);
+    setLoading(false);
+  };
+
+  const handleNewClick = () => {
+    if (
+      !confirm(
+        "Are you sure you want create a new workbook? Unsaved changes will be lost."
+      )
+    ) {
+      return;
+    }
+    resetSlides();
+    router.push("/");
+  };
+
+  const handleAddSimButtonClick = () => {
+    setShowAddSimModal(true);
+  };
+
+  const handleAddSimModalClose = () => {
+    setShowAddSimModal(false);
+  };
+
+  const handleAddTextboxButtonClick = () => {
+    const newTextbox = getNewTextbox();
+    onItemAdd(newTextbox, "textboxes");
+  };
+
+  ///////////////////////////////////
+  //////// Utility functions ///////
+  /////////////////////////////////
+
+  const addSimFromLocalStorage = () => {
+    const simToAdd = localStorage.getItem("sim-to-add");
+    if (simToAdd) {
+      const parsedSimToAdd = JSON.parse(simToAdd);
+      onItemAdd(parsedSimToAdd, "sims");
+      localStorage.removeItem("sim-to-add");
+    }
+  };
+
+  const saveStateLocally = () => {
+    const savedState = {
+      slides,
+      curSlide,
+    };
+    localStorage.removeItem("savedState");
+    localStorage.setItem("savedState", JSON.stringify(savedState));
+  };
+
+  const goToPage = (path: string) => {
+    setLoading(true);
+    router.push(path);
   };
 
   return (
