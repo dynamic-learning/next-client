@@ -34,6 +34,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions, title }: any) => {
     onNewClick,
     onLoginClick,
     onSignUpClick,
+    handlSimulationCollectionClick
   } = actions;
 
   const { undoable, redoable, canCanvasSizeBeReduced } = actionDisablers;
@@ -104,8 +105,6 @@ const TopBar = ({ actions, actionDisablers, canvasOptions, title }: any) => {
   const handleDecreaseSizeClick = () => {
     onPageCountChange(-1);
   };
-
-  const handlSimulationCollectionClick = () => goToPage("/simulations");
 
   const handleClearClick = () => {
     onClearSlide();

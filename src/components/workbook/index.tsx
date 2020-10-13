@@ -121,10 +121,20 @@ const Workbook = (props: Props) => {
     if (initialSlides) {
       setSlides(initialSlides);
       onSlideButtonClick(initialCurSlide);
+      addSimFromLocalStorage();
     } else {
       resetSlides();
     }
   };
+
+  const addSimFromLocalStorage = () => {
+    const simToAdd = localStorage.getItem("sim-to-add")
+    if(simToAdd) {
+      const parsedSimToAdd = JSON.parse(simToAdd);
+      onItemAdd(parsedSimToAdd, "sims");
+      localStorage.removeItem("sim-to-add");
+    }
+  }
 
   const handleSaveClick = async () => {
     setLoading(true);
@@ -150,13 +160,7 @@ const Workbook = (props: Props) => {
     localStorage.removeItem("savedState");
     localStorage.setItem("savedState", JSON.stringify(savedState));
   };
-  useEffect(() => {
-    const savedSlides = localStorage.getItem("savedSlides");
-    if (savedSlides) {
-      setSlides(JSON.parse(savedSlides));
-      localStorage.removeItem("savedSlides");
-    }
-  }, []);
+  
   const handleNewClick = () => {
     confirm(
       "Are you sure you want create a new workbook? Unsaved changes will be lost."
@@ -223,6 +227,11 @@ const Workbook = (props: Props) => {
     setScaleX(scaleX);
   };
 
+  const handlSimulationCollectionClick = () => {
+    setStateInLocalStorage();
+    goToPage("/simulations");
+  }
+
   return (
     <>
       <Spin spinning={loading} size="large">
@@ -246,6 +255,7 @@ const Workbook = (props: Props) => {
             onNewClick: handleNewClick,
             onLoginClick: handleLoginClick,
             onSignUpClick: handleSignupClick,
+            handlSimulationCollectionClick:handlSimulationCollectionClick
           }}
           actionDisablers={{
             undoable,

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react"
 
 const WorkbookPage = () => {
   const router = useRouter();
-  const [ slides, setSlides ] = useState(null)
+  const [ initialSlides, setInitialSlides ] = useState(null)
   const [initialCurSlide, setInitialCurSlide] = useState(0);
 
   const saveWorkbook = async (slides: Array<SlideType>) => {
@@ -20,14 +20,14 @@ const WorkbookPage = () => {
     const savedState = localStorage.getItem("savedState");
     if (savedState) {
       const parsedState = JSON.parse(savedState)
-      setSlides(parsedState.slides);
+      setInitialSlides(parsedState.slides);
       setInitialCurSlide(parsedState.curSlide);
       localStorage.removeItem("savedState");
     }
   }, []);
 
   const props = {
-    initialSlides: slides,
+    initialSlides,
     initialCurSlide: initialCurSlide,
     updateWorkbook: saveWorkbook,
   };
