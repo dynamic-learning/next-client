@@ -272,7 +272,7 @@ const Workbooks = (props: Props) => {
     return () => {
       setLoading(true);
       setSpinner(true);
-      router.push(`/workbook/${node._id}`);
+      router.push(`/workbook/${node._id}?mode=open`);
     };
   };
 

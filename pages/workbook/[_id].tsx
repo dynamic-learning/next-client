@@ -29,7 +29,7 @@ const WorkbookPage = (props: any) => {
 
   useEffect(()=>{
     const savedState = localStorage.getItem("savedState");
-    if (savedState) {
+    if (savedState && router.query.mode !== "open") {
       const parsedState = JSON.parse(savedState)
       setInitialSlides(parsedState.slides);
       setIntialCurSlide(parsedState.curSlide);
@@ -37,8 +37,17 @@ const WorkbookPage = (props: any) => {
     } else {
       //@ts-ignore
       setInitialSlides(slides)
+      clearOpenModeInUrl();
     }
   },[])
+
+  const clearOpenModeInUrl = () => router.push(
+    {
+      pathname: `/workbook/${_id}`
+    },
+    undefined,
+    { shallow: true }
+  );
 
   const inputProps = {
     initialSlides,

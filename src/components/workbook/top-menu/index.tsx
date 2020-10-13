@@ -34,12 +34,11 @@ const TopBar = ({ actions, actionDisablers, canvasOptions, title }: any) => {
     onNewClick,
     onLoginClick,
     onSignUpClick,
-    handlSimulationCollectionClick
+    handlSimulationCollectionClick,
+    handleOpenClick
   } = actions;
 
   const { undoable, redoable, canCanvasSizeBeReduced } = actionDisablers;
-
-  const handleOpenClick = () => goToPage("/workbooks");
 
   const handleSaveClick = (isAuthenticated: boolean) => {
     isAuthenticated ? onSaveClick() : alert("Please sign in to save your work");
