@@ -4,16 +4,18 @@ import { AuthData } from "../types";
 import { getCurrentUser } from "../api/queries";
 
 const cookies = new Cookies();
+import { useRouter } from "next/router";
 
 const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState("");
+  const router = useRouter();
  
   useEffect(() => {
     currentUser().then((user) => {
-      if (!user) {
+      if (!user && router.asPath !== "/login") {
         console.log("User logged out");
         clearAuthData();
       }
@@ -44,11 +46,11 @@ const useAuth = () => {
   };
 
   const setAuthData = (authData: AuthData) => {
-    cookies.set("auth_data", authData);
+    cookies.set("auth_data", authData, { path: '/' });
   };
 
   const clearAuthData = () => {
-    cookies.remove("auth_data");
+    cookies.remove("auth_data", { path: '/' });
     setIsAuthenticated(false);
     setUsername("");
     setUserId("")

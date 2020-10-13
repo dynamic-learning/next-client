@@ -67,8 +67,9 @@ const WorkbookPage = (props: any) => {
       //@ts-ignore
       setInitialSlides(slides);
       clearOpenModeInUrl();
+      localStorage.removeItem("savedState");
     }
-  }, []);
+  }, [props.workbook]);
 
   const clearOpenModeInUrl = () =>
     router.push(
