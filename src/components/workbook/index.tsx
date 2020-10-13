@@ -32,7 +32,7 @@ interface WorkbookMethods {
   onClearSlide(): void;
   onFinishReorder(startIndex: number, endIndex: number): void;
   setSlides(slides: Array<SlideType>): void;
-  updateWorkbook(slides: Array<SlideType>, _id: string): Promise<any>;
+  saveWorkbook(slides: Array<SlideType>): Promise<any>;
   resetSlides(): void;
   clearUndoHistory(): void;
 }
@@ -45,7 +45,6 @@ interface WorkbookProps {
   canvasOptions: any;
   initialSlides: Array<SlideType>;
   title: String;
-  _id: string;
   initialCurSlide: number;
 }
 
@@ -75,10 +74,9 @@ const Workbook = (props: Props) => {
     onFinishReorder,
     initialSlides,
     setSlides,
-    updateWorkbook,
+    saveWorkbook,
     resetSlides,
     title,
-    _id,
     initialCurSlide,
     clearUndoHistory,
   } = props;
@@ -213,7 +211,7 @@ const Workbook = (props: Props) => {
 
   const handleSaveClick = async () => {
     setLoading(true);
-    await updateWorkbook(slides, _id);
+    await saveWorkbook(slides);
     setLoading(false);
   };
 

@@ -12,7 +12,7 @@ const WorkbookPage = () => {
   const [initialCurSlide, setInitialCurSlide] = useState(0);
 
   const saveWorkbook = async (slides: Array<SlideType>) => {
-    const _id = await getTitleAndCreateNewWorkbook(slides, "Eneter the title for the new workbook.");
+    const _id = await getTitleAndCreateNewWorkbook(slides, "Enter the title for the new workbook.");
     if(_id) {
       await router.push(`workbook/${_id}`);
     }
@@ -31,7 +31,7 @@ const WorkbookPage = () => {
   const props = {
     initialSlides,
     initialCurSlide: initialCurSlide,
-    updateWorkbook: saveWorkbook,
+    saveWorkbook
   };
 
   return (
