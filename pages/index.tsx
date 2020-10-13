@@ -12,8 +12,10 @@ const WorkbookPage = () => {
   const [initialCurSlide, setInitialCurSlide] = useState(0);
 
   const saveWorkbook = async (slides: Array<SlideType>) => {
-    const _id = await getTitleAndCreateNewWorkbook(slides);
-    await router.push(`workbook/${_id}`);
+    const _id = await getTitleAndCreateNewWorkbook(slides, "Eneter the title for the new workbook.");
+    if(_id) {
+      await router.push(`workbook/${_id}`);
+    }
   };
 
   useEffect(() => {

@@ -2,10 +2,15 @@ import { createWorkbook, updateWorkbook } from "../../api/mutations";
 import { SlideType } from "../../types";
 
 export const getTitleAndCreateNewWorkbook = async (
-  slides: Array<SlideType>
+  slides: Array<SlideType>,
+  message:string
 ) => {
-  const title = prompt("Enter the title of the workbook");
+  const title = prompt(message);
 
+  if(title === null) {
+    return;
+  }
+ 
   if (!title) {
     alert("Title cannot be empty");
     return;

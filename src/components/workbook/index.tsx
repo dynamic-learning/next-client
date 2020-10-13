@@ -34,7 +34,7 @@ interface WorkbookMethods {
   setSlides(slides: Array<SlideType>): void;
   updateWorkbook(slides: Array<SlideType>, _id: string): Promise<any>;
   resetSlides(): void;
-  clearUndoHistory():void;
+  clearUndoHistory(): void;
 }
 
 interface WorkbookProps {
@@ -44,7 +44,7 @@ interface WorkbookProps {
   redoable: boolean;
   canvasOptions: any;
   initialSlides: Array<SlideType>;
-  title:String;
+  title: String;
   _id: string;
   initialCurSlide: number;
 }
@@ -80,7 +80,7 @@ const Workbook = (props: Props) => {
     title,
     _id,
     initialCurSlide,
-    clearUndoHistory
+    clearUndoHistory,
   } = props;
 
   const noOfSlides = slides.length;
@@ -128,13 +128,13 @@ const Workbook = (props: Props) => {
   };
 
   const addSimFromLocalStorage = () => {
-    const simToAdd = localStorage.getItem("sim-to-add")
-    if(simToAdd) {
+    const simToAdd = localStorage.getItem("sim-to-add");
+    if (simToAdd) {
       const parsedSimToAdd = JSON.parse(simToAdd);
       onItemAdd(parsedSimToAdd, "sims");
       localStorage.removeItem("sim-to-add");
     }
-  }
+  };
 
   const handleSaveClick = async () => {
     setLoading(true);
@@ -155,16 +155,20 @@ const Workbook = (props: Props) => {
   const setStateInLocalStorage = () => {
     const savedState = {
       slides,
-      curSlide
-    }
+      curSlide,
+    };
     localStorage.removeItem("savedState");
     localStorage.setItem("savedState", JSON.stringify(savedState));
   };
-  
+
   const handleNewClick = () => {
-    confirm(
-      "Are you sure you want create a new workbook? Unsaved changes will be lost."
-    );
+    if (
+      !confirm(
+        "Are you sure you want create a new workbook? Unsaved changes will be lost."
+      )
+    ) {
+      return;
+    }
     resetSlides();
     router.push("/");
   };
@@ -178,6 +182,7 @@ const Workbook = (props: Props) => {
   };
 
   const goToPage = (path: string) => {
+    setLoading(true);
     router.push(path);
   };
 
@@ -231,13 +236,13 @@ const Workbook = (props: Props) => {
     setLoading(true);
     setStateInLocalStorage();
     goToPage("/simulations");
-  }
+  };
 
   const handleOpenClick = () => {
     setLoading(true);
     setStateInLocalStorage();
     goToPage("/workbooks");
-  }
+  };
 
   return (
     <>
@@ -262,8 +267,8 @@ const Workbook = (props: Props) => {
             onNewClick: handleNewClick,
             onLoginClick: handleLoginClick,
             onSignUpClick: handleSignupClick,
-            handlSimulationCollectionClick:handlSimulationCollectionClick,
-            handleOpenClick
+            handlSimulationCollectionClick: handlSimulationCollectionClick,
+            handleOpenClick,
           }}
           actionDisablers={{
             undoable,

@@ -6,6 +6,8 @@ import { SlideType } from "../../src/types";
 import { updateWorkbook } from "../../src/api/mutations";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import useAuth from "../../src/hooks/useAuth"
+import { getTitleAndCreateNewWorkbook } from "../../src/components/workbook/helpers";
 
 const WorkbookPage = (props: any) => {
   const router = useRouter();
@@ -18,14 +20,30 @@ const WorkbookPage = (props: any) => {
       JSON.parse(props.workbook.slides)
     : null;
 
-  const saveWorkbook = async (slides: Array<SlideType>, _id: string) => {
-    await updateWorkbook({
-      _id,
-      field: "slides",
-      value: JSON.stringify(JSON.stringify(slides)),
-    });
-  };
+  const { userId } = useAuth()
 
+  let isOwner = false
+  let title = ""
+
+  if(props.workbook) {
+    isOwner = userId === props.workbook.owner;
+    title = props.workbook.title
+  }
+
+  const saveWorkbook = async (slides: Array<SlideType>, _id: string) => {
+    if(isOwner) {
+      await updateWorkbook({
+        _id,
+        field: "slides",
+        value: JSON.stringify(JSON.stringify(slides)),
+      });
+    } else {
+      const _id = await getTitleAndCreateNewWorkbook(slides, "The workbook will be duplicated and saved. Enter the title you want to give for the duplicated workbook.");
+      if(_id) {
+        await router.push(`${_id}`);
+      }
+    }
+  };
 
   useEffect(()=>{
     const savedState = localStorage.getItem("savedState");
@@ -54,7 +72,8 @@ const WorkbookPage = (props: any) => {
     initialCurSlide,
     _id,
     updateWorkbook: saveWorkbook,
-    title: props.workbook.title
+    title,
+    isOwner
   };
 
   return (
