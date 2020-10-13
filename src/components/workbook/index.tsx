@@ -143,11 +143,13 @@ const Workbook = (props: Props) => {
   };
 
   const handleLoginClick = () => {
+    setLoading(true);
     setStateInLocalStorage();
     router.push("/login");
   };
 
   const handleSignupClick = () => {
+    setLoading(true);
     setStateInLocalStorage();
     router.push("/signup");
   };

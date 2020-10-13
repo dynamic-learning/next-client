@@ -229,7 +229,11 @@ const Workbooks = (props: Props) => {
   //////// Ends ////////////////////////
   /////////////////////////////////////
 
-  const handleGoBackClick = () => router.back();
+  const handleGoBackClick = () => {
+    setLoading(true);
+    setSpinner(true);
+    router.back();
+  }
 
   const handleTitleModalOpen = () => {
     setShowTitleModal(true);

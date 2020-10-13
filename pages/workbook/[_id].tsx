@@ -47,6 +47,10 @@ const WorkbookPage = (props: any) => {
 
   useEffect(()=>{
     const savedState = localStorage.getItem("savedState");
+    if(props.workbook === null) {
+      router.push("/")
+      return;
+    }
     if (savedState && router.query.mode !== "open") {
       const parsedState = JSON.parse(savedState)
       setInitialSlides(parsedState.slides);
