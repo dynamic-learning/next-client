@@ -46,6 +46,7 @@ interface WorkbookProps {
   initialSlides: Array<SlideType>;
   title:String;
   _id: string;
+  initialCurSlide: number;
 }
 
 type Props = WorkbookMethods & WorkbookProps;
@@ -78,6 +79,7 @@ const Workbook = (props: Props) => {
     resetSlides,
     title,
     _id,
+    initialCurSlide,
     clearUndoHistory
   } = props;
 
@@ -118,18 +120,21 @@ const Workbook = (props: Props) => {
   const setInitialState = () => {
     if (initialSlides) {
       setSlides(initialSlides);
+      onSlideButtonClick(initialCurSlide);
+      addSimFromLocalStorage();
     } else {
       resetSlides();
     }
   };
 
-  useEffect(() => {
-    const savedSlides = localStorage.getItem("savedSlides");
-    if (savedSlides) {
-      setSlides(JSON.parse(savedSlides));
-      localStorage.removeItem("savedSlides");
+  const addSimFromLocalStorage = () => {
+    const simToAdd = localStorage.getItem("sim-to-add")
+    if(simToAdd) {
+      const parsedSimToAdd = JSON.parse(simToAdd);
+      onItemAdd(parsedSimToAdd, "sims");
+      localStorage.removeItem("sim-to-add");
     }
-  }, []);
+  }
 
   const handleSaveClick = async () => {
     setLoading(true);
@@ -138,22 +143,24 @@ const Workbook = (props: Props) => {
   };
 
   const handleLoginClick = () => {
-    setSlidesInLocalStorage();
+    setStateInLocalStorage();
     router.push("/login");
   };
 
   const handleSignupClick = () => {
-    setSlidesInLocalStorage();
+    setStateInLocalStorage();
     router.push("/signup");
   };
 
-  const setSlidesInLocalStorage = () => {
-    if ((router.asPath = "/")) {
-      localStorage.removeItem("savedSlides");
-      localStorage.setItem("savedSlides", JSON.stringify(slides));
+  const setStateInLocalStorage = () => {
+    const savedState = {
+      slides,
+      curSlide
     }
+    localStorage.removeItem("savedState");
+    localStorage.setItem("savedState", JSON.stringify(savedState));
   };
-
+  
   const handleNewClick = () => {
     confirm(
       "Are you sure you want create a new workbook? Unsaved changes will be lost."
@@ -220,6 +227,11 @@ const Workbook = (props: Props) => {
     setScaleX(scaleX);
   };
 
+  const handlSimulationCollectionClick = () => {
+    setStateInLocalStorage();
+    goToPage("/simulations");
+  }
+
   return (
     <>
       <Spin spinning={loading} size="large">
@@ -243,6 +255,7 @@ const Workbook = (props: Props) => {
             onNewClick: handleNewClick,
             onLoginClick: handleLoginClick,
             onSignUpClick: handleSignupClick,
+            handlSimulationCollectionClick:handlSimulationCollectionClick
           }}
           actionDisablers={{
             undoable,

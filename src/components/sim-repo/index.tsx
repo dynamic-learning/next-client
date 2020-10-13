@@ -1,6 +1,6 @@
 import LeftMenu from "./menu/LeftMenu";
 import SimSearchAdd from "./sim-search-add";
-import SimsList from "./sims-list/SimsList";
+import SimsList from "./sims-list"
 import { useState, useEffect } from "react";
 import AddSimModal from "./sims-list/AddSimModal";
 import { debounce } from "../../utils/common";
@@ -46,7 +46,6 @@ const Simulations = (props: Props) => {
   };
 
   const onSimAdd = (newSim: any) => {
-    console.log(newSim);
     updateSims([...sims, newSim]);
     addSim(newSim)
       .then((data) => console.log(data))
@@ -68,7 +67,6 @@ const Simulations = (props: Props) => {
   };
 
   const onSimDelete = (deletedSim: any) => {
-    console.log(deletedSim);
     updateSims(sims.filter((sim) => sim._id !== deletedSim._id));
     deleteSim(deletedSim._id);
   };
@@ -111,6 +109,7 @@ const Simulations = (props: Props) => {
             onSimDelete={onSimDelete}
             sims={sims}
             loading={loading}
+            setLoading={setLoading}
           />
         </div>
       </div>

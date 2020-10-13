@@ -9,22 +9,25 @@ import {
   PlusCircleOutlined,
 } from "@ant-design/icons";
 import useAuth from "../../../hooks/useAuth";
-
-const defaultSim: any = null;
+import { getNewSim } from "../../../utils/workbook";
+import { useRouter } from "next/router"
 
 interface Props {
   sims: Array<any>;
   onSimUpdate(updatedSim: any): void;
   onSimDelete: (deletedSim: any) => void;
   loading: any;
+  setLoading(loading:boolean):void;
 }
 
 const SimsList = (props: Props) => {
-  const { sims, onSimUpdate, onSimDelete, loading } = props;
+  const { sims, onSimUpdate, onSimDelete, loading, setLoading } = props;
 
   const [simModal, updateSimModal] = useState({ sim: {}, showSimModal: false });
 
   const { isAdmin } = useAuth();
+
+  const router = useRouter();
 
   const handleSimClick = (index: number) => {
     return () => {
@@ -65,8 +68,13 @@ const SimsList = (props: Props) => {
   };
 
   const handleAddSimToWorkbook = () => {
-    //TODO: Need to implement this later
-    console.log("add sim to workbook");
+    setLoading(true);
+    localStorage.setItem(
+      "sim-to-add", 
+      //@ts-ignore
+      JSON.stringify(getNewSim(simModal.sim.owner, simModal.sim._id))
+    )
+    router.back();
     handleModalClose();
   };
 

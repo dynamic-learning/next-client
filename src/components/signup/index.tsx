@@ -39,7 +39,7 @@ const SignUp = () => {
         setLoading(false);
         if (data.createUser.userId) {
           setAuthData(data.createUser);
-          router.push("/");
+          router.back();
         }
       })
       .catch((err) => {
