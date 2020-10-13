@@ -70,8 +70,7 @@ const Login = () => {
   // Handle login auth token response
   const postLogin = async (authData: any) => {
     setAuthData(authData);
-    await router.push("/");
-    setLoading(false);
+    router.back();
   };
 
   const handleAPIError = (err: any) => {
