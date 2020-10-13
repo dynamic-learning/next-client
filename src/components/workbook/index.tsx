@@ -228,8 +228,15 @@ const Workbook = (props: Props) => {
   };
 
   const handlSimulationCollectionClick = () => {
+    setLoading(true);
     setStateInLocalStorage();
     goToPage("/simulations");
+  }
+
+  const handleOpenClick = () => {
+    setLoading(true);
+    setStateInLocalStorage();
+    goToPage("/workbooks");
   }
 
   return (
@@ -255,7 +262,8 @@ const Workbook = (props: Props) => {
             onNewClick: handleNewClick,
             onLoginClick: handleLoginClick,
             onSignUpClick: handleSignupClick,
-            handlSimulationCollectionClick:handlSimulationCollectionClick
+            handlSimulationCollectionClick:handlSimulationCollectionClick,
+            handleOpenClick
           }}
           actionDisablers={{
             undoable,
