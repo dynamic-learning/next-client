@@ -1,6 +1,8 @@
 import { Menu } from "antd";
 import ThemeContext from "../../../contexts/index";
 import { useContext } from "react";
+import { Button } from "antd";
+import { useRouter } from "next/router"
 
 const subjects = ["Physics", "Maths", "Computer Science", "Biology"];
 
@@ -14,10 +16,22 @@ const LeftMenu = (props: Props) => {
   const handleClick = (e: any) => {
     onCategoryClick(e.key);
   };
+  const router = useRouter();
+  const handleBackClick = () => {
+    const savedState = localStorage.getItem("savedState")
+    if(savedState) {
+      const parsedState = JSON.parse(savedState);
+      router.push(parsedState.atPath);
+    }
+  }
+  
   return (
     <>
       <style>{getStyle(theme)}</style>
       <Menu className="menu" theme="dark">
+        <div className="button-container">
+          <Button type="primary" className="back-button" onClick={handleBackClick}>Back</Button>
+        </div>
         <div className="select-subject">Select subject</div>
         {subjects.map((subject) => (
           <Menu.Item onClick={handleClick} key={subject}>
@@ -41,6 +55,11 @@ const getStyle = ({ color8 }: any) => `
     }
     .ant-menu.ant-menu-dark, .ant-menu-dark .ant-menu-sub {
         background:${color8};
+    }
+    .back-button {
+      width:80px;
+      margin-top:1rem;
+      margin-left:1rem;
     }
 `;
 

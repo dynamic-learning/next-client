@@ -3,7 +3,7 @@ import SimSearchAdd from "./sim-search-add";
 import SimsList from "./sims-list"
 import { useState, useEffect } from "react";
 import AddSimModal from "./sims-list/AddSimModal";
-import { debounce } from "../../utils/common";
+import { debounce } from "../../utils/common"; 
 
 const defaultSims: Array<any> = [];
 

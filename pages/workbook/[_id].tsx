@@ -53,12 +53,12 @@ const WorkbookPage = (props: any) => {
       router.push("/");
       return;
     }
-    const isOpenMode = router.query.mode !== "open";
+    const isOpenMode = router.query.mode === "open";
     /**
      * Workbook with ID exists
      * But it is modified
      */
-    if (savedState && isOpenMode) {
+    if (savedState && !isOpenMode) {
       const parsedState = JSON.parse(savedState);
       setInitialSlides(parsedState.slides);
       setIntialCurSlide(parsedState.curSlide);

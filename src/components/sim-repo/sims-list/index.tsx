@@ -74,9 +74,14 @@ const SimsList = (props: Props) => {
       //@ts-ignore
       JSON.stringify(getNewSim(simModal.sim.owner, simModal.sim._id))
     )
-    router.back();
+    const savedState = localStorage.getItem("savedState")
+    if(savedState) {
+      const parsedState = JSON.parse(savedState);
+      router.push(parsedState.atPath);
+    }
     handleModalClose();
   };
+  
 
   const footerArray = () => {
     if (isAdmin) {
