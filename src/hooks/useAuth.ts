@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import { AuthData } from "../types";
 import { getCurrentUser } from "../api/queries";
+import { useRouter } from "next/router"
 
 const cookies = new Cookies();
-import { useRouter } from "next/router";
 
 const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -12,7 +12,7 @@ const useAuth = () => {
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState("");
   const router = useRouter();
- 
+
   useEffect(() => {
     currentUser().then((user) => {
       if (!user && router.asPath !== "/login") {

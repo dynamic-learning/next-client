@@ -70,7 +70,11 @@ const Login = () => {
   // Handle login auth token response
   const postLogin = async (authData: any) => {
     setAuthData(authData);
-    router.back();
+    const savedState = localStorage.getItem("savedState")
+    if(savedState) {
+      const parsedState = JSON.parse(savedState);
+      router.push(parsedState.atPath)
+    }
   };
 
   const handleAPIError = (err: any) => {

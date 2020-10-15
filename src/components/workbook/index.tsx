@@ -255,6 +255,7 @@ const Workbook = (props: Props) => {
 
   const saveStateLocally = () => {
     const savedState = {
+      atPath:router.asPath,
       slides,
       curSlide,
     };
