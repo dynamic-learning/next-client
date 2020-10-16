@@ -97,7 +97,7 @@ export const updateWorkbookFolder = ({ _id, field, value }: any) => {
   );
 };
 
-export const addSim = ({ _id, title, description, tags, imageURL }: any) => {
+export const addSim = ({ _id, title, description, tags, imageURL, owner }: any) => {
   return request(
     `mutation {
       createSim(sim: {
@@ -106,6 +106,7 @@ export const addSim = ({ _id, title, description, tags, imageURL }: any) => {
         description: "${description}"
         tags: ${JSON.stringify(tags)}
         imageURL: "${imageURL}"
+        owner: "${owner}"
       }) {
         _id
       }
