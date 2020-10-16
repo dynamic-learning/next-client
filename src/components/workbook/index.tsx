@@ -186,26 +186,18 @@ const Workbook = (props: Props) => {
   ///////////////////////////////////
 
   const handleLoginClick = () => {
-    setLoading(true);
-    saveStateLocally();
-    router.push("/login");
+    goToPage("/login");
   };
 
   const handleSignupClick = () => {
-    setLoading(true);
-    saveStateLocally();
-    router.push("/signup");
+    goToPage("/signup");
   };
 
   const handlSimulationCollectionClick = () => {
-    setLoading(true);
-    saveStateLocally();
     goToPage("/simulations");
   };
 
   const handleOpenClick = () => {
-    setLoading(true);
-    saveStateLocally();
     goToPage("/workbooks");
   };
 
@@ -264,6 +256,7 @@ const Workbook = (props: Props) => {
   };
 
   const goToPage = (path: string) => {
+    saveStateLocally();
     setLoading(true);
     router.push(path);
   };

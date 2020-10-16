@@ -4,15 +4,16 @@ import { useContext } from "react";
 import { Button } from "antd";
 import { useRouter } from "next/router"
 
-const subjects = ["Physics", "Maths", "Computer Science", "Biology"];
+const subjects = ["All","Physics", "Maths", "Computer Science", "Biology"];
 
 interface Props {
   onCategoryClick(category: String): void;
+  setLoading(loading: boolean):void;
 }
 
 const LeftMenu = (props: Props) => {
   const { theme } = useContext(ThemeContext);
-  const { onCategoryClick } = props;
+  const { onCategoryClick, setLoading } = props;
   const handleClick = (e: any) => {
     onCategoryClick(e.key);
   };
@@ -20,6 +21,7 @@ const LeftMenu = (props: Props) => {
   const handleBackClick = () => {
     const savedState = localStorage.getItem("savedState")
     if(savedState) {
+      setLoading(true)
       const parsedState = JSON.parse(savedState);
       router.push(parsedState.atPath);
     }

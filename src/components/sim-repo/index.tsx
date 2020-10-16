@@ -72,6 +72,9 @@ const Simulations = (props: Props) => {
   };
 
   const handleSearch = (searchKeyword: any) => {
+    if(searchKeyword === "All") {
+      searchKeyword = ""
+    }
     setLoading(true);
     getSims(searchKeyword)
       .then((data) => {
@@ -97,7 +100,7 @@ const Simulations = (props: Props) => {
       />
       <div className={"page-container"}>
         <div className="left-menu">
-          <LeftMenu onCategoryClick={handleSearch} />
+          <LeftMenu setLoading={setLoading} onCategoryClick={handleSearch} />
         </div>
         <div className="sims-list">
           <SimSearchAdd
