@@ -11,9 +11,9 @@ describe("Workbook", () => {
     cy.visit("localhost:3000");
     cy.get(".add-button").click();
     cy.get(".slide-button-container").should("have.length", 2);
+    cy.get(".slide-delete-button").eq(1).click();
   });
   it("deletes a slide", () => {
-    cy.visit("localhost:3000");
     cy.get(".add-button").click();
     cy.get(".slide-delete-button").eq(1).click();
     cy.get(".slide-button-container").should("have.length", 1);
@@ -59,6 +59,37 @@ describe("Workbook", () => {
           .should("lt", initialHeight);
       });
   });
+  it("checks creation of new workbook", () => {
+    cy.get(".add-button").click();
+    cy.get(".file-menu").trigger("mouseover");
+    cy.get(".new-option").click();
+    cy.get(".slide-button-container").should("have.length", 1);
+  })
+  it("checks navigation to login retainment of state", () => {
+    cy.get(".add-button").click();
+    cy.get(".app-menu").trigger("mouseover");
+    cy.get(".login-menu").click();
+    cy.location('pathname', {timeout: 60000})
+      .should('include', '/login');
+    cy.go('back')
+    cy.get(".slide-button-container").should("have.length", 2);
+  })
+  it("checks navigation to signup", () => {
+    cy.get(".app-menu").trigger("mouseover");
+    cy.get(".signup-menu").click();
+    cy.location('pathname', {timeout: 60000})
+      .should('include', '/signup');
+  })
+  it("checks navigation to about menu", () => {
+    cy.go('back')
+    cy.get(".app-menu").trigger("mouseover");
+    cy.get(".about-menu").click();
+    cy.location('pathname', {timeout: 60000})
+      .should('include', '/about');
+    cy.get(".close-button").click();
+    cy.location('pathname', {timeout: 60000})
+      .should('include', '');
+  })
 });
 const checkIfDimensionsAreEqual = (selector1, selector2) => {
   checkIfPropsAreEqual(selector1, selector2, "width");

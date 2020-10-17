@@ -58,17 +58,17 @@ const TopBar = ({ actions, actionDisablers, canvasOptions, title }: any) => {
   };
 
   const renderFileMenu = () => (
-    <SubMenu title="File" key="file" icon={<FileOutlined />}>
+    <SubMenu className="file-menu" title="File" key="file" icon={<FileOutlined />}>
       <Menu.ItemGroup>
-        <Menu.Item onClick={handleNewClick} key="new">
+        <Menu.Item className="new-option" onClick={handleNewClick} key="new">
           New
         </Menu.Item>
         {isAuthenticated ? (
-          <Menu.Item onClick={handleOpenClick} key="open">
+          <Menu.Item className="new-option" onClick={handleOpenClick} key="open">
             Open
           </Menu.Item>
         ) : null}
-        <Menu.Item onClick={() => handleSaveClick(isAuthenticated)} key="save">
+        <Menu.Item className="save-option" onClick={() => handleSaveClick(isAuthenticated)} key="save">
           Save
         </Menu.Item>
         {/* <Menu.Item key="examples">Examples</Menu.Item> */}
@@ -165,13 +165,14 @@ const TopBar = ({ actions, actionDisablers, canvasOptions, title }: any) => {
 
   const renderLoginSignUp = () => (
     <div className="navitems-right">
-      <Menu selectable={false} theme="dark" mode="horizontal">
+      <Menu className="app-menu" selectable={false} theme="dark" mode="horizontal">
         <SubMenu title="App">
           {!isAuthenticated ? (
             <Menu.Item
               onClick={onLoginClick}
               key="login"
               icon={<LoginOutlined />}
+              className="login-menu"
             >
               Login
             </Menu.Item>
@@ -181,6 +182,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions, title }: any) => {
               onClick={onSignUpClick}
               key="signup"
               icon={<UserAddOutlined />}
+              className="signup-menu"
             >
               Sign Up
             </Menu.Item>
@@ -188,6 +190,7 @@ const TopBar = ({ actions, actionDisablers, canvasOptions, title }: any) => {
           <Menu.Item
             icon={<ExclamationCircleOutlined />}
             onClick={handleAboutClick}
+            className="about-menu"
           >
             About
           </Menu.Item>
