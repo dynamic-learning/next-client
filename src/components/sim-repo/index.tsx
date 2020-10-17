@@ -26,6 +26,7 @@ const Simulations = (props: Props) => {
   const [sims, updateSims] = useState(defaultSims);
   const [loading, setLoading] = useState(true);
   const [showAddSim, setShowAddSim] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
     getSims("")
@@ -71,10 +72,7 @@ const Simulations = (props: Props) => {
     deleteSim(deletedSim._id);
   };
 
-  const handleSearch = (searchKeyword: any) => {
-    if(searchKeyword === "All") {
-      searchKeyword = ""
-    }
+  const search = (searchKeyword: string) => {
     setLoading(true);
     getSims(searchKeyword)
       .then((data) => {
@@ -88,7 +86,23 @@ const Simulations = (props: Props) => {
       });
   };
 
-  const handleSearchDebounced = debounce(handleSearch, 650);
+  const handleSearchType  = (searchKeyword:string)=>{
+    if(searchKeyword === "") {
+      searchKeyword = selectedCategory;
+    }
+    search(searchKeyword);
+  }
+
+  const handleSearchDebounced = debounce(handleSearchType, 650);
+
+  const handleCategoryClick = (category:string) => {
+    if(category === "All") {
+      search("");
+      return;
+    }
+    setSelectedCategory(category);
+    search(category);
+  }
 
   return (
     <>
@@ -100,7 +114,7 @@ const Simulations = (props: Props) => {
       />
       <div className={"page-container"}>
         <div className="left-menu">
-          <LeftMenu setLoading={setLoading} onCategoryClick={handleSearch} />
+          <LeftMenu setLoading={setLoading} onCategoryClick={handleCategoryClick} />
         </div>
         <div className="sims-list">
           <SimSearchAdd
