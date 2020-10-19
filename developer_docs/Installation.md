@@ -1,4 +1,4 @@
-# Setting up the development environment
+# Setting up the local development environment
 
 Follow the below steps to setup the local development environment.
 
