@@ -3,7 +3,7 @@ const LogoWithCaption = () => (
     <style>{style}</style>
     <div className="logo-container">
       <div className="logo-inner-container">
-        <img className="logo-with-caption" src="logo-with-caption.png" />
+        <img className="logo-with-caption" src="logo-with-caption.jpg" />
       </div>
       <div className="caption">
         A platform where teachers and programmers collaborate to create STEM

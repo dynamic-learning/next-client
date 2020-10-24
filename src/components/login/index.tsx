@@ -96,7 +96,7 @@ const Login = () => {
           onLoginSuccess={handleGoogleLoginSuccess}
           onLoginFailure={handleLoginFailure}
         >
-          <img className="google bright-on-hover" src="google.png" />
+          <img className="google bright-on-hover" src="google.svg" />
         </SocialButton>
         <SocialButton
           provider="github"
@@ -104,7 +104,7 @@ const Login = () => {
           gatekeeper={appRootUrl}
           redirect={`${appRootUrl}/login`}
         >
-          <img className="github bright-on-hover" src="github.png" />
+          <img className="github bright-on-hover" src="github.svg" />
         </SocialButton>
       </div>
     </>
@@ -166,14 +166,14 @@ const getStyle = (colors: any) => {
   return `
     ${getCommonStyle(colors)}
     .github.bright-on-hover {
-      width:67px;
-      height:67px;
+      width:80px;
+      height:80px;
       margin-left:1rem;
       cursor:pointer;
     }
     .google.bright-on-hover {
-      width:65px;
-      height:67px;
+      width:80px;
+      height:80px;
       cursor:pointer;
       margin-right:1rem;
     }

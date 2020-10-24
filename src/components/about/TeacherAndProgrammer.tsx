@@ -3,10 +3,10 @@ const TeacherAndProgrammer = () => {
     <>
       <style>{style}</style>
       <div className="programmer-img-container">
-        <img className="programmer-img" src="/programmer.png" />
+        <img className="programmer-img" src="/programmer.jpg" />
       </div>
       <div className="teacher-img-container">
-        <img className="teacher-img" src="/teacher.png" />
+        <img className="teacher-img" src="/teacher.jpg" />
       </div>
     </>
   );
