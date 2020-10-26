@@ -15,21 +15,29 @@ const TeacherAndProgrammer = () => {
 const style = `
     .teacher-img {
         width:220px;
-        height:300px;
+        height:260px;     
     }
     .programmer-img {
         width:220px;
-        height:250px;
+        height:200px;
     }
     .teacher-img-container {
         width:220px;
         position:absolute;
         right:0;
+        top:60vh;      
     }
     .programmer-img-container {
         width:220px;
+        transform:translateY(-40%);
         display:inline-block;
     }
+
+
+    @media screen and (max-width: 60em) {
+      .programmer-img ,.teacher-img{
+        display:none;
+      }
 `;
 
 export default TeacherAndProgrammer;
