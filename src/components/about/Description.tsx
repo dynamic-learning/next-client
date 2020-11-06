@@ -21,7 +21,8 @@ const style = `
         padding:3rem;
         width:70vw;
         color:#495057;
-        font-size:14px
+        font-size:15px;
+        margin-top:15%;
     }
     @media screen and (max-width: 50em) {
       .description{

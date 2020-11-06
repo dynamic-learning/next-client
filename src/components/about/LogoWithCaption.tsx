@@ -26,7 +26,7 @@ const style = `
         position:relative;
         right: 20px;
         bottom:15vh;
-        background-image: linear-gradient(315deg, #3bb78f 0%, #2f9e44 74%);
+        // background-image: linear-gradient(315deg, #3bb78f 0%, #2f9e44 74%);
     }
     .logo-inner-container {
         width:200px;
@@ -37,6 +37,7 @@ const style = `
         text-align:center;
         transform:translate(50%,30vh);
         font-size:20px;
+        border-left: thick solid #000;
     }
 
     
