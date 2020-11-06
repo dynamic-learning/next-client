@@ -3,7 +3,7 @@ const LogoWithCaption = () => (
     <style>{style}</style>
     <div className="logo-container">
       <div className="logo-inner-container">
-        <img className="logo-with-caption" src="logo-with-caption.jpg" />
+        <img className="logo-with-caption" src="logo-with-caption.svg" />
       </div>
       <div className="caption">
         A platform where teachers and programmers collaborate to create STEM lessons taught with the help of interactive visualizations.
@@ -17,7 +17,7 @@ const style = `
         width:200px;
         height:200px;
         position:relative;
-        transform:translateY(70%);
+        transform:translateY(25vh);
         margin-top:10%;
     }
     .logo-container {
@@ -26,7 +26,6 @@ const style = `
         position:relative;
         right: 20px;
         bottom:15vh;
-        // background-image: linear-gradient(315deg, #3bb78f 0%, #2f9e44 74%);
     }
     .logo-inner-container {
         width:200px;
@@ -35,15 +34,17 @@ const style = `
     .caption {
         width:50%;
         text-align:center;
-        transform:translate(50%,30vh);
-        font-size:20px;
-        border-left: thick solid #000;
+        transform:translate(52%,28vh);
+        font-size:18px;
+        padding-left:2px;
     }
-
-    
-    @media screen and (max-width: 50em) {
+    @media screen and (max-width: 45em) {
+      .logo-with-caption {
+        transform:translateY(22vh);
+      }
       .caption{
         font-size:15px;
+        transform:translate(50%,25vh);
       }
 `;
 

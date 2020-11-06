@@ -236,7 +236,7 @@ const getIsDrawingMode = (option: string, value: boolean, state: any) => {
 };
 
 const undoableWorkBook = undoable(workBookReducer, { 
-  filter: excludeAction([actions.CHANGE_CANVAS_OPTION, actions.SET_SLIDES]),
+  filter: excludeAction([actions.SET_SLIDES]),
   clearHistoryType: actions.CLEAR_UNDO_HISTORY
 });
 

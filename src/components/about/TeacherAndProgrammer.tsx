@@ -3,13 +3,11 @@ const TeacherAndProgrammer = () => {
     <>
       <style>{style}</style>
       <div className="programmer-img-container">
-        {/* <img className="programmer-img" src="/programmer.jpg" /> */}
-          <img className="programmer-img" src="/programmerWithBk.jpg" />
+        <img className="programmer-img" src="/programmer.png" />
       </div>
 
       <div className="teacher-img-container">
-        {/* <img className="teacher-img" src="/teacher.jpg" /> */}
-            <img className="teacher-img" src="/teacherWithBk.jpg" />
+        <img className="teacher-img" src="/teacher.png" />
       </div>
     </>
   );
@@ -17,44 +15,45 @@ const TeacherAndProgrammer = () => {
 
 const style = `
     .teacher-img {
-        width:300px;
-        height:400px;
-    }
-    .programmer-img {
-        width:300px;
+        width:400px;
         height:380px;
     }
+    .programmer-img {
+        width:340px;
+        height:360px;
+    }
    .teacher-img-container {
-        width:220px;
+        width:350px;
         position:absolute;
-        right:6%;
+        right:0;
         top:45%;      
     }
- 
     .programmer-img-container {
         width:220px;
         position:absolute;
-        top:1%;
-      
+        top:0%;
     }
-
-
+    body {
+      overflow-x:hidden
+    }
     @media screen and (max-width: 60em) {
-      .programmer-img ,.teacher-img{
-        width:150px;
-        height:200px;
-        
-      }
-      .teacher-img-container{
-        left:85%;
-      }
-      body{
-        overflow-x:hidden
-      }
-      @media screen and (max-width: 35em){
-         .programmer-img ,.teacher-img{
-           display:none
-         }
+        .programmer-img {
+          width:200px;
+          height:220px;
+        }
+        .teacher-img{
+          width:240px;
+          height:240px;
+          position:absolute;
+          right:0;
+        }
+        body {
+          overflow-x:hidden
+        }
+        @media screen and (max-width: 45em){
+          .programmer-img ,.teacher-img{
+            display:none
+        }
       }
 `;
 
