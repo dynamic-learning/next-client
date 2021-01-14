@@ -1,5 +1,6 @@
 import { fabric } from "fabric";
 import { useEffect } from "react";
+import { debounce } from "../../../utils/common"
 
 /**
  * Modified the add function prototype to add
@@ -103,7 +104,8 @@ const Slide = (props: Props) => {
   }, [canvasOptions.color]);
 
   const registerEvents = () => {
-    canvas.on("mouse:up", setCanvasState);
+    // Debounce is to reduce the frequency of update
+    canvas.on("mouse:up", debounce(setCanvasState, 500));
     window.onkeydown = handleKeyPress;
   };
 
