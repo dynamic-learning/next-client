@@ -35,7 +35,8 @@ const TopBar = ({ actions, actionDisablers, canvasOptions, title }: any) => {
     onLoginClick,
     onSignUpClick,
     handlSimulationCollectionClick,
-    handleOpenClick
+    handleOpenClick,
+    handleDuplicateClick
   } = actions;
 
   const { undoable, redoable, canCanvasSizeBeReduced } = actionDisablers;
@@ -71,7 +72,11 @@ const TopBar = ({ actions, actionDisablers, canvasOptions, title }: any) => {
         <Menu.Item className="save-option" onClick={() => handleSaveClick(isAuthenticated)} key="save">
           Save
         </Menu.Item>
-        {/* <Menu.Item key="examples">Examples</Menu.Item> */}
+        {isAuthenticated ? (
+          <Menu.Item onClick={handleDuplicateClick} key="duplicate">
+            Duplicate
+          </Menu.Item>
+        ) : null}
       </Menu.ItemGroup>
     </SubMenu>
   );

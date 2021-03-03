@@ -33,6 +33,7 @@ interface WorkbookMethods {
   onFinishReorder(startIndex: number, endIndex: number): void;
   setSlides(slides: Array<SlideType>): void;
   saveWorkbook(slides: Array<SlideType>): Promise<any>;
+  createDuplicateWorkbook(slides: Array<SlideType>): Promise<any>;
   resetSlides(): void;
   clearUndoHistory(): void;
 }
@@ -75,6 +76,7 @@ const Workbook = (props: Props) => {
     initialSlides,
     setSlides,
     saveWorkbook,
+    createDuplicateWorkbook,
     resetSlides,
     title,
     initialCurSlide,
@@ -207,6 +209,12 @@ const Workbook = (props: Props) => {
     setLoading(false);
   };
 
+  const handleDuplicateClick = async () => {
+    setLoading(true);
+    await createDuplicateWorkbook(slides);
+    setLoading(false);
+  };
+
   const handleNewClick = () => {
     if (
       !confirm(
@@ -286,6 +294,7 @@ const Workbook = (props: Props) => {
             onSignUpClick: handleSignupClick,
             handlSimulationCollectionClick: handlSimulationCollectionClick,
             handleOpenClick,
+            handleDuplicateClick
           }}
           actionDisablers={{
             undoable,

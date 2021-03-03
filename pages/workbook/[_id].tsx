@@ -46,6 +46,16 @@ const WorkbookPage = (props: any) => {
     }
   };
 
+  const createDuplicateWorkbook = async (slides: Array<SlideType>) => {
+    const _id = await getTitleAndCreateNewWorkbook(
+      slides,
+      "The workbook will be duplicated and saved. Enter the title you want to give for the duplicated workbook."
+    );
+    if (_id) {
+      await router.push(`${_id}`);
+    }
+  };
+
   useEffect(() => {
     const savedState = localStorage.getItem("savedState");
     const isWorkbookIDInvalid = props.workbook === null;
@@ -86,6 +96,7 @@ const WorkbookPage = (props: any) => {
     saveWorkbook,
     title,
     isOwner,
+    createDuplicateWorkbook
   };
 
   return (
