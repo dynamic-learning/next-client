@@ -18,6 +18,7 @@ import { BsSquareFill } from "react-icons/bs";
 import useAuth from "../../../hooks/useAuth";
 import ThemeContext from "../../../contexts";
 import { useContext } from "react";
+import { useRouter } from "next/router";
 const { SubMenu } = Menu;
 
 const TopBar = ({ actions, actionDisablers, canvasOptions, title }: any) => {
@@ -35,7 +36,8 @@ const TopBar = ({ actions, actionDisablers, canvasOptions, title }: any) => {
     onLoginClick,
     onSignUpClick,
     handlSimulationCollectionClick,
-    handleOpenClick
+    handleOpenClick,
+    handleDuplicateClick
   } = actions;
 
   const { undoable, redoable, canCanvasSizeBeReduced } = actionDisablers;
@@ -57,6 +59,10 @@ const TopBar = ({ actions, actionDisablers, canvasOptions, title }: any) => {
     onNewClick();
   };
 
+  const router = useRouter();
+
+  const canDuplicate = !(router.asPath === "/")
+
   const renderFileMenu = () => (
     <SubMenu className="file-menu" title="File" key="file" icon={<FileOutlined />}>
       <Menu.ItemGroup>
@@ -71,7 +77,11 @@ const TopBar = ({ actions, actionDisablers, canvasOptions, title }: any) => {
         <Menu.Item className="save-option" onClick={() => handleSaveClick(isAuthenticated)} key="save">
           Save
         </Menu.Item>
-        {/* <Menu.Item key="examples">Examples</Menu.Item> */}
+        {isAuthenticated && canDuplicate ? (
+          <Menu.Item onClick={handleDuplicateClick} key="duplicate">
+            Duplicate
+          </Menu.Item>
+        ) : null}
       </Menu.ItemGroup>
     </SubMenu>
   );
