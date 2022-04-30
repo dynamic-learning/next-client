@@ -3,5 +3,5 @@ export default {
   githubAppId: "57a83f80b513c2157799",
   googleAppId:
     "169411693746-n25fehl2bciatp8setlvkuhmoajr5usn.apps.googleusercontent.com",
-  appRootUrl: "https://www.dynamiclearning.io",
+  appRootUrl: "https://dl-next.herokuapp.com",
 };
